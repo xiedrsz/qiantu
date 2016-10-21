@@ -29,15 +29,10 @@ define(['text'], function (text) {
 				Deps_path_list += "'xvue!" + temp[1].replace(/\'|\"/g, '') + ".xvue', ";
 				Deps_name_list += temp[0] + ", ";
 			});
-			// 添加到依赖列表
-			Deps_path_list = Deps_path_list.slice(0, -2) + ']';
-			Deps_name_list = Deps_name_list.slice(0, -2) + ')';
-		} else {
-			Deps_path_list = Deps_path_list.slice(0, -2) + ']';
-			Deps_name_list = Deps_name_list.slice(0, -2) + ')';
-//			Deps_path_list += ']';
-//			Deps_name_list += ')';
 		}
+		// 添加到依赖列表
+		Deps_path_list = Deps_path_list.slice(0, -2) + ']';
+		Deps_name_list = Deps_name_list.slice(0, -2) + ')';
 
 		// export
 		scriptStr = scriptStr.replace(export_reg, 'return Vue.extend({\r\ntemplate: "' + tempStr + '",');
@@ -51,14 +46,14 @@ define(['text'], function (text) {
 	 */
 	function divide(xvueTmp) {
 		scriptStr = xvueTmp.match(Script_reg)[1];
-		tempStr = xvueTmp.match(Template_reg)[1].replace(/\r\n/g, '');
+		tempStr = xvueTmp.match(Template_reg)[1].replace(/\s+/g, ' ').replace(/\'/g, "\\'").replace(/\"/g, '\\"');
 	}
 
 	xvue.load = function (name, req, onload, config) {
 		req(['text!' + name], function (value) {
 			divide(value);
 			getDeps();
-//			console.log(scriptStr);
+			// console.log(scriptStr);
 			onload.fromText(scriptStr);
 		});
 	};
