@@ -1,0 +1,113 @@
+<template>
+	<div class="ac-bgc">
+		<x-header :left-options='{showBack: false}'>
+			<img slot='left' src='./assets/img/round.png' /> 手工记账
+		</x-header>
+		<div class="ac-money">
+			<div>
+				<img src="./assets/img/question.png" />
+			</div>
+			<div>
+				类别
+			</div>
+			<div>
+				<input type="number" placeholder="0.00" />
+			</div>
+		</div>
+		<ul class="ac-inoutul">
+			<li class="ac-target">支出</li>
+			<li>收入</li>
+		</ul>
+		<div class="ac-items">
+			<div class="ac-item">
+				<img src="./assets/img/food.png" />
+				<span>餐饮食品</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/clothes.png" />
+				<span>衣服饰品</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/life.png" />
+				<span>居家生活</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/traffic.png" />
+				<span>行车交通</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/enter.png" />
+				<span>休闲娱乐</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/jiaoyu.png" />
+				<span>文化教育</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/yiliao.png" />
+				<span>健康医疗</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/touzi.png" />
+				<span>投资支出</span>
+			</div>
+			<div class="ac-item">
+				<img src="./assets/img/other.png" />
+				<span>其他支出</span>
+			</div>
+		</div>
+
+		<div class="ac-input">
+			<div>
+				<img src="./assets/img/calander.png" />
+			</div>
+			<div>
+				<span>2016年10月25日</span>
+			</div>
+		</div>
+
+		<div class="ac-input">
+			<div>
+				<img src="./assets/img/local.png" />
+			</div>
+			<div>
+				<span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
+			</div>
+		</div>
+
+		<div class="ac-input">
+			<div>
+				<img src="./assets/img/edit.png" />
+			</div>
+			<div>
+				<input type="text" placeholder="备注" />
+			</div>
+		</div>
+
+		<div class='footer'>
+			<button class='ac-btn'>
+				保存
+			</button>
+		</div>
+	</div>
+</template>
+<script>
+	import xHeader from '../components/vux/xHeader'
+	export default {
+		data: function () {
+			return {
+				msg: 'Hello, vue router!'
+			}
+		},
+		methods: {
+			go: function () {
+				this.$route.router.go({
+					path: '/about'
+				});
+			}
+		},
+		components: {
+			xHeader
+		}
+	}
+</script>

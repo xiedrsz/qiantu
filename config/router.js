@@ -1,4 +1,4 @@
-define(['Vue', 'VueRouter', 'xvue!./modules/home.xvue', 'xvue!./components/about.xvue'], function (Vue, VueRouter, Home, About) {
+define(['Vue', 'VueRouter', 'xvue!./modules/home.xvue', 'xvue!./modules/account.xvue'], function (Vue, VueRouter, Home, Account) {
 	'use strict';
 
 	Vue.use(VueRouter);
@@ -10,8 +10,8 @@ define(['Vue', 'VueRouter', 'xvue!./modules/home.xvue', 'xvue!./components/about
 		'/home': {
 			component: Home
 		},
-		'/about': {
-			component: About
+		'/account': {
+			component: Account
 		}
 	});
 

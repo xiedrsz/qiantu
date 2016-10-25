@@ -1,39 +1,43 @@
 <template>
-	<x-header :left-options='{showBack: false}'>
-		<img slot='left' src='./assets/img/menu.png' /> 钱途
-		<img slot='right' src='./assets/img/syn.png' />
-	</x-header>
-	<div class='h-in-out'>
-		<div>
-			<h3>十月支出</h3>
-			<p>1100</p>
-		</div>
-		<div>
-			<h3>十月收入</h3>
-			<p>8888</p>
-		</div>
-	</div>
-	<div class='footer h-bt-6'>
-		<div class='h-out'>
+	<div>
+		<x-header :left-options='{showBack: false}'>
+			<img slot='left' src='./assets/img/menu.png' /> 钱途
+			<img slot='right' src='./assets/img/syn.png' />
+		</x-header>
+		<div class='h-in-out'>
 			<div>
-				<p>今日支出</p>
+				<h3>十月支出</h3>
+				<p>1100</p>
 			</div>
 			<div>
-				<span>0.00</span> 元
+				<h3>十月收入</h3>
+				<p>8888</p>
 			</div>
 		</div>
-	</div>
-	<div class='footer'>
-		<div class='h-muti-btn'>
-			<div>
-				<img src='./assets/img/pencil.png' />
+		<div class='footer h-bt-6'>
+			<div class='h-out'>
+				<div>
+					<p>今日支出</p>
+				</div>
+				<div>
+					<span>0.00</span> 元
+				</div>
 			</div>
-			<div>
-				<img src='./assets/img/mic.png' />
-				<span>按住说话</span>
-			</div>
-			<div>
-				<img src='./assets/img/type.png' />
+		</div>
+		<div class='footer'>
+			<div class='h-muti-btn'>
+				<div>
+					<a v-link="{ path: '/account'}">
+						<img src='./assets/img/pencil.png' />
+					</a>
+				</div>
+				<div>
+					<img src='./assets/img/mic.png' />
+					<span>按住说话</span>
+				</div>
+				<div>
+					<img src='./assets/img/type.png' />
+				</div>
 			</div>
 		</div>
 	</div>

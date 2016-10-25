@@ -100,6 +100,7 @@ option {
   font-style: inherit;
   font-weight: inherit;
   outline: 0;
+  border: 0;
 }
 
 button {
@@ -540,6 +541,112 @@ body {
 
 .h-bt-6 {
   bottom: .6rem;
+}
+
+/**
+ * account页面的样式，以 ac- 开头
+ */
+.ac-bgc {
+  background-color: #fff;
+}
+
+.ac-btn {
+  background-color: #FF5353;
+  color: #fff;
+  width: 95%;
+  margin: 0 2.5%;
+  border-radius: .04rem;
+  text-align: center;
+  line-height: .48rem;
+  font-size: .16rem;
+}
+
+.ac-btn:active {
+  background-color: #e13e3e;
+}
+
+.ac-inoutul {
+  display: flex;
+  border-top: 1px solid #e6e6e6;
+}
+.ac-inoutul li {
+  list-style: none;
+  flex: 1;
+  text-align: center;
+  font-size: .16rem;
+  background-color: #F8F8F8;
+  line-height: .48rem;
+}
+.ac-inoutul .ac-target {
+  background-color: #fff;
+}
+
+.ac-input {
+  display: flex;
+  padding: .10rem .05rem;
+  font-size: .18rem;
+  height: .42rem;
+  line-height: .42rem;
+  border-top: 1px solid #e6e6e6;
+}
+.ac-input div:first-child {
+  width: .42rem;
+  text-align: center;
+  padding: 0 .05rem;
+  line-height: .52rem;
+}
+.ac-input div:last-child {
+  flex: 1;
+}
+.ac-input div:last-child input {
+  width: 100%;
+}
+.ac-input img {
+  height: .24rem;
+}
+
+.ac-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 0 .1rem;
+}
+.ac-items .ac-item {
+  width: .60rem;
+  text-align: center;
+  padding: .2rem .05rem;
+}
+.ac-items .ac-item img {
+  height: .42rem;
+}
+.ac-items .ac-item span {
+  display: block;
+}
+
+.ac-money {
+  display: flex;
+  padding: .15rem .05rem;
+  font-size: .18rem;
+  height: .42rem;
+  line-height: .42rem;
+}
+.ac-money div {
+  padding: 0 .05rem;
+}
+.ac-money div:last-child {
+  flex: 1;
+}
+.ac-money div:last-child input {
+  width: 100%;
+  text-align: right;
+  color: #FF5353;
+  font-size: .20rem;
+}
+.ac-money div:last-child input::-webkit-input-placeholder {
+  color: #FF5353;
+}
+.ac-money img {
+  height: .42rem;
 }
 
 /*# sourceMappingURL=app.css.map */
