@@ -31,7 +31,7 @@
 						<img src='./assets/img/pencil.png' />
 					</a>
 				</div>
-				<div>
+				<div @click="say">
 					<img src='./assets/img/mic.png' />
 					<span>按住说话</span>
 				</div>
@@ -54,6 +54,17 @@
 			go: function () {
 				this.$route.router.go({
 					path: '/about'
+				});
+			},
+			say: function () {
+				this.$http.post('https://test-hcz-claim.pingan.com.cn:23443/claims/sendskkms', {
+					a: 'kk'
+				}).then(function (data) {
+					data.json().then(function (ss) {
+						console.log(ss);
+					});
+				}, function (e) {
+					console.log(e);
 				});
 			}
 		},

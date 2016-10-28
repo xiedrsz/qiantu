@@ -10,8 +10,12 @@ requirejs.config({
 		text: './libs/require/text',
 		xvue: './libs/require/xvue',
 		Vue: './libs/vue/vue',
+		mock: './libs/mock-min',
 		VueRouter: './libs/vue/vue-router',
-		router: './config/router'
+		resource: './libs/vue/vue-resource.min',
+		router: './config/router',
+		setting: './config/setting',
+		mockData: './mocks/mockData',
 	},
 	shim: {
 		VueRouter: ['Vue']
@@ -19,7 +23,10 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['Vue', 'router'], function (Vue, router) {
+requirejs(['Vue', 'router', 'resource', 'setting'], function (Vue, router, resource) {
+	Vue.use(resource);
+	// 以表单形式发送数据
+	Vue.http.options.emulateJSON = true;
 	/* 启动路由  */
 	var App = Vue.extend({})
 	router.start(App, '#app')
