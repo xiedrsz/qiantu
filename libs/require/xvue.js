@@ -26,7 +26,12 @@ define(['text'], function (text) {
 				scriptStr = scriptStr.replace(item, '');
 				// 解析依赖内容
 				temp = item.replace(/import|\s/g, '').replace('from', ',').split(',');
-				Deps_path_list += "'xvue!" + temp[1].replace(/\'|\"/g, '') + ".xvue', ";
+				// 区分 js 与 xvue
+				if (temp[1].indexOf('.js') > -1) {
+					Deps_path_list += "'" + temp[1].replace(/\'|\"/g, '').replace('.js', '') + "', ";
+				} else {
+					Deps_path_list += "'xvue!" + temp[1].replace(/\'|\"/g, '') + ".xvue', ";
+				}
 				Deps_name_list += temp[0] + ", ";
 			});
 		}
@@ -53,7 +58,7 @@ define(['text'], function (text) {
 		req(['text!' + name], function (value) {
 			divide(value);
 			getDeps();
-			// console.log(scriptStr);
+			//console.log(scriptStr);
 			onload.fromText(scriptStr);
 		});
 	};

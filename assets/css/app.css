@@ -461,6 +461,10 @@ body {
     transform: translateX(0);
   }
 }
+.xs-plugin-pullup-container {
+  text-align: center;
+}
+
 /**
  * home页面的样式，以 h- 开头
  */
