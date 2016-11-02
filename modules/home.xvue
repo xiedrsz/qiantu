@@ -14,13 +14,6 @@
 				<p>8888</p>
 			</div>
 		</div>
-
-		<x-scroller lock-y :scrollbar-x="false">
-			<div class="box1">
-				many many content
-			</div>
-		</x-scroller>
-
 		<div class='footer h-bt-6'>
 			<div class='h-out'>
 				<div>
@@ -30,6 +23,30 @@
 					<span>0.00</span> 元
 				</div>
 			</div>
+
+			<x-scroller lock-x :scrollbar-y="false" :height="'inherit'">
+				<div class="h-item">
+					<div>
+						<img src="./assets/img/food.png" />
+					</div>
+					<div>
+						<h2>餐饮食品</h2>
+						<p>午餐16元</p>
+						<div>-16.00</div>
+					</div>
+				</div>
+				<div class="h-item">
+					<div>
+						<img src="./assets/img/food.png" />
+					</div>
+					<div>
+						<h2>餐饮食品</h2>
+						<p>午餐16元</p>
+						<div>-16.00</div>
+					</div>
+				</div>
+			</x-scroller>
+
 		</div>
 		<div class='footer'>
 			<div class='h-muti-btn'>
