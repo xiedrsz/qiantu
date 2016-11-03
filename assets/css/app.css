@@ -475,6 +475,15 @@ body {
 /**
  * home页面的样式，以 h- 开头
  */
+.h-date {
+  line-height: .42rem;
+  color: #999;
+  padding: 0 .1rem;
+}
+.h-date div {
+  float: right;
+}
+
 .h-in-out {
   display: flex;
   color: #fff;

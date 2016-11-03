@@ -1,21 +1,48 @@
 define(['mock'], function (Mock) {
-	'use strict';
+    'use strict';
 
-	var conf = {};
+    var conf = {};
 
-	conf.config = function () {
-		Mock
-			.mock(/sendskkms/, function () {
-				return {
-					a: 'sendskkms'
-				};
-			})
-			.mock(/sendsms/, function () {
-				return {
-					a: 'ss'
-				};
-			});
-	};
+    conf.config = function () {
+        Mock
+            .mock(/expense\/pull/, function () {
+                return {
+                    amount: '32.00',
+                    lists: [{
+                        detail: [{
+                            img: './assets/img/food.png',
+                            type: '餐饮食品',
+                            mess: '午餐16元',
+                            money: '-16.00'
+                        }, {
+                            img: './assets/img/food.png',
+                            type: '餐饮食品',
+                            mess: '午餐16元',
+                            money: '-16.00'
+                        }]
+                    }, {
+                        date: '昨天',
+                        amount: '20.00',
+                        detail: [{
+                            img: './assets/img/food.png',
+                            type: '餐饮食品',
+                            mess: '午餐16元',
+                            money: '-16.00'
+                        }, {
+                            img: './assets/img/food.png',
+                            type: '餐饮食品',
+                            mess: '午餐16元',
+                            money: '-16.00'
+                        }]
+                    }]
+                };
+            })
+            .mock(/sendsms/, function () {
+                return {
+                    a: 'ss'
+                };
+            });
+    };
 
-	return conf;
+    return conf;
 });
