@@ -6,6 +6,7 @@ define(['Vue', 'ext'], function (Vue, ext) {
      * 表字段
      * lists Array 支出列表
      * amount String 今日支出
+     * outItems Array 支出项目
      */
 
     // 稳定数据
@@ -16,6 +17,10 @@ define(['Vue', 'ext'], function (Vue, ext) {
     
     expense.temp.amount = '0.00';
     expense.temp.lists = [];
+    expense.temp.outItems = [{
+        src: './assets/img/food.png',
+        name: '餐饮食品'
+    }];
 
     // 读取器
     expense.getter = function (attr) {

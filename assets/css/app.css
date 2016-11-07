@@ -663,6 +663,7 @@ body {
   width: .60rem;
   text-align: center;
   padding: .2rem .05rem;
+  position: relative;
 }
 .ac-items .ac-item img {
   height: .42rem;
@@ -695,6 +696,14 @@ body {
 }
 .ac-money img {
   height: .42rem;
+}
+
+.ac-move {
+  position: absolute;
+  left: .14rem;
+  top: .2rem;
+  transition: All .4s ease-in-out;
+  -webkit-transition: All .4s ease-in-out;
 }
 
 /*# sourceMappingURL=app.css.map */
