@@ -24,10 +24,10 @@
                 </div>
             </div>
 
-            <x-scroller lock-x height="inherit" style="max-height:4.17rem">
+            <x-scroller lock-x height="inherit" style="max-height:3.8rem">
                 <div>
                     <div v-for="item in formData.lists">
-                        <div class="h-date">
+                        <div class="h-date" v-if="item.date!='今天'">
                             <span>{{item.date}}</span>
                             <div>{{item.amount}}</div>
                         </div>
@@ -36,7 +36,7 @@
                                 <img :src="detail.img" />
                             </div>
                             <div>
-                                <h2>{{detail.type}}</h2>
+                                <h3>{{detail.type}}</h3>
                                 <p>{{detail.mess}}</p>
                                 <div>{{detail.money}}</div>
                             </div>
@@ -47,7 +47,8 @@
 
         </div>
         <div class='footer'>
-            <div class='h-muti-btn'>
+
+            <div class='h-muti-btn' v-show="!typing">
                 <div>
                     <a v-link="{ path: '/account'}">
                         <img src='./assets/img/pencil.png' />
@@ -57,8 +58,17 @@
                     <img src='./assets/img/mic.png' />
                     <span>按住说话</span>
                 </div>
-                <div>
+                <div @click="chtyping">
                     <img src='./assets/img/type.png' />
+                </div>
+            </div>
+
+            <div class='h-input-btn' v-show="typing">
+                <div class="h-input">
+                    <input type="text" v-model="message" />
+                </div>
+                <div class="h-btn" @click="submit">
+                    {{btnMess}}
                 </div>
             </div>
         </div>
@@ -73,10 +83,13 @@
         data: function () {
             return {
                 formData: expense.temp,
+                typing: false,
+                btnMess: "取消",
+                message: ""
             }
         },
         created: function () {
-            expense.pull();
+            !expense.temp.lists.length && expense.pull();
         },
         methods: {
             go: function () {
@@ -86,6 +99,23 @@
             },
             say: function () {
                 console.log("语音尚未集成");
+            },
+            chtyping: function () {
+                this.typing = !this.typing;
+            },
+            submit: function () {
+                if (this.btnMess == "取消") {
+                    this.chtyping();
+                } else {}
+            }
+        },
+        watch: {
+            message: function () {
+                if (!!this.message) {
+                    this.btnMess = "提交";
+                } else {
+                    this.btnMess = "取消";
+                }
             }
         },
         components: {

@@ -26,8 +26,35 @@
     div:first-child {
         h3,
         p {
-            border-right: 2px solid;
+            @include border((border-right: 1px solid));
         }
+    }
+}
+
+.h-input-btn {
+    display: flex;
+    background-color: #FF5353;
+    color: #fff;
+    padding: .1rem .12rem;
+    text-align: center;
+    line-height: 2em;
+    font-size: .16rem;
+    .h-input {
+        flex: 1;
+        input {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            text-indent: .1rem;
+        }
+        padding-right: .12rem;
+    }
+    .h-btn {
+        width: 2.4em;
+        border-radius: 50%;
+    }
+    .h-btn:active {
+        background-color: #e13e3e;
     }
 }
 
@@ -48,17 +75,18 @@
         line-height: .18rem;
         p {
             color: #999;
+            font-size: .12rem;
         }
         div {
             position: absolute;
             right: .1rem;
             top: .08rem;
             color: $main-color;
-            font-size: .18rem;
+            font-size: .16rem;
         }
     }
     img {
-        height: .42rem;
+        height: .36rem;
     }
 }
 
@@ -71,8 +99,10 @@
     padding: .1rem 0;
     border-radius: .04rem;
     text-align: center;
+    margin-bottom: .09rem;
     img {
-        height: 2em;
+        height: .22rem;
+        padding-top: .04rem;
     }
     div:first-child,
     div:last-child {
@@ -81,13 +111,13 @@
     div:nth-child(2) {
         position: relative;
         flex: 1;
-        border-left: 1px solid;
-        border-right: 1px solid;
         line-height: 2em;
+        font-size: .16rem;
         img {
             position: absolute;
             left: 24%;
         }
+        @include border((border-left: 1px solid, border-right: 1px solid));
     }
 }
 
@@ -119,5 +149,5 @@
 }
 
 .h-bt-6 {
-    bottom: .6rem;
+    bottom: .7rem;
 }

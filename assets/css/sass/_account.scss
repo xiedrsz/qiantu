@@ -17,6 +17,7 @@
     text-align: center;
     line-height: .48rem;
     font-size: .16rem;
+    margin-bottom: .09rem;
 }
 
 .ac-btn:active {
@@ -42,10 +43,10 @@
 .ac-input {
     display: flex;
     padding: .10rem .05rem;
-    font-size: .18rem;
+    font-size: .16rem;
     height: .42rem;
     line-height: .42rem;
-    border-top: 1px solid #e6e6e6;
+    @include border((border-top: 1px solid #e6e6e6));
     div:first-child {
         width: .42rem;
         text-align: center;
@@ -59,7 +60,7 @@
         }
     }
     img {
-        height: .24rem;
+        height: .20rem;
     }
 }
 
@@ -69,12 +70,11 @@
     justify-content: flex-start;
     padding: 0 .1rem;
     .ac-item {
-        width: .60rem;
         text-align: center;
         padding: .2rem .05rem;
         position: relative;
         img {
-            height: .42rem;
+            height: .36rem;
         }
         span {
             display: block;
@@ -85,9 +85,9 @@
 .ac-money {
     display: flex;
     padding: .15rem .05rem;
-    font-size: .18rem;
-    height: .42rem;
-    line-height: .42rem;
+    font-size: .16rem;
+    height: .36rem;
+    line-height: .36rem;
     div {
         padding: 0 .05rem;
     }
@@ -104,7 +104,7 @@
         }
     }
     img {
-        height: .42rem;
+        height: .36rem;
     }
 }
 

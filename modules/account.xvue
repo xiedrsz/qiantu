@@ -5,13 +5,13 @@
         </x-header>
         <div class="ac-money">
             <div>
-                <img id="uac-type" :src="targetSrc" />
+                <img id="uac-type" :src="itemDetail.img" />
             </div>
             <div>
-                {{targetName}}
+                {{itemDetail.type}}
             </div>
             <div>
-                <input type="number" placeholder="0.00" />
+                <input type="number" placeholder="0.00" v-model="itemDetail.money" />
             </div>
         </div>
         <ul class="ac-inoutul">
@@ -19,41 +19,9 @@
             <li>收入</li>
         </ul>
         <div class="ac-items">
-            <div class="ac-item" v-for="item in formData.outItems">
+            <div class="ac-item" v-for="item in outItems">
                 <img :src="item.src" @click="selected($event, item.src, item.name)" />
                 <span>{{item.name}}</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/clothes.png" @click="selected($event, './assets/img/clothes.png', '衣服饰品')" />
-                <span>衣服饰品</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/life.png" @click="selected($event, './assets/img/life.png', '居家生活')" />
-                <span>居家生活</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/traffic.png" />
-                <span>行车交通</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/enter.png" />
-                <span>休闲娱乐</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/jiaoyu.png" />
-                <span>文化教育</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/yiliao.png" />
-                <span>健康医疗</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/touzi.png" />
-                <span>投资支出</span>
-            </div>
-            <div class="ac-item">
-                <img src="./assets/img/other.png" />
-                <span>其他支出</span>
             </div>
         </div>
 
@@ -80,12 +48,12 @@
                 <img src="./assets/img/edit.png" />
             </div>
             <div>
-                <input type="text" placeholder="备注" />
+                <input type="text" placeholder="备注" v-model="itemDetail.mess" />
             </div>
         </div>
 
         <div class='footer'>
-            <button class='ac-btn'>
+            <button class='ac-btn' @click="save">
                 保存
             </button>
         </div>
@@ -94,22 +62,36 @@
 <script>
     import xHeader from '../components/vux/xHeader'
     import expense from '../table/expense.js'
+    import ext from 'ext.js'
 
     export default {
         data: function () {
             return {
-                formData: expense.temp,
+                outItems: [],
+                itemDetail: {
+                    img: './assets/img/question.png',
+                    type: '类别',
+                    date: '昨天',
+                    address: '',
+                    money: '',
+                    mess: ''
+                },
                 msg: 'Hello, vue router!',
                 targetX: 0,
-                targetY: 0,
-                targetSrc: './assets/img/question.png',
-                targetName: '类别'
+                targetY: 0
             }
         },
         ready: function () {
-            var target = document.getElementById("uac-type");
+            var target = document.getElementById("uac-type"),
+                vm = this;
             this.targetX = target.x;
             this.targetY = target.y;
+
+            // 获取支出列表
+            expense.getOutItems(function (res) {
+                ext.extend(vm.outItems, res.outItems);
+                !!vm.outItems[0] && vm.outItems.$set(0, vm.outItems[0]);
+            });
         },
         methods: {
             go: function () {
@@ -117,6 +99,7 @@
                     path: '/about'
                 });
             },
+            // 选择类型动画
             selected: function (event, src, name) {
                 var x = event.target.x,
                     y = event.target.y,
@@ -135,13 +118,24 @@
                 }, 100);
 
                 var timer2 = setTimeout(function () {
-                    vm.targetSrc = src;
-                    vm.targetName = name;
+                    vm.itemDetail.img = src;
+                    vm.itemDetail.type = name;
 
                     node.remove();
 
                     clearTimeout(timer2);
                 }, 1000);
+            },
+
+            // 保存收支信息
+            save: function () {
+                console.log(this.itemDetail);
+                var vm = this;
+                expense.saveOutItem(this.itemDetail, function () {
+                    vm.$route.router.go({
+                        path: '/home'
+                    });
+                });
             }
         },
         components: {
