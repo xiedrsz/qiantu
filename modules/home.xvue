@@ -27,8 +27,8 @@
             <x-scroller lock-x height="inherit" style="max-height:3.8rem">
                 <div>
                     <div v-for="item in formData.lists">
-                        <div class="h-date" v-if="item.date!='今天'">
-                            <span>{{item.date}}</span>
+                        <div class="h-date" v-if="item.date!=formData.today">
+                            <span>{{item.date | isYestoday}}</span>
                             <div>{{item.amount}}</div>
                         </div>
                         <div class="h-item" v-for="detail in item.detail">
@@ -50,7 +50,7 @@
 
             <div class='h-muti-btn' v-show="!typing">
                 <div>
-                    <a v-link="{ path: '/account'}">
+                    <a v-link="{ name: 'account' }">
                         <img src='./assets/img/pencil.png' />
                     </a>
                 </div>
@@ -65,7 +65,7 @@
 
             <div class='h-input-btn' v-show="typing">
                 <div class="h-input">
-                    <input type="text" v-model="message" />
+                    <input type="text" placeholder="eg: 昨天早餐4元" v-model="message" />
                 </div>
                 <div class="h-btn" @click="submit">
                     {{btnMess}}
@@ -78,6 +78,7 @@
     import xHeader from '../components/vux/xHeader'
     import xScroller from '../components/vux/xScroller'
     import expense from '../table/expense.js'
+    import analyzer from 'analyzer.js'
 
     export default {
         data: function () {
@@ -92,11 +93,6 @@
             !expense.temp.lists.length && expense.pull();
         },
         methods: {
-            go: function () {
-                this.$route.router.go({
-                    path: '/about'
-                });
-            },
             say: function () {
                 console.log("语音尚未集成");
             },
@@ -106,7 +102,15 @@
             submit: function () {
                 if (this.btnMess == "取消") {
                     this.chtyping();
-                } else {}
+                } else {
+                    var result = analyzer.analyze(this.message);
+                    this.$route.router.go({
+                        name: 'account',
+                        params: {
+                            bill: JSON.stringify(result)
+                        }
+                    });
+                }
             }
         },
         watch: {

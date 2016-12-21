@@ -1,29 +1,15 @@
-define(['mock'], function (Mock) {
+define(['mock', 'dataApi'], function (Mock, dataApi) {
     'use strict';
 
-    var conf = {};
+    var conf = {},
+        today = dataApi.format("YYYY年MM月DD日");
 
     conf.config = function () {
         Mock
-            .mock(/expense\/pull/, function () {
+            .mock(/expense\/pull/, function () { // 更新账单列表
                 return {
-                    amount: '32.00',
                     lists: [{
-                        date: '今天',
-                        amount: '32.00',
-                        detail: [{
-                            img: './assets/img/food.png',
-                            type: '餐饮食品',
-                            mess: '午餐16元',
-                            money: '-16.00'
-                        }, {
-                            img: './assets/img/food.png',
-                            type: '餐饮食品',
-                            mess: '午餐16元',
-                            money: '-16.00'
-                        }]
-                    }, {
-                        date: '昨天',
+                        date: today,
                         amount: '32.00',
                         detail: [{
                             img: './assets/img/food.png',

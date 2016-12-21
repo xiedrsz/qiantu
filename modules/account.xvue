@@ -82,7 +82,8 @@
             }
         },
         ready: function () {
-            var target = document.getElementById("uac-type"),
+            var bill = this.$route.params.bill,
+                target = document.getElementById("uac-type"),
                 vm = this;
             this.targetX = target.x;
             this.targetY = target.y;
@@ -92,6 +93,16 @@
                 ext.extend(vm.outItems, res.outItems);
                 !!vm.outItems[0] && vm.outItems.$set(0, vm.outItems[0]);
             });
+
+            // 初始化账单信息
+            if (bill != ":bill") {
+                bill = JSON.parse(bill);
+                this.itemDetail.type = bill.type;
+                this.itemDetail.money = bill.money.toFixed(2);
+                this.itemDetail.mess = bill.mess;
+                this.itemDetail.date = bill.date;
+                this.itemDetail.img = "./assets/img/" + bill.img;
+            }
         },
         methods: {
             go: function () {
@@ -129,7 +140,6 @@
 
             // 保存收支信息
             save: function () {
-                console.log(this.itemDetail);
                 var vm = this;
                 expense.saveOutItem(this.itemDetail, function () {
                     vm.$route.router.go({

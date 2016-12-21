@@ -1,21 +1,25 @@
-define(['Vue', 'ext'], function (Vue, ext) {
+define(['Vue', 'ext', 'dataApi'], function (Vue, ext, dataApi) {
     'use strict';
     var expense = {};
 
     /**
      * 表字段
-     * lists Array 支出列表
-     * amount String 今日支出
+     * lists Array 支出列表, 与数据库同步
+     * amount String 今日支出, 从支出列表中获取
      * outItems Array 支出项目
      * itemDetail Object 项目详情 { date, Address, money, type, mess, img }
      */
 
     // 稳定数据
+    /**
+     * 用处不大，可能被删, [2016-12-21]
+     */
     expense.param = {};
 
     // 临时数据
     expense.temp = {};
 
+    expense.temp.today = dataApi.format("YYYY年MM月DD日");
     expense.temp.amount = '0.00';
     expense.temp.lists = [];
     expense.temp.outItems = [];
@@ -61,6 +65,12 @@ define(['Vue', 'ext'], function (Vue, ext) {
                 // 让 view 更新
                 !!expense.temp.lists[0] && expense.temp.lists.$set(0, expense.temp.lists[0]);
 
+                // 计算今日支出
+                var temp = expense.temp.lists.filter(function (item) {
+                    return item.date == expense.temp.today;
+                });
+                !!temp[0] && (expense.temp.amount = temp[0].amount);
+
                 !!callback && callback(res);
             });
         }, function (e) {
@@ -98,24 +108,34 @@ define(['Vue', 'ext'], function (Vue, ext) {
                 mess: itemDetail.mess,
                 money: itemDetail.money
             },
-            i = 0,
-            len = expense.temp.lists.length,
-            amount;
+            amount = parseFloat(detail.money),
+            temp = expense.temp.lists.filter(function (item) {
+                return item.date == date;
+            });
 
-        for (; i < len; i++) {
-            if (expense.temp.lists[i].date == date) {
-                expense.temp.lists[i].detail.push(detail);
-                
-                amount = expense.temp.lists[i].amount;
-                amount = parseFloat(amount) + parseFloat(detail.money);
-                expense.temp.lists[i].amount = amount.toFixed(2);
-                
-                detail = undefined;
-
-                !!callback && callback();
-                break;
-            }
+        // 更新支出列表
+        if (temp[0]) {
+            temp[0].detail.push(detail);
+            amount += parseFloat(temp[0].amount);
+            temp[0].amount = amount.toFixed(2);
+        } else {
+            temp = {
+                date: date,
+                amount: amount.toFixed(2),
+                detail: [detail]
+            };
+            expense.temp.lists.push(temp);
         }
+
+        // 更新今日支出
+        if (date == expense.temp.today) {
+            var acTmp = expense.temp.amount;
+            acTmp = parseFloat(detail.money) + parseFloat(acTmp);
+            expense.temp.amount = acTmp.toFixed(2);
+        }
+
+        // 回调
+        !!callback && callback();
     };
 
     return expense;
