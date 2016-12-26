@@ -24,7 +24,6 @@
 }
 
 .menu_animation {
-    position: relative;
     -webkit-animation: fadeInLeft .5s 0s linear both;
     animation: fadeInLeft .5s 0s linear both;
     box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.4);
@@ -40,16 +39,15 @@
 }
 
 @keyframes fadeInRight {
-    0% {
+	0% {
         left: 0;
     }
-    100% {
+    to {
         left: -100%;
     }
 }
 
 .menu_animation1 {
-    position: relative;
     -webkit-animation: fadeInRight .5s 0s linear both;
     animation: fadeInRight .5s 0s linear both;
 }
