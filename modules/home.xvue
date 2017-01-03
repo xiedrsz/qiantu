@@ -93,16 +93,17 @@
 			!expense.temp.lists.length && expense.pull();
 		},
 		methods: {
+			// 说话
 			say: function () {
 				console.log("语音尚未集成");
 			},
+			// 切换输入模式
 			chtyping: function () {
 				this.typing = !this.typing;
 			},
+			// 提交
 			submit: function () {
-				if (this.btnMess == "取消") {
-					this.chtyping();
-				} else {
+				if (this.btnMess == "提交") {
 					var result = analyzer.analyze(this.message);
 					this.$route.router.go({
 						name: 'account',
@@ -111,7 +112,11 @@
 						}
 					});
 				}
+				this.message = "";
+				this.btnMess = "取消";
+				this.chtyping();
 			},
+			// 打开侧滑菜单
 			openMenu: function () {
 				this.$parent.menuClass = "menu_animation";
 			}

@@ -2,7 +2,7 @@ define(['Vue', 'VueRouterTransition', 'VueRouter', 'xvue!./modules/home.xvue', '
 	'use strict';
 
 	Vue.use(VueRouter);
-	Vue.use(VueRouterTransition, VueRouter)
+	Vue.use(VueRouterTransition, VueRouter);
 
 	var router = new VueRouter();
 

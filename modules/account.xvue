@@ -1,155 +1,157 @@
 <template>
-    <div class="ac-bgc">
-        <x-header :left-options='{showBack: false}'>
-            <img slot='left' src='./assets/img/round.png' /> 手工记账
-        </x-header>
-        <div class="ac-money">
-            <div>
-                <img id="uac-type" :src="itemDetail.img" />
-            </div>
-            <div>
-                {{itemDetail.type}}
-            </div>
-            <div>
-                <input type="number" placeholder="0.00" v-model="itemDetail.money" />
-            </div>
-        </div>
-        <ul class="ac-inoutul">
-            <li class="ac-target">支出</li>
-            <li>收入</li>
-        </ul>
-        <div class="ac-items">
-            <div class="ac-item" v-for="item in outItems">
-                <img :src="item.src" @click="selected($event, item.src, item.name)" />
-                <span>{{item.name}}</span>
-            </div>
-        </div>
+	<div class="ac-bgc">
+		<x-header :left-options='{showBack: false}'>
+			<img slot='left' src='./assets/img/round.png' /> 手工记账
+		</x-header>
+		<div class="ac-money">
+			<div>
+				<img id="uac-type" :src="itemDetail.img" />
+			</div>
+			<div>
+				{{itemDetail.type}}
+			</div>
+			<div>
+				<input type="number" placeholder="0.00" v-model="itemDetail.money" />
+			</div>
+		</div>
+		<ul class="ac-inoutul">
+			<li class="ac-target">支出</li>
+			<li>收入</li>
+		</ul>
+		<div class="ac-items">
+			<div class="ac-item" v-for="item in outItems">
+				<img :src="item.src" @click="selected($event, item.src, item.name)" />
+				<span>{{item.name}}</span>
+			</div>
+		</div>
 
-        <div class="ac-input">
-            <div>
-                <img src="./assets/img/calander.png" />
-            </div>
-            <div>
-                <span>2016年10月25日</span>
-            </div>
-        </div>
+		<div class="ac-input">
+			<div>
+				<img src="./assets/img/calander.png" />
+			</div>
+			<div>
+				<span>2016年10月25日</span>
+			</div>
+		</div>
 
-        <div class="ac-input">
-            <div>
-                <img src="./assets/img/local.png" />
-            </div>
-            <div>
-                <span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
-            </div>
-        </div>
+		<div class="ac-input">
+			<div>
+				<img src="./assets/img/local.png" />
+			</div>
+			<div>
+				<span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
+			</div>
+		</div>
 
-        <div class="ac-input">
-            <div>
-                <img src="./assets/img/edit.png" />
-            </div>
-            <div>
-                <input type="text" placeholder="备注" v-model="itemDetail.mess" />
-            </div>
-        </div>
+		<div class="ac-input">
+			<div>
+				<img src="./assets/img/edit.png" />
+			</div>
+			<div>
+				<input type="text" placeholder="备注" v-model="itemDetail.mess" />
+			</div>
+		</div>
 
-        <div class='footer'>
-            <button class='ac-btn' @click="save">
-                保存
-            </button>
-        </div>
-    </div>
+		<div class='footer'>
+			<button class='ac-btn' @click="save">
+				保存
+			</button>
+		</div>
+	</div>
 </template>
 <script>
-    import xHeader from '../components/vux/xHeader'
-    import expense from '../table/expense.js'
-    import ext from 'ext.js'
+	import xHeader from '../components/vux/xHeader'
+	import expense from '../table/expense.js'
+	import ext from 'ext.js'
 
-    export default {
-        data: function () {
-            return {
-                outItems: [],
-                itemDetail: {
-                    img: './assets/img/question.png',
-                    type: '类别',
-                    date: '昨天',
-                    address: '',
-                    money: '',
-                    mess: ''
-                },
-                msg: 'Hello, vue router!',
-                targetX: 0,
-                targetY: 0
-            }
-        },
-        ready: function () {
-            var bill = this.$route.params.bill,
-                target = document.getElementById("uac-type"),
-                vm = this;
-            this.targetX = target.x;
-            this.targetY = target.y;
+	export default {
+		data: function () {
+			return {
+				outItems: [],
+				itemDetail: {},
+				targetX: 0,
+				targetY: 0
+			}
+		},
+		ready: function () {
+			var target = document.getElementById("uac-type"),
+				vm = this;
+			this.targetX = target.x;
+			this.targetY = target.y;
 
-            // 获取支出列表
-            expense.getOutItems(function (res) {
-                ext.extend(vm.outItems, res.outItems);
-                !!vm.outItems[0] && vm.outItems.$set(0, vm.outItems[0]);
-            });
+			// 获取支出列表
+			expense.getOutItems(function (res) {
+				ext.extend(vm.outItems, res.outItems);
+				!!vm.outItems[0] && vm.outItems.$set(0, vm.outItems[0]);
+			});
 
-            // 初始化账单信息
-            if (bill != ":bill") {
-                bill = JSON.parse(bill);
-                this.itemDetail.type = bill.type;
-                this.itemDetail.money = bill.money.toFixed(2);
-                this.itemDetail.mess = bill.mess;
-                this.itemDetail.date = bill.date;
-                this.itemDetail.img = "./assets/img/" + bill.img;
-            }
-        },
-        methods: {
-            go: function () {
-                this.$route.router.go({
-                    path: '/about'
-                });
-            },
-            // 选择类型动画
-            selected: function (event, src, name) {
-                var x = event.target.x,
-                    y = event.target.y,
-                    node = event.target.cloneNode(true),
-                    vm = this;
+			// 初始化支出详情
+			this.reset();
+		},
+		methods: {
+			// 选择类型动画
+			selected: function (event, src, name) {
+				var x = event.target.x,
+					y = event.target.y,
+					node = event.target.cloneNode(true),
+					vm = this;
 
-                x = this.targetX - x;
-                y = this.targetY - y;
+				x = this.targetX - x;
+				y = this.targetY - y;
 
-                node.className = "ac-move";
-                event.target.parentElement.appendChild(node);
-                var time1 = setTimeout(function () {
-                    node.setAttribute("style", "-webkit-transform: translate(" + x + "px, " + y + "px);");
+				node.className = "ac-move";
+				event.target.parentElement.appendChild(node);
+				var time1 = setTimeout(function () {
+					node.setAttribute("style", "-webkit-transform: translate(" + x + "px, " + y + "px);");
 
-                    clearTimeout(time1);
-                }, 100);
+					clearTimeout(time1);
+				}, 100);
 
-                var timer2 = setTimeout(function () {
-                    vm.itemDetail.img = src;
-                    vm.itemDetail.type = name;
+				var timer2 = setTimeout(function () {
+					vm.itemDetail.img = src;
+					vm.itemDetail.type = name;
 
-                    node.remove();
+					node.remove();
 
-                    clearTimeout(timer2);
-                }, 1000);
-            },
+					clearTimeout(timer2);
+				}, 1000);
+			},
+			// 保存收支信息
+			save: function () {
+				var vm = this;
+				expense.saveOutItem(this.itemDetail, function () {
+					vm.$route.router.go({
+						path: '/home'
+					});
+				});
+			},
+			// 重置支出详情 itemDetail
+			reset: function () {
+				var bill = this.$route.params.bill;
 
-            // 保存收支信息
-            save: function () {
-                var vm = this;
-                expense.saveOutItem(this.itemDetail, function () {
-                    vm.$route.router.go({
-                        path: '/home'
-                    });
-                });
-            }
-        },
-        components: {
-            xHeader
-        }
-    }
+				this.itemDetail = {
+					img: './assets/img/question.png',
+					type: '类别',
+					date: '昨天',
+					address: '',
+					money: '',
+					mess: ''
+				};
+
+				if (!!bill && bill != ":bill") {
+					bill = JSON.parse(bill);
+					ext.extend(this.itemDetail, bill);
+					this.itemDetail.img = "./assets/img/" + bill.img;
+				}
+			}
+		},
+		watch: {
+			$route: function () {
+				this.reset();
+			}
+		},
+		components: {
+			xHeader
+		}
+	}
 </script>
