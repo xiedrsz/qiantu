@@ -30,7 +30,7 @@
 				<img src="./assets/img/calander.png" />
 			</div>
 			<div>
-				<span>2016年10月25日</span>
+				<input type="text" placeholder="2016年10月25日" v-model="itemDetail.date" />
 			</div>
 		</div>
 
