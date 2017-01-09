@@ -116,12 +116,19 @@ define(['Vue', 'ext', 'dataApi'], function (Vue, ext, dataApi) {
    * @param callback 回调函数
    */
   expense.getOutItems = function (callback) {
-    Vue.http.get('/expense/getOutItems').then(function (data) {
-      data.json().then(function (res) {
-        ext.extend(true, expense.param.outItems, res.outItems);
-        ext.extend(true, expense.temp.outItems, res.outItems);
+    Vue.http.get('/dict/getItem', {
+      params: {
+        name: "outItems"
+      }
+    }).then(function (data) {
+      console.log(data);
+      var lists = data.data.value;
 
-        !!callback && callback(res);
+      ext.extend(true, expense.param.outItems, lists);
+      ext.extend(true, expense.temp.outItems, lists);
+
+      !!callback && callback({
+        outItems: lists
       });
     }, function (e) {
       console.log(e);

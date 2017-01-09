@@ -28,15 +28,26 @@ requirejs(['Vue', 'router', 'resource', 'setting', 'filter'], function (Vue, rou
   Vue.http.options.emulateJSON = true;
 
   // 拦截请求
-  if (setting.env !== "product") {
-    Vue.http.interceptors.push(function (request, next) {
-      request.url = setting.test_server + request.url;
-      next(function (res) {
-        (setting.env == "mock") && (res.data = JSON.parse(res.data));
-        return res;
-      });
+  Vue.http.interceptors.push(function (request, next) {
+    // 请求地址设置
+    (setting.env !== "product") && (request.url = setting.test_server + request.url);
+
+    // 超时设置
+    !request.timeout && (request.timeout = 1000);
+    var timer = setTimeout(function () {
+      clearInterval(timer);
+      next(request.respondWith(request.body, {
+        status: 408,
+        statusText: '请求超时'
+      }));
+      request.abort();
+    }, request.timeout);
+
+    next(function (res) {
+      (setting.env == "mock") && (res.data = JSON.parse(res.data));
+      return res;
     });
-  }
+  });
 
   /* 启动路由  */
   var App = Vue.extend({
