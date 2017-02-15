@@ -3,7 +3,7 @@ define(['mockData'], function (mockData) {
 
   // 运行环境 [mock, test, product]
   var env = 'test',
-    test_server = "http://localhost:3000";
+    test_server = "http://192.168.1.21:3000";
 
   // 配置mocks
   if (env == 'mock') {

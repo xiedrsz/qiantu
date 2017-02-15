@@ -12,6 +12,8 @@ requirejs.config({
     analyzer: './libs/analyzer',
     dataApi: './libs/dataApi',
     ext: './libs/extend.min',
+    store: './libs/store',
+    localDB: './libs/localDB',
     router: './config/router',
     setting: './config/setting',
     mockData: './mocks/mockData'
@@ -40,7 +42,7 @@ requirejs(['Vue', 'router', 'resource', 'setting', 'filter'], function (Vue, rou
         status: 408,
         statusText: '请求超时'
       }));
-      request.abort();
+      (setting.env !== "mock") && request.abort();
     }, request.timeout);
 
     next(function (res) {
