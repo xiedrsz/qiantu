@@ -1,0 +1,149 @@
+@charset "UTF-8";
+
+/**
+ * 动画，
+ */
+
+// 侧滑菜单动画 开始
+@-webkit-keyframes fadeInLeft {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0px;
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0px;
+  }
+}
+
+.menu_animation {
+  -webkit-animation: fadeInLeft .5s 0s linear both;
+  animation: fadeInLeft .5s 0s linear both;
+  box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.4);
+}
+
+@-webkit-keyframes fadeInRight {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    left: 0;
+  }
+  to {
+    left: -100%;
+  }
+}
+
+.menu_animation1 {
+  -webkit-animation: fadeInRight .5s 0s linear both;
+  animation: fadeInRight .5s 0s linear both;
+}
+
+// 侧滑菜单动画 结束
+// 转场效果 设计 完成 开始
+.vux-pop-out-enter-active,
+.vux-pop-in-enter-active {
+  width: 100%;
+  height: 100%;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  backface-visibility: hidden;
+}
+
+.vux-pop-out-enter-active {
+  animation-name: popInLeft;
+}
+
+.vux-pop-out-leave-active {
+  animation-name: popOutRight;
+}
+
+.vux-pop-in-enter-active {
+  perspective: 1000;
+  animation-name: popInRight;
+}
+
+.vux-pop-in-leave-active {
+  animation-name: popOutLeft;
+}
+
+@keyframes popInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes popOutLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes popInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes popOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+// 转场效果 设计 完成 结束
+// 旋转 开始
+@-webkit-keyframes rotation {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.an-rotate {
+  -webkit-animation: rotation 2.5s linear infinite;
+}
+
+// 旋转 结束
