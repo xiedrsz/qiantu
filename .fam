@@ -1,0 +1,8 @@
+{
+  "name": "www",
+  "type": "vue",
+  "catalogue": {
+    "css": "/assets/css",
+    "table": "./table"
+  }
+}

@@ -2,14 +2,60 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <title>vue-webpack</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="assets/css/app.min.css" />
+  <title>钱途</title>
 </head>
 
 <body>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
+  <div id="app">
+    <div id="menu" class="menu" :class="menuClass">
+      <div class="leftM">
+        <div class="float">
+          <img class="img" src="assets/img/touxiang.jpg" />
+          <div>Beautiful Girl</div>
+          <div class="icM">
+            <img class="pic" src="assets/img/camera.png" />
+          </div>
+        </div>
+        <div class="top">
+          <img src="assets/img/camera.png" />
+        </div>
+        <div class="bottom">
+          <div class="menu-item">
+            <img src="assets/img/note.png" />
+            <span>记一笔</span>
+          </div>
+          <div class="menu-item">
+            <img src="assets/img/statistics.png" />
+            <span>统计分析</span>
+          </div>
+          <div class="menu-item">
+            <img src="assets/img/logout.png" />
+            <span>登出</span>
+          </div>
+          <div class="menu-item">
+            <img src="assets/img/logout.png" />
+            <span>登出</span>
+          </div>
+          <div class="menu-item">
+            <img src="assets/img/setting.png" />
+            <span>设置</span>
+          </div>
+
+          <div class="logout menu-item">
+            <img src="assets/img/logout.png" />
+            <span>登出</span>
+          </div>
+        </div>
+      </div>
+      <div class="rightM" @click="closeMenu"></div>
+    </div>
+    <router-view transition v-r-transition="{forward: 'vux-pop-in', back: 'vux-pop-out'}" keep-alive></router-view>
+  </div>
 </body>
+
+<script type="text/javascript" src="libs/require/require.js" data-main="config/main.js"></script>
 
 </html>
