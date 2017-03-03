@@ -1,0 +1,57 @@
+<template>
+  <div class="ac-items">
+    <div class="ac-item" v-for="item in outItems">
+      <img :src="item.src" @click="selected($event, item.src, item.name)" />
+      <span>{{item.name}}</span>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'out-items',
+    props: {
+      outItems: {
+        type: Array,
+        default () {
+          return []
+        }
+      },
+      target: {
+        type: Object,
+        default () {
+          return {
+            x: 0,
+            y: 0
+          }
+        }
+      }
+    },
+    methods: {
+      // 选择类型动画
+      selected(event, src, name) {
+        let x = this.target.x - event.target.x,
+          y = this.target.y - event.target.y,
+          node = event.target.cloneNode(true),
+          vm = this,
+          time1, timer2;
+        // 移动动画
+        node.className = "ac-move"
+        event.target.parentElement.appendChild(node)
+        time1 = setTimeout(() => {
+          node.setAttribute("style", "-webkit-transform: translate(" + x + "px, " + y + "px);")
+          clearTimeout(time1)
+        }, 100)
+
+        // 赋值
+        timer2 = setTimeout(() => {
+          this.$emit("on-select", {
+            src, name
+          })
+          node.remove();
+          clearTimeout(timer2);
+        }, 1000)
+      }
+    }
+  }
+</script>
