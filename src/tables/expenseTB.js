@@ -5,8 +5,7 @@ import {
   ext, dataApi, localDB
 }
 from '../libs'
-
-let expenseTB = {};
+import table from './table'
 
 /**
  * 表字段
@@ -15,106 +14,77 @@ let expenseTB = {};
  * outItems Array 支出项目
  * itemDetail Object 项目详情 { date, Address, money, type, mess, img }
  */
-
-// 稳定数据
-/**
- * 用处不大，可能被删, [2016-12-21]
- */
-expenseTB.param = {}
-
-// 临时数据, 可抽象
-expenseTB.temp = {}
-
-expenseTB.temp.today = dataApi.format("YYYY年MM月DD日")
-expenseTB.temp.amount = '0.00'
-expenseTB.temp.lists = []
-expenseTB.temp.outItems = []
-expenseTB.temp.itemDetail = {}
-
-// 读取器, 可抽象
-expenseTB.getter = (attr) => {
-  return this.temp[attr]
-}
-
-// 设置器, 可抽象
-expenseTB.setter = (attr, value) => {
-  this.temp[attr] = value
-  return this
-}
-
-// 设置多个参数, 可抽象
-/**
- * @Param data 数据源
- * @Param attr1 
- * @Param attr2
- */
-expenseTB.setmore = () => {
-  // 未完成
-}
-
-// 校验
-expenseTB.check = () => {
-
-}
+let expenseTB = new table({
+  today: dataApi.format("YYYY年MM月DD日"),
+  amount: '0.00',
+  lists: [],
+  outItems: [],
+  itemDetail: {}
+})
 
 /**
  * 拉取,从服务器上拉去最新列表, 若失败则使用本地数据
  * @param callback 回调函数
  */
 expenseTB.pull = (callback) => {
-  console.log("pull")
   Vue.http.get('/expense/pull').then((data) => {
-    let res = data.data
-
+    let res = data.data;
     // 同步到本地
-    // localDB.syn(res.lists)
-
-    deal(res)
+    localDB.syn(res.lists)
+    deal(res);
+    !!callback && callback()
   }, (e) => {
     // 连接失败，使用本地
     let res = {
       lists: localDB.localEList()
     }
-    deal(res)
+    deal(res);
+    !!callback && callback()
   })
 
   // 处理结果
   function deal(res) {
     // 更新列表
     expenseTB.temp.lists = expenseTB.temp.lists.concat(res.lists)
-
-    // 计算今日支出
+      // 计算今日支出
     let temp = expenseTB.temp.lists.filter((item) => {
       return item.date == expenseTB.temp.today
     });
-    !!temp[0] && (expenseTB.temp.amount = temp[0].amount)
-
+    !!temp[0] && (expenseTB.temp.amount = temp[0].amount);
     !!callback && callback(res)
   }
 }
 
 /**
- * 推， 将最新账单信息推向服务器, 未完成
- * @param list Array 待更新账单
+ * 推, 将最新账单信息推向服务器
  * @param callback 回调函数
  */
-expenseTB.push = (list, callback) => {
-  console.log("push");
+expenseTB.push = (callback) => {
+  // 收集未提交列表
+  let list = [],
+    unPullEList = localDB.queryDict("unPullEList") || []
+  unPullEList.forEach((item) => {
+    let tmp = localDB.queryDict(item)
+    list.push(tmp)
+  })
+
+  // 没有未提交数据
+  if (!list[0]) {
+    !!callback && callback(1)
+    return
+  }
+
+  // 提交
   Vue.http.post('/expense/push', {
     expensesList: JSON.stringify(list)
-  }).then(function (data) {
-    console.log(data);
-  }, function (e) {
-    var unPullEList = localDB.queryDict("unPullEList") || [],
-      tmp;
-    list.forEach(function (item) {
-      tmp = localDB.update(item);
-      (unPullEList.indexOf(tmp) < 0) && unPullEList.push(tmp);
-    });
-    localDB.saveDict("unPullEList", unPullEList);
-    console.log(e);
-  });
-
+  }).then((data) => {
+    // SUCCESS
+    localDB.saveDict("unPullEList", []);
+    !!callback && callback(1)
+  }, (e) => {
+    // FAIL
+    !!callback && callback(0)
+  })
 }
 
 // 获取支出类型
@@ -127,9 +97,9 @@ expenseTB.getOutItems = (callback) => {
       name: "outItems"
     }
   }).then((data) => {
-    let lists = data.data.value
-      // 保存到本地
-      // localDB.saveDict("outItems", lists);
+    let lists = data.data.value;
+    // 保存到本地
+    localDB.saveDict("outItems", lists);
     deal(lists)
   }, (e) => {
     let lists = localDB.queryDict("outItems")
@@ -152,7 +122,6 @@ expenseTB.getOutItems = (callback) => {
  * @param callback 回调函数
  */
 expenseTB.saveOutItem = (itemDetail, callback) => {
-  console.log(itemDetail)
   let date = itemDetail.date,
     detail = {
       img: itemDetail.img,
@@ -170,7 +139,7 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
     temp[0].detail.push(detail)
     amount += parseFloat(temp[0].amount)
     temp[0].amount = amount.toFixed(2)
-    expenseTB.push(temp)
+    localDB.update(temp[0])
   } else {
     temp = {
       date: date,
@@ -178,7 +147,7 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
       detail: [detail]
     }
     expenseTB.temp.lists.push(temp)
-    expenseTB.push([temp])
+    localDB.update(temp)
   }
 
   // 更新今日支出

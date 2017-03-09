@@ -1,5 +1,5 @@
 <template>
-  <div class="ac-bgc">
+  <div>
     <x-header :left-options="{showBack: true}">
       手工记账
     </x-header>
@@ -14,42 +14,44 @@
         <input type="number" placeholder="0.00" v-model="itemDetail.money" />
       </div>
     </div>
-    
+
     <ul class="ac-inoutul">
       <li class="ac-target">支出</li>
       <li>收入</li>
     </ul>
-    
-    <out-items :out-items="outItems" :target="target" @on-select="select"></out-items>
 
-    <div class="ac-input">
-      <div>
-        <img src="/static/img/calander.png" />
-      </div>
-      <div>
-        <input type="text" placeholder="2016年10月25日" v-model="itemDetail.date" />
-      </div>
-    </div>
-
-    <div class="ac-input">
-      <div>
-        <img src="/static/img/local.png" />
-      </div>
-      <div>
-        <span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
-      </div>
-    </div>
-
-    <div class="ac-input">
-      <div>
-        <img src="/static/img/edit.png" />
-      </div>
-      <div>
-        <input type="text" placeholder="备注" v-model="itemDetail.mess" />
-      </div>
-    </div>
+    <out-items :out-items="outItems" @on-select="select"></out-items>
 
     <div class='footer'>
+      <div class="ac-input">
+        <div>
+          <img src="/static/img/calander.png" />
+        </div>
+        <div>
+          <input type="text" placeholder="2016年10月25日" v-model="itemDetail.date" />
+        </div>
+      </div>
+
+      <div class="ac-input">
+        <div>
+          <img src="/static/img/local.png" />
+        </div>
+        <div>
+          <span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
+        </div>
+      </div>
+
+
+      <div class="ac-input">
+        <div>
+          <img src="/static/img/edit.png" />
+        </div>
+        <div>
+          <input type="text" placeholder="备注" v-model="itemDetail.mess" />
+        </div>
+      </div>
+
+
       <button class='ac-btn' @click="save">
         保存
       </button>
@@ -57,73 +59,83 @@
   </div>
 </template>
 <script>
-  import { XHeader } from 'vux'
-  import { OutItems } from '../components'
-  
-  import { ext } from '../libs'
-  import expenseTB from '../tables/expenseTB'
-  
-  export default {
-    data () {
-      return {
-        outItems: [],
-        itemDetail: {},
-        target: {
-          x: 0,
-          y: 0
-        }
-      }
-    },
-    mounted () {
-      let target = document.getElementById("uac-type"),
-        vm = this;
-      
-      // 获取支出列表
-      expenseTB.getOutItems(function (res) {
-        vm.outItems = vm.outItems.concat(res.outItems)
-        
-        vm.target.x = target.x
-        vm.target.y = target.y
-      })
+  import {
+    XHeader
+  }
+  from 'vux'
+  import {
+    OutItems
+  }
+  from '../components'
 
-      // 初始化支出详情
-      this.reset();
-    },
-    methods: {
-      select (res) {
-        this.itemDetail.img = res.src
-        this.itemDetail.type = res.name
+  import {
+    ext
+  }
+  from '../libs'
+  import expenseTB from '../tables/expenseTB'
+
+  export default {
+    data() {
+        return {
+          outItems: [],
+          itemDetail: {},
+          target: {
+            x: 0,
+            y: 0
+          }
+        }
       },
-      // 保存收支信息
-      save() {
-        var vm = this
-        expenseTB.saveOutItem(vm.itemDetail, () => {
-          vm.$router.push({
-            path: '/home'
-          })
+      mounted() {
+        let target = document.getElementById("uac-type"),
+          vm = this;
+
+        // 获取支出列表
+        expenseTB.getOutItems(function (res) {
+          vm.target.x = target.x
+          vm.target.y = target.y
+
+          vm.outItems = vm.outItems.concat(res.outItems)
         })
+
+        // 初始化支出详情
+        this.reset();
       },
-      // 重置支出详情 itemDetail
-      reset() {
-        let bill = this.$route.params.bill
-        this.itemDetail = {
-          img: '/static/img/question.png',
-          type: '类别',
-          date: '2017-02-08',
-          address: '',
-          money: '',
-          mess: ''
-        }
-        if (!!bill && bill != ":bill") {
-          bill = JSON.parse(bill)
-          ext.extend(this.itemDetail, bill)
-          this.itemDetail.img = "/static/img/" + bill.img
-        }
+      methods: {
+        select(res) {
+            this.itemDetail.img = res.src
+            this.itemDetail.type = res.name
+          },
+          // 保存收支信息
+          save() {
+            var vm = this
+            expenseTB.saveOutItem(vm.itemDetail, () => {
+              vm.$router.push({
+                path: '/home'
+              })
+            })
+          },
+          // 重置支出详情 itemDetail
+          reset() {
+            let bill = this.$route.params.bill,
+              today = expenseTB.getter("today")
+            this.itemDetail = {
+              img: '/static/img/question.png',
+              type: '类别',
+              date: today,
+              address: '',
+              money: '',
+              mess: ''
+            }
+            if (!!bill && bill != ":bill") {
+              bill = JSON.parse(bill)
+              ext.extend(this.itemDetail, bill)
+              this.itemDetail.img = "/static/img/" + bill.img
+            }
+          }
+      },
+      components: {
+        XHeader,
+        OutItems
       }
-    },
-    components: {
-      XHeader,
-      OutItems
-    }
   }
 </script>

@@ -12,17 +12,21 @@ let db = {}
 /**
  * @Function 更新，将单天的账单更新到服务器
  * @Param item 账单信息
+ * @Param isSyn 是否为同步
  */
-db.update = (item) => {
+db.update = (item, isSyn) => {
   let date = item.date,
-    key = "e-"
+    key = "e-",
+    unPullEList = store.getItem("unPullEList") || []
 
   date = date.replace(/[年月]/g, "-").replace("日", "")
   key += date
-
   store.setItem(key, item)
 
-  return key
+  if (!isSyn) {
+    (unPullEList.indexOf(key) < 0) && unPullEList.push(key)
+    store.setItem("unPullEList", unPullEList)
+  }
 }
 
 /**
@@ -31,7 +35,7 @@ db.update = (item) => {
  */
 db.syn = (list) => {
   list.forEach(function (item) {
-    db.update(item)
+    db.update(item, true)
   })
 }
 

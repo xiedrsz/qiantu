@@ -16,21 +16,21 @@ Vue.http.options.emulateJSON = true
 // 拦截请求
 Vue.http.interceptors.push((request, next) => {
   // 超时设置
-  !request.timeout && (request.timeout = 1000)
-  let timer = setTimeout(() => {
-    clearTimeout(timer)
+  !request.timeout && (request.timeout = 2000)
+
+  let timer = window.setTimeout(() => {
     next(request.respondWith(request.body, {
       status: 408,
       statusText: '请求超时'
     }))
-
     // mock 状态时将此句屏蔽
-    (window.env == "mock") || request.abort()
+    (window.env != "mock") || request.abort()
+    clearTimeout(timer)
   }, request.timeout)
 
   next((res) => {
-    (res.status == 404) && clearTimeout(timer);
-    (window.env == "mock") && (res.data = JSON.parse(res.data), clearTimeout(timer))
+    clearTimeout(timer);
+    (window.env == "mock") && (res.data = JSON.parse(res.data))
     return res
   })
 })

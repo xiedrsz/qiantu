@@ -26,8 +26,8 @@ module.exports = {
     assetsPublicPath: '/',
     // http 请求反转配置表
     proxyTable: {
-      "/vf_sales": "http://172.16.17.162:8000",
-      "/vfsales": "http://172.16.17.232:7002"
+      "/expense": "http://localhost:3000",
+      "/dict": "http://localhost:3000"
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

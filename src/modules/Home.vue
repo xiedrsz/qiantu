@@ -15,7 +15,7 @@
         <p>8888</p>
       </div>
     </div>
-    
+
     <div class='footer h-bt-6'>
       <div class='h-out'>
         <div>
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <scroller lock-x style="max-height:400px">
+      <scroller lock-x style="max-height:360px" ref="scroller">
         <e-lists :lists="formData.lists"></e-lists>
       </scroller>
     </div>
@@ -34,15 +34,24 @@
   </div>
 </template>
 <script>
-  import { XHeader, Scroller } from 'vux'
-  import { XMenu, MutiBtn, ELists } from '../components'
-  
+  import {
+    XHeader, Scroller
+  }
+  from 'vux'
+  import {
+    XMenu, MutiBtn, ELists
+  }
+  from '../components'
+
   import store from '../vuex/store'
   const commit = store.commit || store.dispatch
-  
+
   import expenseTB from '../tables/expenseTB'
-  import { analyzer } from '../libs'
-    
+  import {
+    analyzer
+  }
+  from '../libs'
+
   export default {
     name: 'home',
     data() {
@@ -55,25 +64,34 @@
       }
     },
     created() {
-      !expenseTB.temp.lists.length && expenseTB.pull();
+      this.syn();
+      !expenseTB.temp.lists.length && expenseTB.pull(() => {
+        this.$nextTick(() => {
+          this.$refs.scroller.reset()
+        })
+      })
     },
     methods: {
-      openMenu () {
-        commit('UPDATE_MENUCLASS', 'menu_animation')
-      },
-      syn () {
-        console.log("gg");
-      },
-      submit (mess) {
-        let result = analyzer.analyze(mess)
-        
-        this.$router.push({
-          name: 'account',
-          params: {
-            bill: JSON.stringify(result)
-          }
-        })
-      }
+      openMenu() {
+          commit('UPDATE_MENUCLASS', 'menu_animation')
+        },
+        syn() {
+          this.synOption.class = "an-rotate"
+          this.synOption.img = "/static/img/syn.png"
+          expenseTB.push((res) => {
+            this.synOption.class = "";
+            !!res || (this.synOption.img = "/static/img/syn_fail.png")
+          })
+        },
+        submit(mess) {
+          let result = analyzer.analyze(mess)
+          this.$router.push({
+            name: 'account',
+            params: {
+              bill: JSON.stringify(result)
+            }
+          })
+        }
     },
     components: {
       XHeader,

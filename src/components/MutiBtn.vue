@@ -28,7 +28,7 @@
 <script>
   export default {
     name: 'muti-btn',
-    data() {
+    data () {
       return {
         typing: false,
         btnMess: "取消",
@@ -37,26 +37,31 @@
     },
     methods: {
       // 说话
-      say() {
-          console.log("语音尚未集成")
-        },
-        // 切换输入模式
-        chtyping() {
-          this.typing = !this.typing
-        },
-        // 提交
-        submit() {
-          if (this.btnMess == "提交") {
-            // Todo
-            this.$emit('on-submit', this.message)
-          }
-          this.message = ""
-          this.btnMess = "取消"
-          this.chtyping()
+      say () {
+        let vm = this
+        navigator.xfySpeech.recognize((data) => {
+          let result = data.result
+          vm.$emit("on-submit", result)
+        }, (err) => {
+          console.log("Erro: " + err)
+        })
+      },
+      // 切换输入模式
+      chtyping () {
+        this.typing = !this.typing
+      },
+      // 提交
+      submit () {
+        if (this.btnMess == "提交") {
+          this.$emit('on-submit', this.message)
         }
+        this.message = ""
+        this.btnMess = "取消"
+        this.chtyping()
+      }
     },
     watch: {
-      message() {
+      message () {
         if (!!this.message) {
           this.btnMess = "提交"
         } else {

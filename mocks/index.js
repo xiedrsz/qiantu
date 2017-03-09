@@ -27,7 +27,7 @@ Mock
     };
   })
   // 提交账单列表
-  .mock(/expense\/push/, function (req) {
+  .mock(/expense\/pusllh/, function (req) {
     var data = req.body;
     return {
       result: "OK"

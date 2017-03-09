@@ -16,16 +16,18 @@
         default () {
           return []
         }
-      },
-      target: {
-        type: Object,
-        default () {
-          return {
-            x: 0,
-            y: 0
-          }
+      }
+    },
+    data () {
+      return {
+        target: {
+          x: 0,
+          y: 0
         }
       }
+    },
+    updated () {
+      this.target = document.getElementById("uac-type")
     },
     methods: {
       // 选择类型动画

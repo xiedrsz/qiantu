@@ -24,9 +24,9 @@
           <img src="static/img/logout.png" />
           <span>登出</span>
         </div>
-        <div class="menu-item">
-          <img src="static/img/logout.png" />
-          <span>登出</span>
+        <div class="menu-item" @click="refresh">
+          <img src="static/img/refresh.png" />
+          <span>刷新</span>
         </div>
         <div class="menu-item">
           <img src="static/img/setting.png" />
@@ -56,8 +56,11 @@
       }
     },
     methods: {
-      closeMenu() {
+      closeMenu () {
         commit('UPDATE_MENUCLASS', 'menu_animation1')
+      },
+      refresh () {
+        window.location.reload()
       }
     }
   }
