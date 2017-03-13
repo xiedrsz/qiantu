@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <scroller lock-x style="max-height:360px" ref="scroller">
+      <scroller lock-x style="max-height:320px" ref="scroller">
         <e-lists :lists="formData.lists"></e-lists>
       </scroller>
     </div>

@@ -12,11 +12,11 @@
         <img src="static/img/camera.png" />
       </div>
       <div class="bottom">
-        <div class="menu-item">
+        <div class="menu-item" @click="go('home')">
           <img src="static/img/note.png" />
           <span>记一笔</span>
         </div>
-        <div class="menu-item">
+        <div class="menu-item" @click="go('statistics')">
           <img src="static/img/statistics.png" />
           <span>统计分析</span>
         </div>
@@ -61,6 +61,12 @@
       },
       refresh () {
         window.location.reload()
+      },
+      go (page) {
+        this.closeMenu()
+        this.$router.push({
+          path: '/' + page
+        })
       }
     }
   }

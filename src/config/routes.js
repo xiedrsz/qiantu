@@ -11,7 +11,8 @@
 
 import {
   Home,
-  Account
+  Account,
+  Statistics
 }
 from '../modules'
 
@@ -26,5 +27,8 @@ module.exports = [
     name: 'account',
     path: '/account/:bill',
     component: Account
+  }, {
+    path: '/statistics',
+    component: Statistics
   }
 ]
