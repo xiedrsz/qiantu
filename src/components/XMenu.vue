@@ -16,7 +16,7 @@
           <img src="static/img/note.png" />
           <span>记一笔</span>
         </div>
-        <div class="menu-item" @click="go('statistics')">
+        <div class="menu-item" @click="go('wealth')">
           <img src="static/img/statistics.png" />
           <span>统计分析</span>
         </div>

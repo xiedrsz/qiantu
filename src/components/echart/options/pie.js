@@ -1,4 +1,5 @@
-let pieOption = {
+let option = {
+  backgroundColor: '#2c343c',
   tooltip: {
     trigger: 'item',
     formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -19,6 +20,13 @@ let pieOption = {
         show: false
       }
     },
+    itemStyle: {
+      emphasis: {
+        shadowBlur: 10,
+        shadowOffsetX: 0,
+        shadowColor: 'rgba(0, 0, 0, 0.5)'
+      }
+    },
     data: []
   }, { // 外圈
     name: '财富分布',
@@ -28,4 +36,4 @@ let pieOption = {
   }]
 }
 
-export default pieOption
+export default option

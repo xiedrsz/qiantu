@@ -12,7 +12,10 @@
 import {
   Home,
   Account,
-  Statistics
+  Statistics,
+  Wealth,
+  Fund,
+  WealthItem
 }
 from '../modules'
 
@@ -30,5 +33,14 @@ module.exports = [
   }, {
     path: '/statistics',
     component: Statistics
+  }, {
+    path: '/wealth',
+    component: Wealth
+  }, {
+    path: '/fund/:index',
+    component: Fund
+  }, {
+    path: '/wealthItem/',
+    component: WealthItem
   }
 ]

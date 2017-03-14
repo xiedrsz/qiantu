@@ -1,15 +1,6 @@
 let option = {
   // 背景颜色
   backgroundColor: '#2c343c',
-  // 标题
-  title: {
-    text: '股市资金分布',
-    left: 'center',
-    top: 20,
-    textStyle: {
-      color: '#ccc'
-    }
-  },
   // 提示栏
   tooltip: {
     trigger: 'item',
@@ -18,8 +9,8 @@ let option = {
   // 遮罩层明亮程度配置
   visualMap: {
     show: false,
-    min: 80,
-    max: 600,
+    min: 1000,
+    max: 4000,
     inRange: {
       colorLightness: [0, 1]
     }
@@ -32,22 +23,7 @@ let option = {
       radius: '55%',
       center: ['50%', '50%'],
       // 图标数据，后面有排序
-      data: [
-        {
-          value: 2249.77,
-          name: '可取金额'
-        },
-        {
-          value: 1839.26,
-          name: '16国债19'
-        },
-        {
-          value: 2000.00,
-          name: '标准券'
-        }
-      ].sort(function (a, b) {
-        return a.value - b.value;
-      }),
+      data: [],
       roseType: 'angle',
       label: {
         normal: {
@@ -79,7 +55,7 @@ let option = {
       animationDelay: function (idx) {
         return Math.random() * 200;
       }
-    }]
+  }]
 };
 
 export default option
