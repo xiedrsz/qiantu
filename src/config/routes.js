@@ -37,6 +37,7 @@ module.exports = [
     path: '/wealth',
     component: Wealth
   }, {
+    name: 'fund',
     path: '/fund/:index',
     component: Fund
   }, {

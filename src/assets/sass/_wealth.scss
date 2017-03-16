@@ -16,3 +16,40 @@
   color: #fff;
   font-size: .16rem;
 }
+
+.w-banner {
+  text-align: center;
+  background-color: orange;
+}
+
+.w-form {
+  display: flex;
+  padding: .10rem .05rem;
+  font-size: .16rem;
+  height: .42rem;
+  line-height: .42rem;
+  @include border((border-top: 1px solid #e6e6e6));
+  .i-icon {
+    width: .42rem;
+    text-align: center;
+    padding: 0 .05rem;
+    line-height: .52rem;
+  }
+  .weui_cell {
+    padding: 0;
+  }
+  div:last-child {
+    flex: 1;
+    input {
+      width: 100%;
+    }
+  }
+  img {
+    height: .20rem;
+  }
+}
+
+.w-val {
+  float: left;
+  width: 90%;
+}

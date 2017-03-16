@@ -3,90 +3,11 @@
  */
 
 import table from './table'
+import ext from '../libs/extend.min'
 
 let wealthTB = new table({
-  list: [
-    {
-      name: '基金',
-      value: 37782.44,
-      icon: '/static/img/fund.png',
-      account: '',
-      href: '',
-      detail: [
-        {
-          value: 21531.51,
-          name: '理财通',
-          icon: '/static/img/fund.png',
-          account: '',
-          href: ''
-        }, {
-          value: 3218.16,
-          name: '余额宝',
-          icon: '/static/img/fund.png',
-          account: '',
-          href: ''
-        }, {
-          value: 6022.21,
-          name: '工基',
-          icon: '/static/img/fund.png',
-          account: '',
-          href: ''
-        }, {
-          value: 3003.64,
-          name: '上基',
-          icon: '/static/img/fund.png',
-          account: '',
-          href: ''
-        }, {
-          value: 4006.92,
-          name: '招基',
-          icon: '/static/img/fund.png',
-          account: '',
-          href: ''
-        }
-      ]
-    }, {
-      name: '储蓄',
-      value: 15546.89,
-      icon: '/static/img/card.png',
-      account: '',
-      href: '',
-      detail: []
-    }, {
-      name: '债务',
-      value: 1500.00,
-      icon: '/static/img/loan.png',
-      account: '',
-      href: '',
-      detail: []
-    }, {
-      name: '股市',
-      value: 6097.49,
-      icon: '/static/img/k.png',
-      account: '',
-      href: '',
-      detail: [
-        {
-          value: 2249.77,
-          name: '可取金额'
-        }, {
-          value: 1839.26,
-          name: '16国债19'
-        }, {
-          value: 2000.00,
-          name: '标准券'
-        }
-      ]
-    }, {
-      name: '钱包',
-      value: 28.23,
-      icon: '/static/img/wallet.png',
-      account: '',
-      href: '',
-      detail: []
-    }
-  ],
-  sum: 0
+  value: 0.00,
+  list: []
 })
 
 /**
@@ -100,7 +21,7 @@ wealthTB.update = (callback) => {
   list.forEach((item) => {
     sum += item.value
   });
-  wealthTB.temp.sum = sum;
+  wealthTB.temp.value = sum;
   // 计算财富占比
   list.forEach((item) => {
     item.account = (item.value / sum * 100).toFixed(2) + '%'
@@ -109,6 +30,45 @@ wealthTB.update = (callback) => {
   list = list.sort((a, b) => {
     return b.value - a.value;
   })
+
+  !!callback && callback()
+}
+
+/**
+ * @Function 保存修改的列表项
+ * @Param item Object 财富
+ * @Param callback 更新完成回调函数
+ * 注：
+ *  使用 pos 表示位置，[undefined: 大分类新增， 0、1...: 大分类修改， 0-、1-：小分类新增，0-0、0-1：小分类修
+ *  改]
+ */
+wealthTB.save = (item, callback) => {
+  let pos = item.pos,
+    i = 0,
+    wealth, len, index;
+
+  if (pos === undefined) {
+    wealthTB.temp.list = wealthTB.temp.list.concat(item);
+  } else {
+    pos += ""
+    pos = pos.split("-")
+    len = pos.length
+    wealth = wealthTB.temp
+    for (; i < len; i++) {
+      index = pos[i]
+      if (i == len - 1) {
+        if (index === "") {
+          wealth.list = wealth.list.concat(item)
+        } else {
+          index = +index
+          wealth.list[index] = item
+        }
+      } else {
+        index = +index
+        wealth = wealth.list[index]
+      }
+    }
+  }
 
   !!callback && callback()
 }

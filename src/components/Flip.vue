@@ -1,6 +1,6 @@
 <!-- 待整理 -->
 <template>
-  <div class="box viewport-flip" title="点击翻面" @click="flip">
+  <div class="box viewport-flip">
     <a class="list flip" :class="fClass">
       <slot name="front"></slot>
     </a>
@@ -49,6 +49,7 @@
   
   .list {
     position: absolute;
+    width: 100%;
   }
   
   .viewport-flip {

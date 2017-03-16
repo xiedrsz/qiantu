@@ -86,14 +86,10 @@
         }
       },
       mounted() {
-        let target = document.getElementById("uac-type"),
-          vm = this;
+        let vm = this;
 
         // 获取支出列表
         expenseTB.getOutItems(function (res) {
-          vm.target.x = target.x
-          vm.target.y = target.y
-
           vm.outItems = vm.outItems.concat(res.outItems)
         })
 
