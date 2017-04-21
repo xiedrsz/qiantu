@@ -16,24 +16,28 @@
         default () {
           return []
         }
-      }
-    },
-    data () {
-      return {
-        target: {
-          x: 0,
-          y: 0
+      },
+      deviate: {
+        type: Object,
+        default () {
+          return {
+            x: 0,
+            y: 0
+          }
         }
       }
     },
-    updated () {
-      this.target = document.getElementById("uac-type")
+    data() {
+      return {
+        target: ""
+      }
     },
     methods: {
       // 选择类型动画
       selected(event, src, name) {
-        let x = this.target.x - event.target.x,
-          y = this.target.y - event.target.y,
+        !this.target && (this.target = document.getElementById("uac-type"));
+        let x = this.target.x - event.target.x - this.deviate.x,
+          y = this.target.y - event.target.y - this.deviate.y,
           node = event.target.cloneNode(true),
           vm = this,
           time1, timer2;

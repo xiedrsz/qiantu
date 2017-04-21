@@ -41,7 +41,8 @@ module.exports = [
     path: '/fund/:index',
     component: Fund
   }, {
-    path: '/wealthItem/',
+    name: 'wealthItem',
+    path: '/wealthItem/:index',
     component: WealthItem
   }
 ]

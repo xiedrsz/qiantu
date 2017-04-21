@@ -16,3 +16,13 @@ Vue.filter('isYestoday', (value) => {
   }
   return value
 })
+
+Vue.filter('diff', (value) => {
+  let tmp = +value
+
+  if (tmp < 0) {
+    return value
+  } else {
+    return "+" + value
+  }
+})

@@ -1,9 +1,12 @@
 /**
  * @File 财富统计表
  */
-
+import Vue from 'vue'
 import table from './table'
-import ext from '../libs/extend.min'
+import {
+  ext, localDB
+}
+from '../libs'
 
 let wealthTB = new table({
   value: 0.00,
@@ -11,27 +14,43 @@ let wealthTB = new table({
 })
 
 /**
- * @Function 更新列表
- * @Param callback 更新完成回调函数
+ * @Description 其他数据(外加数据)
+ * @Param isSyn string 是否已同步，[0: 否, 1: 是]
  */
-wealthTB.update = (callback) => {
-  let list = wealthTB.temp.list,
-    sum = 0
-    // 统计总财富
-  list.forEach((item) => {
-    sum += item.value
-  });
-  wealthTB.temp.value = sum;
-  // 计算财富占比
-  list.forEach((item) => {
-    item.account = (item.value / sum * 100).toFixed(2) + '%'
-  });
-  // 排序
-  list = list.sort((a, b) => {
-    return b.value - a.value;
-  })
+wealthTB.other = {
+  isSyn: "1"
+}
 
-  !!callback && callback()
+/**
+ * @Function 初始化， 从服务器获取到财富
+ */
+wealthTB.init = () => {
+  Vue.http.get('/wealth/pull').then((data) => {
+    let wealth = data.body;
+    (wealth.size !== 0) && ext.extend(wealthTB.temp, wealth)
+    wealthTB.saveToLocal()
+  }, (e) => {
+    // 连接失败，使用本地
+    let loc = localDB.queryDict("myWealth") || {}
+    ext.extend(wealthTB.temp, loc)
+  })
+}
+
+/**
+ * @Function 将财富信息更新到服务器
+ */
+wealthTB.push = () => {
+  Vue.http.post('/wealth/push', {
+    wealth: JSON.stringify(wealthTB.temp)
+  }).then((data) => {
+    let id = data.body._id
+    wealthTB.temp._id = id
+    wealthTB.other.isSyn = "1"
+    wealthTB.saveToLocal()
+  }, (e) => {
+    wealthTB.other.isSyn = "0"
+    wealthTB.saveToLocal()
+  })
 }
 
 /**
@@ -73,6 +92,79 @@ wealthTB.save = (item, callback) => {
   !!callback && callback()
 }
 
-wealthTB.update()
+/**
+ * @Function calc 计算
+ * @Param index String 位置 [eg: 0-0]
+ * @Param diff Number 变动金额
+ */
+wealthTB.calc = (index, diff) => {
+  let arr = index.split("-").reverse(),
+    len = arr.length,
+    temp = wealthTB.temp
+
+  temp.value = +temp.value + diff
+  while (--len) {
+    temp.list[arr[len]].value = +temp.list[arr[len]].value + diff
+  }
+
+  account(wealthTB.temp)
+}
+
+/**
+ * @Function saveToLocal 保存到本地
+ */
+wealthTB.saveToLocal = () => {
+  localDB.saveDict("myWealth", wealthTB.temp)
+  localDB.saveDict("wealth_issyn", wealthTB.other.isSyn)
+}
+
+/**
+ * @Function getIcons 获取图标
+ */
+wealthTB.getIcons = () => {
+  return [{
+    src: '/static/img/card.png',
+    name: '储蓄'
+  }, {
+    src: '/static/img/fund.png',
+    name: '基金'
+  }, {
+    src: '/static/img/K.png',
+    name: '股票'
+  }, {
+    src: '/static/img/loan.png',
+    name: '借贷'
+  }, {
+    src: '/static/img/wallet.png',
+    name: '钱包'
+  }]
+}
+
+/**
+ * @Function account 计算百分比
+ * @Param obj object 被计算对象
+ */
+function account(obj) {
+  let type = obj.type,
+    sum, rate
+  if (type !== "1") {
+    sum = obj.value;
+    obj.list.forEach((item) => {
+      rate = item.value / sum * 100
+      item.account = rate.toFixed(2) + "%"
+      account(item)
+    })
+  }
+}
+
+// ============================ 初始化 ============================
+let isSyn = localDB.queryDict("wealth_issyn") || "1",
+  loc = localDB.queryDict("myWealth") || {}
+if (isSyn == "1") {
+  wealthTB.init()
+} else {
+  ext.extend(wealthTB.temp, loc)
+  wealthTB.push()
+}
 
 export default wealthTB

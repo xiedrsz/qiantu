@@ -1,0 +1,56 @@
+CACHE MANIFEST
+
+# 2017-04-17 V1.0.1
+
+# CACHE:
+
+/static/js/manifest.967ce29c4ab2380a23d7.js
+/static/js/vendor.8094949ec06714b544f7.js
+/static/js/app.597018222c446fcf9763.js
+/static/css/app.0dcf4f0212f6c2bc0067507cfbed3cac.css
+/static/plugins/com.xiedrsz.xfyspeech/www/xfySpeech.js
+/static/cordova.js
+/static/cordova_plugins.js
+/static/img/beijing.jpg
+/static/img/calander.png
+/static/img/camera.png
+/static/img/clothes.png
+/static/img/edit.png
+/static/img/enter.png
+/static/img/food.png
+/static/img/jiaoyu.png
+/static/img/life.png
+/static/img/local.png
+/static/img/logout.png
+/static/img/menu.png
+/static/img/mic.png
+/static/img/note.png
+/static/img/other.png
+/static/img/pencil.png
+/static/img/question.png
+/static/img/round.png
+/static/img/setting.png
+/static/img/statistics.png
+/static/img/success.png
+/static/img/syn.png
+/static/img/yiliao.png
+/static/img/type.png
+/static/img/traffic.png
+/static/img/touzi.png
+/static/img/touxiang.jpg
+/static/img/syn_fail.png
+/static/img/refresh.png
+/static/img/wallet.png
+/static/img/loan.png
+/static/img/K.png
+/static/img/fund.png
+/static/img/card.png
+/static/img/flip.png
+/static/img/account.png
+/static/img/classify.png
+/static/img/spread.png
+
+NETWORK:
+*
+
+# FALLBACK:

@@ -6,7 +6,7 @@
       <img slot='right' @click="flip(null)" src="/static/img/flip.png" />
     </x-header>
     <flip ref="flip">
-      <div slot="front" style="height: 600px;">
+      <div slot="front" style="height: 570px;">
         <div class="ac-money">
           <div>
             <img id="uac-type" :src="form.icon||defaultIcon" />
@@ -18,7 +18,7 @@
             <span>{{form.value}}</span>
           </div>
         </div>
-        <out-items :out-items="outItems" @on-select="select"></out-items>
+        <out-items :out-items="outItems" :deviate="{x:10,y:0}" @on-select="select"></out-items>
         <div class='footer'>
           <div class="ac-input">
             <div>
@@ -51,7 +51,7 @@
       </div>
       <!-- 前 -->
       <div slot="back" style="width: 360px;">
-        <pie></pie>
+        <pie :data="datas.list"></pie>
         <div class="g-relative">
           <div class="w-sum">总财富： {{datas.value}} 元</div>
         </div>
@@ -89,7 +89,6 @@
   import ext from '../libs/extend.min'
 
   import wealthTB from '../tables/wealthTB'
-  import expenseTB from '../tables/expenseTB'
 
   export default {
     name: 'wealth',
@@ -105,19 +104,15 @@
           list: []
         },
         defaultIcon: '/static/img/question.png',
-        outItems: []
+        outItems: wealthTB.getIcons()
       }
     },
     mounted() {
       this.$nextTick(() => {
+        this.datas.list.sort((a, b) => {
+          return b.value - a.value
+        })
         this.$refs.scroller.reset()
-      })
-
-      let vm = this;
-
-      // 获取支出列表
-      expenseTB.getOutItems((res) => {
-        vm.outItems = vm.outItems.concat(res.outItems)
       })
     },
     methods: {
@@ -146,10 +141,19 @@
         },
         save() {
           // check
-
           wealthTB.save(this.form, () => {
             this.flip()
             this.reset()
+
+            // 保存到服务器
+            wealthTB.push()
+
+            this.$nextTick(() => {
+              this.datas.list.sort((a, b) => {
+                return b.value - a.value
+              })
+              this.$refs.scroller.reset()
+            })
           })
         },
         reset() {

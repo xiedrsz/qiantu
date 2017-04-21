@@ -5,19 +5,36 @@
 </template>
 <script>
   import echarts from 'echarts'
-  import option from './options/pie'
-  import statisticsTB from '../../tables/statisticsTB'
-  
+  import pie from './options/pie'
+
   export default {
     name: 'pie',
-    mounted () {
-      // 清除过去数据
-      option.series[0].data = [];
-      option.series[1].data = [];
-      // 更新数据
-      [].push.apply(option.series[0].data, statisticsTB.temp.wealth);
-      [].push.apply(option.series[1].data, statisticsTB.temp.wdetail);
+    props: {
+      data: {
+        type: Array,
+        default () {
+          return [{
+            account: "0.00%",
+            icon: "/static/img/clothes.png",
+            list: [{
+              account: "0.00%",
+              icon: "/static/img/clothes.png",
+              list: [],
+              mess: "易方达A",
+              name: "易方达A",
+              value: "0.00",
+              type: "1"
+            }],
+            mess: "我的基金",
+            name: "基金",
+            value: "0.00"
+          }]
+        }
+      }
+    },
+    mounted() {
       // 创建图表
+      let option = new pie(this.data)
       let myChart = echarts.init(this.$refs.main)
       myChart.setOption(option)
     }

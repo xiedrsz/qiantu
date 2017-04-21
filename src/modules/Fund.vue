@@ -2,10 +2,10 @@
   <div>
     <x-header :left-options="{showBack: true}">
       {{datas.name}}
-      <img slot='right' @click="flip" src="/static/img/flip.png" />
+      <img slot='right' @click="flip(null)" src="/static/img/flip.png" />
     </x-header>
     <flip ref="flip">
-      <div slot="front" style="height: 600px;">
+      <div slot="front" style="height: 570px;">
         <div class="ac-money">
           <div>
             <img id="uac-type" :src="form.icon||defaultIcon" />
@@ -17,7 +17,7 @@
             <span>{{form.value}}</span>
           </div>
         </div>
-        <out-items :out-items="outItems" @on-select="select"></out-items>
+        <out-items :out-items="outItems" :deviate="{x:10,y:0}" @on-select="select"></out-items>
         <div class='footer'>
           <div class="ac-input">
             <div>
@@ -59,7 +59,7 @@
             <cell v-for="(item, index) in datas.list" is-link>
               <img slot="icon" :src="item.icon" class="w-cell-icon" />
               <div slot="after-title" @click="flip(index)">{{item.name}}</div>
-              <div class="w-val" @click="go(index)">
+              <div class="w-val" @click="go(index, item.type)">
                 <span>{{item.value}}</span>
                 <badge class="g-bgc-b" :text="item.account"></badge>
               </div>
@@ -85,7 +85,6 @@
 
   import ext from '../libs/extend.min'
   import wealthTB from '../tables/wealthTB'
-  import expenseTB from '../tables/expenseTB'
 
   export default {
     name: 'fund',
@@ -112,18 +111,11 @@
           value: '财富'
         }],
         defaultIcon: '/static/img/question.png',
-        outItems: [],
+        outItems: wealthTB.getIcons(),
         index: ''
       }
     },
-    mounted() {
-      let vm = this;
-
-      // 获取支出列表
-      expenseTB.getOutItems(function (res) {
-        vm.outItems = vm.outItems.concat(res.outItems)
-      })
-    },
+    mounted() {},
     methods: {
       flip(index) {
           if (index !== null) {
@@ -142,6 +134,16 @@
           wealthTB.save(this.form, () => {
             this.flip()
             this.reset()
+
+            // 保存到服务器
+            wealthTB.push()
+
+            this.$nextTick(() => {
+              this.datas.list.sort((a, b) => {
+                return b.value - a.value
+              })
+              this.$refs.scroller.reset()
+            })
           })
         },
         reset() {
@@ -153,27 +155,53 @@
             value: 0.00,
             account: '0.00%',
             type: '',
-            mess: ''
+            mess: '',
+            list: []
           }
         },
-        go(index) {
-          this.$router.push({
-            name: 'fund',
-            params: {
-              index: index
-            }
+        go(index, type) {
+          let pos = this.index + "-" + index;
+          if (type == '0') {
+            this.$router.push({
+              name: 'fund',
+              params: {
+                index: pos
+              }
+            })
+            this.refresh()
+          } else {
+            this.$router.push({
+              name: 'wealthItem',
+              params: {
+                index: pos
+              }
+            })
+          }
+        },
+        refresh() {
+          let index = "" + this.$route.params.index,
+            arr = index.split("-").reverse(),
+            len = arr.length
+          this.index = index
+          this.datas = wealthTB.temp
+          while (len) {
+            index = +arr[--len]
+            this.datas = this.datas.list[index]
+          }
+
+          this.$nextTick(() => {
+            this.datas.list.sort((a, b) => {
+              return b.value - a.value
+            })
+            this.$refs.scroller.reset()
           })
         }
     },
     created() {
-      let index = this.$route.params.index
-      this.index = index
-      this.datas = wealthTB.temp.list[index]
-      console.log(this.datas)
-
-      this.$nextTick(() => {
-        this.$refs.scroller.reset()
-      })
+      this.refresh()
+    },
+    watch: {
+      '$route.params': 'refresh'
     },
     components: {
       XHeader,

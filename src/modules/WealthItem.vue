@@ -1,18 +1,18 @@
 <template>
   <div>
     <x-header :left-options="{showBack: true}">
-      {{name}}
-      <img slot='right' @click="flip" src="/static/img/flip.png" />
+      {{datas.name}}
+      <img slot='right' @click="flip(null)" src="/static/img/flip.png" />
     </x-header>
     <flip ref="flip">
-      <div slot="front" style="height: 600px;">
-        <div class="w-banner"> {{name}} 最近一次金额为： {{recent}} 元</div>
+      <div slot="front" style="height: 570px;">
+        <div class="w-banner"> 最近一次总金额为： {{datas.value}} 元</div>
         <div class="ac-money">
           <div>
-            <img id="uac-type" :src="icon" />
+            <img id="uac-type" :src="datas.icon" />
           </div>
           <div>
-            {{name}}
+            {{datas.name}}
           </div>
           <div>
             <input type="number" placeholder="0.00" v-model="money" />
@@ -32,7 +32,7 @@
               <img src="/static/img/calander.png" />
             </div>
             <div>
-              <input type="text" placeholder="日期" v-model="date" />
+              <input type="text" placeholder="日期" v-model="form.date" />
             </div>
           </div>
           <div class="ac-input">
@@ -48,7 +48,7 @@
               <img src="/static/img/edit.png" />
             </div>
             <div>
-              <input type="text" placeholder="备注" v-model="mess" />
+              <input type="text" placeholder="备注" v-model="form.mess" />
             </div>
           </div>
           <button class='ac-btn' @click="save">
@@ -58,27 +58,12 @@
       </div>
       <!-- 前 -->
       <div slot="back" style="width: 360px;">
-        <line-chart></line-chart>
+        <line-chart :data="datas.list"></line-chart>
         <scroller height="260px" lock-x ref="scroller">
           <group>
-            <cell title="2017年3月15日" inline-desc="分发红利">
+            <cell v-for="(item, index) in datas.list" :title="item.date" :inline-desc="item.mess" @click.native="flip(index)">
               <div slot="value">
-                <span style="color: green">+50.09</span>
-              </div>
-            </cell>
-            <cell title="2017年3月15日" inline-desc="分发红利">
-              <div slot="value">
-                <span style="color: green">+50.09</span>
-              </div>
-            </cell>
-            <cell title="2017年3月15日" inline-desc="分发红利">
-              <div slot="value">
-                <span style="color: green">+50.09</span>
-              </div>
-            </cell>
-            <cell title="2017年3月15日" inline-desc="分发红利">
-              <div slot="value">
-                <span style="color: green">+50.09</span>
+                <span :class="{ 'g-color-g': +item.spread<0, 'g-color-r': +item.spread>=0}">{{item.spread|diff}}</span>
               </div>
             </cell>
           </group>
@@ -98,31 +83,112 @@
   }
   from '../components'
 
+  import {
+    dataApi, ext
+  }
+  from '../libs'
+
+  import wealthTB from '../tables/wealthTB'
+
   import LineChart from '../components/echart/LineChart.vue'
+
+  let lastSpread = 0
 
   export default {
     name: 'wealth-item',
     data() {
       return {
-        name: "招商招利",
-        recent: 3300.87,
-        icon: '/static/img/question.png',
-        money: '',
-        spread: '',
-        date: '',
-        mess: '',
-        history: []
+        datas: {},
+        form: {
+          money: "",
+          spread: "",
+          date: dataApi.format("YYYY年MM月DD日"),
+          mess: ""
+        },
+        money: "",
+        spread: ""
       }
     },
     mounted() {
 
     },
+    created() {
+      let index = "" + this.$route.params.index,
+        arr = index.split("-").reverse(),
+        len = arr.length,
+        i = index
+      this.datas = wealthTB.temp
+      while (len) {
+        index = +arr[--len]
+        this.datas = this.datas.list[index]
+      }
+      this.$nextTick(() => {
+        this.$refs.scroller.reset()
+      })
+    },
     methods: {
-      flip() {
+      flip(index) {
+          this.reset()
+          if (index !== null) {
+            this.form = this.datas.list[index]
+            this.spread = +this.form.spread
+            this.datas.value = +this.datas.value - this.spread;
+            lastSpread = this.spread
+          }
           this.$refs.flip.flip()
         },
+        // 保存
         save() {
-          // Todo
+          let len = this.datas.list.length,
+            index = this.form.index,
+            pos = "" + this.$route.params.index
+
+          this.datas.value = +this.money;
+          (index == undefined) && (this.form.index = len, this.datas.list = this.datas.list.concat([this.form]));
+
+          // 重算财富
+          wealthTB.calc(pos, this.spread - lastSpread)
+          lastSpread = 0;
+          // 保存到服务器
+          wealthTB.push()
+
+          this.flip(null)
+
+          this.$nextTick(() => {
+            this.$refs.scroller.reset()
+          })
+        },
+        // 重置form
+        reset() {
+          this.form = {
+            money: "",
+            spread: "",
+            date: dataApi.format("YYYY年MM月DD日"),
+            mess: ""
+          }
+          this.money = ""
+        }
+    },
+    watch: {
+      money(val, old) {
+          if (val !== "") {
+            let current = +val,
+              recent = +this.datas.value,
+              spread = current - recent;
+            (spread == 0) && (spread = "")
+            this.form.spread = (+spread).toFixed(2)
+            this.spread = spread
+          } else {
+            this.spread = ""
+          }
+        },
+        spread(val, old) {
+          if (val !== "") {
+            let recent = +this.datas.value,
+              money = recent + val
+            this.form.money = money.toFixed(2)
+            this.money = money
+          }
         }
     },
     components: {

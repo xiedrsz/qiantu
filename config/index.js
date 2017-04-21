@@ -21,13 +21,14 @@ module.exports = {
   // 开发环境配置
   dev: {
     env: require('./dev.env'), // => "development"
-    port: 8080,
+    port: 8081,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     // http 请求反转配置表
     proxyTable: {
       "/expense": "http://localhost:3000",
-      "/dict": "http://localhost:3000"
+      "/dict": "http://localhost:3000",
+      "/wealth": "http://localhost:3000"
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

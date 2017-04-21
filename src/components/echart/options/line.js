@@ -1,16 +1,13 @@
+/**
+ * @Notice 此处应整理成一个类用来生成OPTION
+ */
+
 import echarts from 'echarts'
 
 var base = +new Date(1968, 9, 3);
 var oneDay = 24 * 3600 * 1000;
-var date = [];
-
-var data = [Math.random() * 300];
-
-for (var i = 1; i < 20000; i++) {
-  var now = new Date(base += oneDay);
-  date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
-  data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
-}
+var date = ['2017年4月13日', '2017年4月14日'];
+var data = [1000, 2000];
 
 var option = {
   tooltip: {

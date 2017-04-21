@@ -20,9 +20,9 @@
           <img src="static/img/statistics.png" />
           <span>统计分析</span>
         </div>
-        <div class="menu-item">
+        <div class="menu-item" @click="save">
           <img src="static/img/logout.png" />
-          <span>登出</span>
+          <span>保存</span>
         </div>
         <div class="menu-item" @click="refresh">
           <img src="static/img/refresh.png" />
@@ -45,6 +45,7 @@
 
 <script>
   import store from '../vuex/store'
+  import wealthTB from '../tables/wealthTB'
   const commit = store.commit || store.dispatch
 
   export default {
@@ -67,6 +68,9 @@
         this.$router.push({
           path: '/' + page
         })
+      },
+      save() {
+        wealthTB.saveToLocal()
       }
     }
   }

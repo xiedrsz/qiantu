@@ -1,4 +1,10 @@
-let option = {
+import {
+  ext
+}
+from '../../../libs'
+
+// 默认配置
+const DefaultOpt = {
   backgroundColor: '#2c343c',
   tooltip: {
     trigger: 'item',
@@ -27,13 +33,68 @@ let option = {
         shadowColor: 'rgba(0, 0, 0, 0.5)'
       }
     },
-    data: []
+    data: [] // 内圈数据
   }, { // 外圈
     name: '财富分布',
     type: 'pie',
     radius: ['40%', '55%'],
-    data: []
+    data: [] // 外圈数据
   }]
 }
 
-export default option
+/**
+ * @Function 运算
+ * @Param list Array 财富列表
+ * @Return ret Object 
+ *  eg: {
+ *    data1: [{
+ *      value: 37782.44,
+ *      name: '基金'
+ *    }],
+ *    data2: [{
+ *      value: 37782.44,
+ *      name: '易方达'
+ *    }]
+ *  }
+ */
+function calc(list) {
+  let data1 = list.map((item) => {
+      return {
+        name: item.name,
+        value: +item.value,
+        list: item.list
+      }
+    }),
+    temp = [],
+    data2
+
+  data1.forEach((item) => {
+    [].push.apply(temp, item.list)
+    delete item.list
+  })
+
+  data2 = temp.map((item) => {
+    return {
+      name: item.name,
+      value: +item.value
+    }
+  })
+
+  return {
+    data1: data1,
+    data2: data2
+  }
+}
+
+class pie extends Object {
+  constructor(list) {
+    let option = {},
+      datas = calc(list)
+    ext.extend(true, option, DefaultOpt)
+    option.series[0].data = datas.data1
+    option.series[1].data = datas.data2
+    super(option);
+  }
+}
+
+export default pie
