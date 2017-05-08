@@ -31,7 +31,7 @@
             <div class="i-icon">
               <img src="/static/img/classify.png" />
             </div>
-            <div>
+            <div class="r-txt-left">
               <selector placeholder="请选择财富类型" :options="list" v-model="form.type" :readonly="form.value>0"></selector>
             </div>
           </div>
@@ -52,32 +52,34 @@
       <div slot="back" style="width: 360px;">
         <dis-pie :data="datas.list"></dis-pie>
         <div class="g-relative">
-          <div class="w-sum">总财富： {{datas.value}} 元</div>
+          <div class="w-sum">总财富： {{datas.value.toFixed(2)}} 元</div>
         </div>
-        <scroller height="260px" lock-x ref="scroller">
-          <group>
-            <cell v-for="(item, index) in datas.list" is-link>
-              <img slot="icon" :src="item.icon" class="w-cell-icon" />
-              <div slot="after-title" @click="flip(index)">{{item.name}}</div>
-              <div class="w-val" @click="go(index, item.type)">
-                <span>{{item.value}}</span>
-                <badge class="g-bgc-b" :text="item.account"></badge>
+
+        <order-list :datas="datas.list" ref="orderlist">
+          <template scope="props">
+            <cell is-link>
+              <img slot="icon" :src="props.item.icon" class="w-cell-icon" />
+              <div slot="after-title" @click="flip(props.item)">{{props.item.name}}</div>
+              <div class="w-val" @click="go(props.item)">
+                <span>{{props.item.value}}</span>
+                <badge class="g-bgc-b" :text="props.item.account"></badge>
               </div>
             </cell>
-          </group>
-        </scroller>
+          </template>
+        </order-list>
+
       </div>
     </flip>
   </div>
 </template>
 <script>
   import {
-    XHeader, Group, Cell, Badge, Scroller, Selector
+    XHeader, Group, Cell, Badge, Selector
   }
   from 'vux'
 
   import {
-    Flip, OutItems
+    Flip, OutItems, OrderList
   }
   from '../components'
 
@@ -117,12 +119,10 @@
     },
     mounted() {},
     methods: {
-      flip(index) {
-          if (index !== null) {
-            ext.extend(this.form, this.datas.list[index])
-            this.form.pos = this.index + "-" + index
-          } else {
-            this.reset()
+      flip(item) {
+          this.reset()
+          if (item !== null) {
+            ext.extend(this.form, item)
           }
           this.$refs.flip.flip()
         },
@@ -130,20 +130,12 @@
           this.form.icon = res.src
         },
         save() {
-          // Todo
+          // Todo, check
           wealthTB.save(this.form, () => {
-            this.flip()
-            this.reset()
-
+            this.flip(null);
             // 保存到服务器
             wealthTB.push()
-
-            this.$nextTick(() => {
-              this.datas.list.sort((a, b) => {
-                return b.value - a.value
-              })
-              this.$refs.scroller.reset()
-            })
+            this.$refs.orderlist.cal()
           })
         },
         reset() {
@@ -159,8 +151,9 @@
             list: []
           }
         },
-        go(index, type) {
-          let pos = this.index + "-" + index;
+        go(item) {
+          let pos = item.pos,
+            type = item.type
           if (type == '0') {
             this.$router.push({
               name: 'fund',
@@ -188,13 +181,6 @@
             index = +arr[--len]
             this.datas = this.datas.list[index]
           }
-
-          this.$nextTick(() => {
-            this.datas.list.sort((a, b) => {
-              return b.value - a.value
-            })
-            this.$refs.scroller.reset()
-          })
         }
     },
     created() {
@@ -209,10 +195,10 @@
       Group,
       Cell,
       Badge,
-      Scroller,
       Flip,
       OutItems,
-      Selector
+      Selector,
+      OrderList
     }
   }
 </script>

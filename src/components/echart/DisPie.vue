@@ -7,6 +7,8 @@
   import echarts from 'echarts'
   import option from './options/disPie'
 
+  import ext from '../../libs/extend.min'
+
   export default {
     name: 'dis-pie',
     props: {
@@ -30,7 +32,9 @@
     },
     mounted() {
       // 排序
-      let data = this.data.sort((a, b) => {
+      let data = []
+      ext.extend(true, data, this.data)
+      data.sort((a, b) => {
         return a.value - b.value;
       });
       // 清除过去数据

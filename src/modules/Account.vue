@@ -3,6 +3,8 @@
     <x-header :left-options="{showBack: true}">
       手工记账
     </x-header>
+    <div class="ac-tip" v-show="itemDetail.showTip">小主，快教教我这个账单怎么分类</div>
+
     <div class="ac-money">
       <div>
         <img id="uac-type" :src="itemDetail.img" />
@@ -22,45 +24,50 @@
 
     <out-items :out-items="outItems" @on-select="select"></out-items>
 
-    <div class='footer'>
-      <div class="ac-input">
-        <div>
-          <img src="/static/img/calander.png" />
+    <scroller lock-x>
+      <div>
+        <div class="ac-input">
+          <div>
+            <img src="/static/img/calander.png" />
+          </div>
+          <div>
+            <input type="text" placeholder="2016年10月25日" v-model="itemDetail.date" />
+          </div>
         </div>
-        <div>
-          <input type="text" placeholder="2016年10月25日" v-model="itemDetail.date" />
+        <div class="ac-input">
+          <div>
+            <img src="/static/img/local.png" />
+          </div>
+          <div>
+            <span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
+          </div>
         </div>
+        <div class="ac-input" v-show="itemDetail.showTip">
+          <div>
+            <img src="/static/img/key.png" />
+          </div>
+          <div>
+            <input type="text" placeholder="关键字" v-model="itemDetail.keyWord" />
+          </div>
+        </div>
+        <div class="ac-input" v-show="!itemDetail.showTip">
+          <div>
+            <img src="/static/img/edit.png" />
+          </div>
+          <div>
+            <input type="text" placeholder="备注" v-model="itemDetail.mess" />
+          </div>
+        </div>
+        <button class='ac-btn' @click="save">
+          保存
+        </button>
       </div>
-
-      <div class="ac-input">
-        <div>
-          <img src="/static/img/local.png" />
-        </div>
-        <div>
-          <span>深圳市罗湖区嘉宾路爵士大厦21B17</span>
-        </div>
-      </div>
-
-
-      <div class="ac-input">
-        <div>
-          <img src="/static/img/edit.png" />
-        </div>
-        <div>
-          <input type="text" placeholder="备注" v-model="itemDetail.mess" />
-        </div>
-      </div>
-
-
-      <button class='ac-btn' @click="save">
-        保存
-      </button>
-    </div>
+    </scroller>
   </div>
 </template>
 <script>
   import {
-    XHeader
+    XHeader, Scroller
   }
   from 'vux'
   import {
@@ -103,7 +110,16 @@
           },
           // 保存收支信息
           save() {
-            var vm = this
+            let vm = this,
+              bill = this.$route.params.bill
+
+            if (!!bill && bill != ":bill") {
+              bill = JSON.parse(bill)
+              if (this.itemDetail.type != bill.type) {
+                this.itemDetail.oldType = bill.type
+              }
+            }
+
             expenseTB.saveOutItem(vm.itemDetail, () => {
               vm.$router.push({
                 path: '/home'
@@ -131,7 +147,8 @@
       },
       components: {
         XHeader,
-        OutItems
+        OutItems,
+        Scroller
       }
   }
 </script>

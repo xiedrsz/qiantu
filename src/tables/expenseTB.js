@@ -12,7 +12,7 @@ import table from './table'
  * lists Array 支出列表, 与数据库同步
  * amount String 今日支出, 从支出列表中获取
  * outItems Array 支出项目
- * itemDetail Object 项目详情 { date, Address, money, type, mess, img }
+ * itemDetail Object 项目详情 { date, Address, money, type, mess, img, showTip, keyWord }
  */
 let expenseTB = new table({
   today: dataApi.format("YYYY年MM月DD日"),
@@ -123,6 +123,8 @@ expenseTB.getOutItems = (callback) => {
  */
 expenseTB.saveOutItem = (itemDetail, callback) => {
   let date = itemDetail.date,
+    showTip = itemDetail.showTip,
+    oldType = itemDetail.oldType,
     detail = {
       img: itemDetail.img,
       type: itemDetail.type,
@@ -133,6 +135,11 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
     temp = expenseTB.temp.lists.filter((item) => {
       return item.date == date
     })
+
+  // 保存分类
+  if (showTip || !!oldType) {
+    expenseTB.saveKeys(itemDetail);
+  }
 
   // 更新支出列表
   if (temp[0]) {
@@ -159,6 +166,68 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
 
   // 回调
   !!callback && callback()
+}
+
+/**
+ * @Function saveKeys 保存分类关键自
+ * @param itemDetail 项目详情
+ */
+expenseTB.saveKeys = (itemDetail) => {
+  let keyWord = itemDetail.keyWord,
+    type = itemDetail.type,
+    oldType = itemDetail.oldType,
+    img = itemDetail.img,
+    keyWords = localDB.queryDict("e-keyWords") || {
+      name: "keyWords",
+      value: []
+    },
+    temp = keyWords.value.filter((item) => {
+      return item.type == type
+    }),
+    index
+
+  if (!keyWord) {
+    return
+  }
+
+  if (!!temp[0]) {
+    // 修改
+    temp[0].keyWord += "|(" + keyWord + ")"
+  } else {
+    // 新建分类
+    img = img.match(/[a-zA-Z]+\.[a-zA-Z]+$/)
+    temp = {
+      keyWord: "(" + keyWord + ")",
+      type: type,
+      img: img[0]
+    }
+    keyWords.value.push(temp)
+  }
+
+  // 清除旧分类
+  if (!!oldType && oldType != "其他支出") {
+    temp = keyWords.value.filter((item, i) => {
+      if (item.type == oldType) {
+        index = i
+        return true
+      }
+      return false
+    })
+    let re = new RegExp("^\\(" + keyWord + "\\)\\|?|\\|\\(" + keyWord + "\\)")
+    temp[0].keyWord = temp[0].keyWord.replace(re, "");
+    !temp[0].keyWord && keyWords.value.splice(index, 1)
+  }
+
+  // 保存
+  Vue.http.post('/dict/save', {
+    item: JSON.stringify(keyWords)
+  }).then((data) => {
+    keyWords._id = data.body._id
+    localDB.saveDict("e-keyWords", keyWords);
+  }, (e) => {
+    console.log(e)
+    localDB.saveDict("e-keyWords", keyWords);
+  })
 }
 
 export default expenseTB

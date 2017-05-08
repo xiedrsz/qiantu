@@ -64,9 +64,10 @@ wealthTB.push = () => {
 wealthTB.save = (item, callback) => {
   let pos = item.pos,
     i = 0,
-    wealth, len, index;
+    wealth, len, index, listLen;
 
   if (pos === undefined) {
+    item.pos = "" + wealthTB.temp.list.length
     wealthTB.temp.list = wealthTB.temp.list.concat(item);
   } else {
     pos += ""
@@ -77,6 +78,8 @@ wealthTB.save = (item, callback) => {
       index = pos[i]
       if (i == len - 1) {
         if (index === "") {
+          listLen = wealth.list.length
+          item.pos += listLen
           wealth.list = wealth.list.concat(item)
         } else {
           index = +index
@@ -105,6 +108,7 @@ wealthTB.calc = (index, diff) => {
   temp.value = +temp.value + diff
   while (--len) {
     temp.list[arr[len]].value = +temp.list[arr[len]].value + diff
+    temp = temp.list[arr[len]]
   }
 
   account(wealthTB.temp)

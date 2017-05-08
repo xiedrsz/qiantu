@@ -8,7 +8,7 @@
     <div class='h-in-out'>
       <div>
         <h3>本月支出</h3>
-        <p>1100</p>
+        <p>{{monthInfo.amount.toFixed(2)}}</p>
       </div>
       <div>
         <h3>本月收入</h3>
@@ -47,6 +47,8 @@
   const commit = store.commit || store.dispatch
 
   import expenseTB from '../tables/expenseTB'
+  import monthlyTB from '../tables/monthlyTB'
+
   import {
     analyzer
   }
@@ -57,6 +59,7 @@
     data() {
       return {
         formData: expenseTB.temp,
+        monthInfo: monthlyTB.temp,
         synOption: {
           class: '',
           img: "/static/img/syn.png"
@@ -66,6 +69,7 @@
     created() {
       this.syn();
       !expenseTB.temp.lists.length && expenseTB.pull(() => {
+        monthlyTB.recalc()
         this.$nextTick(() => {
           this.$refs.scroller.reset()
         })
@@ -85,6 +89,8 @@
         },
         submit(mess) {
           let result = analyzer.analyze(mess)
+          result.showTip = !result.keyWord;
+          !result.keyWord && (result.keyWord = result.mess)
           this.$router.push({
             name: 'account',
             params: {

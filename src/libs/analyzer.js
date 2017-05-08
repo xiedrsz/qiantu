@@ -128,34 +128,29 @@ define([], function () {
   // ------------------------------------------------- 获取金额 结束--------------------------------
 
   // ------------------------------------------------- 获取账单类型 开始-----------------------------
-  var keyWords = [{
-    keyWord: /(早餐)|(午餐)|(晚餐)/g,
-    type: "餐饮食品",
-    img: "food.png"
-    }, {
-    keyWord: /(地铁卡)/g,
-    type: "行车交通",
-    img: "traffic.png"
-    }];
-
   /**
    * 获取账单类型
    * @Param billStr String 账单内容字符串
    * return Object/Bool[false] 账单类型
    */
   analyzer.getBillKey = function (billStr) {
+    var keyWords = localStorage.getItem("e-keyWords") || '{"name": "keyWords","value": []}';
+    keyWords = JSON.parse(keyWords);
+    keyWords = keyWords.value;
+
     var i = 0,
       len = keyWords.length,
       result = {},
-      flag;
+      flag,
+      key;
 
     for (; i < len; i++) {
-      flag = billStr.match(keyWords[i].keyWord) || [false];
+      key = new RegExp(keyWords[i].keyWord, "g");
+      flag = billStr.match(key) || [false];
       if (!!flag[0]) {
         result.keyWord = flag[0];
         result.type = keyWords[i].type;
         result.img = keyWords[i].img;
-
         return result;
       }
     }
