@@ -169,6 +169,22 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
 }
 
 /**
+ * @Function 获取支出关键字
+ */
+expenseTB.getKeys = () => {
+  Vue.http.get('/dict/getItem', {
+    params: {
+      name: "keyWords"
+    }
+  }).then((data) => {
+    let keyWords = data.body;
+    !!keyWords.name && localDB.saveDict("e-keyWords", keyWords);
+  }, (e) => {
+    console.error(e);
+  })
+}
+
+/**
  * @Function saveKeys 保存分类关键自
  * @param itemDetail 项目详情
  */
@@ -229,5 +245,9 @@ expenseTB.saveKeys = (itemDetail) => {
     localDB.saveDict("e-keyWords", keyWords);
   })
 }
+
+// 初始化
+let keys = localDB.queryDict("e-keyWords");
+!keys && expenseTB.getKeys();
 
 export default expenseTB
