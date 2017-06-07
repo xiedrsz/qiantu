@@ -177,7 +177,7 @@
               spread = current - recent;
             (spread == 0) && (spread = "")
             this.form.spread = (+spread).toFixed(2)
-            this.spread = spread
+            this.spread = spread.toFixed(2) - 0
           } else {
             this.spread = ""
           }
@@ -187,7 +187,7 @@
             let recent = +this.datas.value,
               money = recent + val
             this.form.money = money.toFixed(2)
-            this.money = money
+            this.money = money.toFixed(2) - 0
           }
         }
     },
