@@ -6,7 +6,7 @@
     </x-header>
     <flip ref="flip">
       <div slot="front" style="height: 570px;">
-        <div class="w-banner"> 最近一次总金额为： {{datas.value}} 元</div>
+        <div class="w-banner"> 最近一次总金额为： {{datas.value.toFixed(2)}} 元</div>
         <div class="ac-money">
           <div>
             <img id="uac-type" :src="datas.icon" />
@@ -177,7 +177,7 @@
               spread = current - recent;
             (spread == 0) && (spread = "")
             this.form.spread = (+spread).toFixed(2)
-            this.spread = spread.toFixed(2) - 0
+            this.spread = (+spread).toFixed(2) - 0
           } else {
             this.spread = ""
           }

@@ -61,7 +61,7 @@
               <img slot="icon" :src="props.item.icon" class="w-cell-icon" />
               <div slot="after-title" @click="flip(props.item)">{{props.item.name}}</div>
               <div class="w-val" @click="go(props.item)">
-                <span>{{props.item.value}}</span>
+                <span>{{props.item.value.toFixed(2)}}</span>
                 <badge class="g-bgc-b" :text="props.item.account"></badge>
               </div>
             </cell>
