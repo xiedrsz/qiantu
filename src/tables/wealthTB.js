@@ -115,6 +115,35 @@ wealthTB.calc = (index, diff) => {
 }
 
 /**
+ * @Function check 核算
+ */
+wealthTB.check = () => {
+  function wealth(item) {
+    let type = item.type || '0',
+      len = item.list.length,
+      pos, value;
+
+    if (type === '0') {
+      item.value = 0;
+      while (len) {
+        wealth(item.list[--len]);
+      }
+    } else {
+      pos = item.pos;
+      value = item.value = item.list[len - 1].money - 0;
+      wealthTB.calc(pos, value);
+    }
+    
+    return item;
+  }
+
+  wealthTB.temp = wealth(wealthTB.temp);
+  account(wealthTB.temp);
+  
+  wealthTB.push();
+}
+
+/**
  * @Function saveToLocal 保存到本地
  */
 wealthTB.saveToLocal = () => {

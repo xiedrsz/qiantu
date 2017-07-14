@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html <%= htmlWebpackPlugin.options.manifest %>>
 
 <head>
   <meta charset="utf-8">
@@ -12,6 +12,6 @@
   <!-- built files will be auto injected -->
 </body>
 <!-- 引入 cordova 插件 PC 上开发时可屏蔽 -->
-<script type="text/javascript" src="/static/cordova.js"></script>
+<%= htmlWebpackPlugin.options.cordova %>
 
 </html>

@@ -14,15 +14,15 @@
       <div class="bottom">
         <div class="menu-item" @click="go('home')">
           <img src="static/img/note.png" />
-          <span>记一笔</span>
+          <span>账单</span>
         </div>
         <div class="menu-item" @click="go('wealth')">
           <img src="static/img/statistics.png" />
-          <span>统计分析</span>
+          <span>财富</span>
         </div>
-        <div class="menu-item" @click="save">
+        <div class="menu-item" @click="check">
           <img src="static/img/logout.png" />
-          <span>保存</span>
+          <span>核算</span>
         </div>
         <div class="menu-item" @click="refresh">
           <img src="static/img/refresh.png" />
@@ -69,8 +69,9 @@
           path: '/' + page
         })
       },
-      save() {
-        wealthTB.saveToLocal()
+      check() {
+        wealthTB.check()
+        window.location.reload()
       }
     }
   }

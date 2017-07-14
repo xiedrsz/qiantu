@@ -1,13 +1,10 @@
 CACHE MANIFEST
 
-# 2017-06-19 V1.0.1
+# 2017-07-12 V1.0.1
 
 # CACHE:
 
-/static/js/manifest.a5783e146c1548e7d02e.js
-/static/js/vendor.a0d842dbf5bd9ea3bd6a.js
-/static/js/app.f3743b808a2b717f0b75.js
-/static/css/app.3b65968cdeec9943563a311824f74f83.css
+replacement
 /static/plugins/com.xiedrsz.xfyspeech/www/xfySpeech.js
 /static/cordova.js
 /static/cordova_plugins.js
