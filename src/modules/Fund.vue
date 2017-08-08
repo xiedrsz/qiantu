@@ -50,7 +50,7 @@
       </div>
       <!-- 前 -->
       <div slot="back" style="width: 360px;">
-        <dis-pie :data="datas.list"></dis-pie>
+        <dis-pie :data="datas.list" ref="dispie"></dis-pie>
         <div class="g-relative">
           <div class="w-sum">总财富： {{datas.value.toFixed(2)}} 元</div>
         </div>
@@ -181,6 +181,8 @@
             index = +arr[--len]
             this.datas = this.datas.list[index]
           }
+          
+          !!this.$refs.dispie && this.$refs.dispie.refresh(this.datas.list)
         }
     },
     created() {

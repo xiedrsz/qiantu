@@ -24,6 +24,10 @@
           <img src="static/img/logout.png" />
           <span>核算</span>
         </div>
+        <div class="menu-item" @click="monthly">
+          <img src="static/img/logout.png" />
+          <span>月度</span>
+        </div>
         <div class="menu-item" @click="refresh">
           <img src="static/img/refresh.png" />
           <span>刷新</span>
@@ -72,7 +76,8 @@
       check() {
         wealthTB.check()
         window.location.reload()
-      }
+      },
+      monthly() {}
     }
   }
 </script>

@@ -66,17 +66,23 @@ function calc(list) {
       }
     }),
     temp = [],
-    data2
+    data2 = []
 
-  data1.forEach((item) => {
-    [].push.apply(temp, item.list)
-    delete item.list
+  data1 = data1.filter(item => {
+    if (item.value > 0) {
+      [].push.apply(temp, item.list)
+      delete item.list
+      return true
+    }
+    return false
   })
 
-  data2 = temp.map((item) => {
-    return {
-      name: item.name,
-      value: +item.value
+  temp.forEach(item => {
+    if (+item.value > 0){
+      data2.push({
+        name: item.name,
+        value: +item.value
+      })
     }
   })
 

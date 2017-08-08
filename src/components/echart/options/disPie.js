@@ -1,4 +1,6 @@
-let option = {
+import { ext } from '../../../libs'
+
+const DefaultOpt = {
   // 背景颜色
   backgroundColor: '#2c343c',
   // 提示栏
@@ -52,10 +54,31 @@ let option = {
       // 显示动画
       animationType: 'scale',
       animationEasing: 'elasticOut',
-      animationDelay: function (idx) {
+      animationDelay: function(idx) {
         return Math.random() * 200;
       }
   }]
-};
+}
 
-export default option
+class dispie extends Object {
+  constructor(source) {
+    let option = {}
+    let data = []
+    ext.extend(true, option, DefaultOpt)
+    ext.extend(true, data, source)
+    
+    data = data.filter(item => {
+      return item.value > 0
+    })
+
+    data.sort((a, b) => {
+      return a.value - b.value
+    })
+    
+    option.series[0].data = data
+
+    super(option)
+  }
+}
+
+export default dispie

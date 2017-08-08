@@ -5,7 +5,7 @@
 </template>
 <script>
   import echarts from 'echarts'
-  import option from './options/disPie'
+  import dispie from './options/disPie'
 
   import ext from '../../libs/extend.min'
 
@@ -31,19 +31,15 @@
       }
     },
     mounted() {
-      // 排序
-      let data = []
-      ext.extend(true, data, this.data)
-      data.sort((a, b) => {
-        return a.value - b.value;
-      });
-      // 清除过去数据
-      option.series[0].data = [];
-      // 更新数据
-      [].push.apply(option.series[0].data, data);
-      // 创建图表
-      let myChart = echarts.init(this.$refs.main)
-      myChart.setOption(option)
+      this.refresh(this.data)
+    },
+    methods: {
+      refresh (data) {
+        // 创建图表
+        let option = new dispie(data)
+        let myChart = echarts.init(this.$refs.main)
+        myChart.setOption(option)
+      }
     }
   }
 </script>
