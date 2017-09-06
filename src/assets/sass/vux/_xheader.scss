@@ -1,9 +1,6 @@
 @charset "UTF-8";
 .vux-header {
-	position: relative;
-	padding: 3px 0;
-	box-sizing: border-box;
-	background-color: $x-header-background-color;
+	background-color: $x-header-background-color !important;
 }
 
 .vux-header .vux-header-title,

@@ -5,9 +5,7 @@
 </template>
 <script>
   import echarts from 'echarts'
-  import dispie from './options/disPie'
-
-  import ext from '../../libs/extend.min'
+  import Dispie from './options/Dispie'
 
   export default {
     name: 'dis-pie',
@@ -30,13 +28,13 @@
         }
       }
     },
-    mounted() {
+    mounted () {
       this.refresh(this.data)
     },
     methods: {
       refresh (data) {
         // 创建图表
-        let option = new dispie(data)
+        let option = new Dispie(data)
         let myChart = echarts.init(this.$refs.main)
         myChart.setOption(option)
       }

@@ -36,38 +36,36 @@
 <script>
   import {
     XHeader, Scroller
-  }
-  from 'vux'
+  } from 'vux'
+  
   import {
     XMenu, MutiBtn, ELists
-  }
-  from '../components'
-
+  } from '../components'
+  
   import store from '../vuex/store'
-  const commit = store.commit || store.dispatch
-
   import expenseTB from '../tables/expenseTB'
   import monthlyTB from '../tables/monthlyTB'
 
   import {
     analyzer
-  }
-  from '../libs'
+  } from '../libs'
+
+  const commit = store.commit || store.dispatch
 
   export default {
     name: 'home',
-    data() {
+    data () {
       return {
         formData: expenseTB.temp,
         monthInfo: monthlyTB.temp,
         synOption: {
           class: '',
-          img: "/static/img/syn.png"
+          img: '/static/img/syn.png'
         }
       }
     },
-    created() {
-      this.syn();
+    created () {
+      this.syn()
       !expenseTB.temp.lists.length && expenseTB.pull(() => {
         monthlyTB.recalc()
         this.$nextTick(() => {
@@ -76,28 +74,28 @@
       })
     },
     methods: {
-      openMenu() {
-          commit('UPDATE_MENUCLASS', 'menu_animation')
-        },
-        syn() {
-          this.synOption.class = "an-rotate"
-          this.synOption.img = "/static/img/syn.png"
-          expenseTB.push((res) => {
-            this.synOption.class = "";
-            !!res || (this.synOption.img = "/static/img/syn_fail.png")
-          })
-        },
-        submit(mess) {
-          let result = analyzer.analyze(mess)
-          result.showTip = !result.keyWord;
-          !result.keyWord && (result.keyWord = result.mess)
-          this.$router.push({
-            name: 'account',
-            params: {
-              bill: JSON.stringify(result)
-            }
-          })
-        }
+      openMenu () {
+        commit('UPDATE_MENUCLASS', 'menu_animation')
+      },
+      syn () {
+        this.synOption.class = 'an-rotate'
+        this.synOption.img = '/static/img/syn.png'
+        expenseTB.push((res) => {
+          this.synOption.class = ''
+          !!res || (this.synOption.img = '/static/img/syn_fail.png')
+        })
+      },
+      submit (mess) {
+        let result = analyzer.analyze(mess)
+        result.showTip = !result.keyWord
+        !result.keyWord && (result.keyWord = result.mess)
+        this.$router.push({
+          name: 'account',
+          params: {
+            bill: JSON.stringify(result)
+          }
+        })
+      }
     },
     components: {
       XHeader,

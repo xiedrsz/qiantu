@@ -2,13 +2,12 @@
  * @File 财富统计表
  */
 import Vue from 'vue'
-import table from './table'
+import Table from './Table'
 import {
   ext, localDB
-}
-from '../libs'
+} from '../libs'
 
-let wealthTB = new table({
+let wealthTB = new Table({
   value: 0.00,
   list: []
 })
@@ -18,7 +17,7 @@ let wealthTB = new table({
  * @Param isSyn string 是否已同步，[0: 否, 1: 是]
  */
 wealthTB.other = {
-  isSyn: "1"
+  isSyn: '1'
 }
 
 /**
@@ -31,7 +30,7 @@ wealthTB.init = () => {
     wealthTB.saveToLocal()
   }, (e) => {
     // 连接失败，使用本地
-    let loc = localDB.queryDict("myWealth") || {}
+    let loc = localDB.queryDict('myWealth') || {}
     ext.extend(wealthTB.temp, loc)
   })
 }
@@ -45,10 +44,10 @@ wealthTB.push = () => {
   }).then((data) => {
     let id = data.body._id
     wealthTB.temp._id = id
-    wealthTB.other.isSyn = "1"
+    wealthTB.other.isSyn = '1'
     wealthTB.saveToLocal()
   }, (e) => {
-    wealthTB.other.isSyn = "0"
+    wealthTB.other.isSyn = '0'
     wealthTB.saveToLocal()
   })
 }
@@ -62,22 +61,25 @@ wealthTB.push = () => {
  *  改]
  */
 wealthTB.save = (item, callback) => {
-  let pos = item.pos,
-    i = 0,
-    wealth, len, index, listLen;
+  let pos = item.pos
+  let i = 0
+  let wealth
+  let len
+  let index
+  let listLen
 
   if (pos === undefined) {
-    item.pos = "" + wealthTB.temp.list.length
-    wealthTB.temp.list = wealthTB.temp.list.concat(item);
+    item.pos = '' + wealthTB.temp.list.length
+    wealthTB.temp.list = wealthTB.temp.list.concat(item)
   } else {
-    pos += ""
-    pos = pos.split("-")
+    pos += ''
+    pos = pos.split('-')
     len = pos.length
     wealth = wealthTB.temp
     for (; i < len; i++) {
       index = pos[i]
-      if (i == len - 1) {
-        if (index === "") {
+      if (i === len - 1) {
+        if (index === '') {
           listLen = wealth.list.length
           item.pos += listLen
           wealth.list = wealth.list.concat(item)
@@ -101,9 +103,9 @@ wealthTB.save = (item, callback) => {
  * @Param diff Number 变动金额
  */
 wealthTB.calc = (index, diff) => {
-  let arr = index.split("-").reverse(),
-    len = arr.length,
-    temp = wealthTB.temp
+  let arr = index.split('-').reverse()
+  let len = arr.length
+  let temp = wealthTB.temp
 
   temp.value = +temp.value + diff
   while (--len) {
@@ -118,37 +120,38 @@ wealthTB.calc = (index, diff) => {
  * @Function check 核算
  */
 wealthTB.check = () => {
-  function wealth(item) {
-    let type = item.type || '0',
-      len = item.list.length,
-      pos, value;
+  function wealth (item) {
+    let type = item.type || '0'
+    let len = item.list.length
+    let pos
+    let value
 
     if (type === '0') {
-      item.value = 0;
+      item.value = 0
       while (len) {
-        wealth(item.list[--len]);
+        wealth(item.list[--len])
       }
     } else {
-      pos = item.pos;
-      value = item.value = item.list[len - 1].money - 0;
-      wealthTB.calc(pos, value);
+      pos = item.pos
+      value = item.value = item.list[len - 1].money - 0
+      wealthTB.calc(pos, value)
     }
-    
-    return item;
+
+    return item
   }
 
-  wealthTB.temp = wealth(wealthTB.temp);
-  account(wealthTB.temp);
-  
-  wealthTB.push();
+  wealthTB.temp = wealth(wealthTB.temp)
+  account(wealthTB.temp)
+
+  wealthTB.push()
 }
 
 /**
  * @Function saveToLocal 保存到本地
  */
 wealthTB.saveToLocal = () => {
-  localDB.saveDict("myWealth", wealthTB.temp)
-  localDB.saveDict("wealth_issyn", wealthTB.other.isSyn)
+  localDB.saveDict('myWealth', wealthTB.temp)
+  localDB.saveDict('wealth_issyn', wealthTB.other.isSyn)
 }
 
 /**
@@ -177,23 +180,24 @@ wealthTB.getIcons = () => {
  * @Function account 计算百分比
  * @Param obj object 被计算对象
  */
-function account(obj) {
-  let type = obj.type,
-    sum, rate
-  if (type !== "1") {
-    sum = obj.value;
+function account (obj) {
+  let type = obj.type
+  let sum
+  let rate
+  if (type !== '1') {
+    sum = obj.value
     obj.list.forEach((item) => {
       rate = item.value / sum * 100
-      item.account = rate.toFixed(2) + "%"
+      item.account = rate.toFixed(2) + '%'
       account(item)
     })
   }
 }
 
 // ============================ 初始化 ============================
-let isSyn = localDB.queryDict("wealth_issyn") || "1",
-  loc = localDB.queryDict("myWealth") || {}
-if (isSyn == "1") {
+let isSyn = localDB.queryDict('wealth_issyn') || '1'
+let loc = localDB.queryDict('myWealth') || {}
+if (isSyn === '1') {
   wealthTB.init()
 } else {
   ext.extend(wealthTB.temp, loc)

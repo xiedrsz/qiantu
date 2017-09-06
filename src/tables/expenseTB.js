@@ -1,11 +1,8 @@
-'use strict';
-
 import Vue from 'vue'
 import {
-  ext, dataApi, localDB
-}
-from '../libs'
-import table from './table'
+  dataApi, localDB
+} from '../libs'
+import Table from './Table'
 
 /**
  * 表字段
@@ -14,8 +11,8 @@ import table from './table'
  * outItems Array 支出项目
  * itemDetail Object 项目详情 { date, Address, money, type, mess, img, showTip, keyWord }
  */
-let expenseTB = new table({
-  today: dataApi.format("YYYY年MM月DD日"),
+let expenseTB = new Table({
+  today: dataApi.format('YYYY年MM月DD日'),
   amount: '0.00',
   lists: [],
   outItems: [],
@@ -28,41 +25,41 @@ let expenseTB = new table({
  */
 expenseTB.pull = (callback) => {
   Vue.http.get('/expense/pull').then((data) => {
-    let res = data.data;
+    let res = data.data
     // 同步到本地
     localDB.syn(res.lists)
-    deal(res);
+    deal(res)
     !!callback && callback()
   }, (e) => {
     // 连接失败，使用本地
     let res = {
       lists: localDB.localEList()
     }
-    deal(res);
+    deal(res)
     !!callback && callback()
   })
 
   // 处理结果
-  function deal(res) {
+  function deal (res) {
     // 更新列表
     expenseTB.temp.lists = expenseTB.temp.lists.concat(res.lists)
-      // 计算今日支出
+    // 计算今日支出
     let temp = expenseTB.temp.lists.filter((item) => {
-      return item.date == expenseTB.temp.today
-    });
-    !!temp[0] && (expenseTB.temp.amount = temp[0].amount);
+      return item.date === expenseTB.temp.today
+    })
+    !!temp[0] && (expenseTB.temp.amount = temp[0].amount)
     !!callback && callback(res)
   }
 }
 
 /**
  * 推, 将最新账单信息推向服务器
- * @param callback 回调函数
+ * @param rb 回调函数
  */
-expenseTB.push = (callback) => {
+expenseTB.push = (rb) => {
   // 收集未提交列表
-  let list = [],
-    unPullEList = localDB.queryDict("unPullEList") || []
+  let list = []
+  let unPullEList = localDB.queryDict('unPullEList') || []
   unPullEList.forEach((item) => {
     let tmp = localDB.queryDict(item)
     list.push(tmp)
@@ -70,7 +67,7 @@ expenseTB.push = (callback) => {
 
   // 没有未提交数据
   if (!list[0]) {
-    !!callback && callback(1)
+    !!rb && rb(1)
     return
   }
 
@@ -79,38 +76,38 @@ expenseTB.push = (callback) => {
     expensesList: JSON.stringify(list)
   }).then((data) => {
     // SUCCESS
-    localDB.saveDict("unPullEList", []);
-    !!callback && callback(1)
+    localDB.saveDict('unPullEList', [])
+    !!rb && rb(1)
   }, (e) => {
     // FAIL
-    !!callback && callback(0)
+    !!rb && rb(0)
   })
 }
 
 // 获取支出类型
 /**
- * @param callback 回调函数
+ * @param rb 回调函数
  */
-expenseTB.getOutItems = (callback) => {
+expenseTB.getOutItems = (rb) => {
   Vue.http.get('/dict/getItem', {
     params: {
-      name: "outItems"
+      name: 'outItems'
     }
   }).then((data) => {
-    let lists = data.data.value;
+    let lists = data.data.value
     // 保存到本地
-    localDB.saveDict("outItems", lists);
+    localDB.saveDict('outItems', lists)
     deal(lists)
   }, (e) => {
-    let lists = localDB.queryDict("outItems")
+    let lists = localDB.queryDict('outItems')
     deal(lists)
   })
 
   // 处理数据
-  function deal(lists) {
+  function deal (lists) {
     expenseTB.temp.outItems = expenseTB.temp.outItems.concat(lists)
 
-    !!callback && callback({
+    !!rb && rb({
       outItems: lists
     })
   }
@@ -122,23 +119,23 @@ expenseTB.getOutItems = (callback) => {
  * @param callback 回调函数
  */
 expenseTB.saveOutItem = (itemDetail, callback) => {
-  let date = itemDetail.date,
-    showTip = itemDetail.showTip,
-    oldType = itemDetail.oldType,
-    detail = {
-      img: itemDetail.img,
-      type: itemDetail.type,
-      mess: itemDetail.mess,
-      money: parseFloat(itemDetail.money).toFixed(2)
-    },
-    amount = parseFloat(detail.money),
-    temp = expenseTB.temp.lists.filter((item) => {
-      return item.date == date
-    })
+  let date = itemDetail.date
+  let showTip = itemDetail.showTip
+  let oldType = itemDetail.oldType
+  let detail = {
+    img: itemDetail.img,
+    type: itemDetail.type,
+    mess: itemDetail.mess,
+    money: parseFloat(itemDetail.money).toFixed(2)
+  }
+  let amount = parseFloat(detail.money)
+  let temp = expenseTB.temp.lists.filter((item) => {
+    return item.date === date
+  })
 
   // 保存分类
   if (showTip || !!oldType) {
-    expenseTB.saveKeys(itemDetail);
+    expenseTB.saveKeys(itemDetail)
   }
 
   // 更新支出列表
@@ -158,7 +155,7 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
   }
 
   // 更新今日支出
-  if (date == expenseTB.temp.today) {
+  if (date === expenseTB.temp.today) {
     let acTmp = expenseTB.temp.amount
     acTmp = parseFloat(detail.money) + parseFloat(acTmp)
     expenseTB.temp.amount = acTmp.toFixed(2)
@@ -174,13 +171,13 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
 expenseTB.getKeys = () => {
   Vue.http.get('/dict/getItem', {
     params: {
-      name: "keyWords"
+      name: 'keyWords'
     }
   }).then((data) => {
-    let keyWords = data.body;
-    !!keyWords.name && localDB.saveDict("e-keyWords", keyWords);
+    let keyWords = data.body
+    !!keyWords.name && localDB.saveDict('e-keyWords', keyWords)
   }, (e) => {
-    console.error(e);
+    console.error(e)
   })
 }
 
@@ -189,31 +186,31 @@ expenseTB.getKeys = () => {
  * @param itemDetail 项目详情
  */
 expenseTB.saveKeys = (itemDetail) => {
-  let keyWord = itemDetail.keyWord,
-    type = itemDetail.type,
-    oldType = itemDetail.oldType,
-    img = itemDetail.img,
-    keyWords = localDB.queryDict("e-keyWords") || {
-      name: "keyWords",
-      value: []
-    },
-    temp = keyWords.value.filter((item) => {
-      return item.type == type
-    }),
-    index
+  let keyWord = itemDetail.keyWord
+  let type = itemDetail.type
+  let oldType = itemDetail.oldType
+  let img = itemDetail.img
+  let keyWords = localDB.queryDict('e-keyWords') || {
+    name: 'keyWords',
+    value: []
+  }
+  let temp = keyWords.value.filter((item) => {
+    return item.type === type
+  })
+  let index
 
   if (!keyWord) {
     return
   }
 
-  if (!!temp[0]) {
+  if (temp[0]) {
     // 修改
-    temp[0].keyWord += "|(" + keyWord + ")"
+    temp[0].keyWord += '|(' + keyWord + ')'
   } else {
     // 新建分类
     img = img.match(/[a-zA-Z]+\.[a-zA-Z]+$/)
     temp = {
-      keyWord: "(" + keyWord + ")",
+      keyWord: '(' + keyWord + ')',
       type: type,
       img: img[0]
     }
@@ -221,16 +218,16 @@ expenseTB.saveKeys = (itemDetail) => {
   }
 
   // 清除旧分类
-  if (!!oldType && oldType != "其他支出") {
+  if (!!oldType && oldType !== '其他支出') {
     temp = keyWords.value.filter((item, i) => {
-      if (item.type == oldType) {
+      if (item.type === oldType) {
         index = i
         return true
       }
       return false
     })
-    let re = new RegExp("^\\(" + keyWord + "\\)\\|?|\\|\\(" + keyWord + "\\)")
-    temp[0].keyWord = temp[0].keyWord.replace(re, "");
+    let re = new RegExp('^\\(' + keyWord + '\\)\\|?|\\|\\(' + keyWord + '\\)')
+    temp[0].keyWord = temp[0].keyWord.replace(re, '')
     !temp[0].keyWord && keyWords.value.splice(index, 1)
   }
 
@@ -239,15 +236,15 @@ expenseTB.saveKeys = (itemDetail) => {
     item: JSON.stringify(keyWords)
   }).then((data) => {
     keyWords._id = data.body._id
-    localDB.saveDict("e-keyWords", keyWords);
+    localDB.saveDict('e-keyWords', keyWords)
   }, (e) => {
     console.log(e)
-    localDB.saveDict("e-keyWords", keyWords);
+    localDB.saveDict('e-keyWords', keyWords)
   })
 }
 
 // 初始化
-let keys = localDB.queryDict("e-keyWords");
-!keys && expenseTB.getKeys();
+let keys = localDB.queryDict('e-keyWords')
+!keys && expenseTB.getKeys()
 
 export default expenseTB

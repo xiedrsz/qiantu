@@ -68,87 +68,85 @@
 <script>
   import {
     XHeader, Scroller
-  }
-  from 'vux'
+  } from 'vux'
   import {
     OutItems
-  }
-  from '../components'
+  } from '../components'
 
   import {
     ext
-  }
-  from '../libs'
+  } from '../libs'
+
   import expenseTB from '../tables/expenseTB'
 
   export default {
-    data() {
-        return {
-          outItems: [],
-          itemDetail: {},
-          target: {
-            x: 0,
-            y: 0
+    data () {
+      return {
+        outItems: [],
+        itemDetail: {},
+        target: {
+          x: 0,
+          y: 0
+        }
+      }
+    },
+    mounted () {
+      let vm = this
+
+      // 获取支出列表
+      expenseTB.getOutItems(function (res) {
+        vm.outItems = vm.outItems.concat(res.outItems)
+      })
+
+      // 初始化支出详情
+      this.reset()
+    },
+    methods: {
+      select (res) {
+        this.itemDetail.img = res.src
+        this.itemDetail.type = res.name
+      },
+      // 保存收支信息
+      save () {
+        let vm = this
+        let bill = this.$route.params.bill
+
+        if (!!bill && bill !== ':bill') {
+          bill = JSON.parse(bill)
+          if (this.itemDetail.type !== bill.type) {
+            this.itemDetail.oldType = bill.type
           }
         }
-      },
-      mounted() {
-        let vm = this;
 
-        // 获取支出列表
-        expenseTB.getOutItems(function (res) {
-          vm.outItems = vm.outItems.concat(res.outItems)
+        expenseTB.saveOutItem(vm.itemDetail, () => {
+          vm.$router.push({
+            path: '/home'
+          })
         })
-
-        // 初始化支出详情
-        this.reset();
       },
-      methods: {
-        select(res) {
-            this.itemDetail.img = res.src
-            this.itemDetail.type = res.name
-          },
-          // 保存收支信息
-          save() {
-            let vm = this,
-              bill = this.$route.params.bill
-
-            if (!!bill && bill != ":bill") {
-              bill = JSON.parse(bill)
-              if (this.itemDetail.type != bill.type) {
-                this.itemDetail.oldType = bill.type
-              }
-            }
-
-            expenseTB.saveOutItem(vm.itemDetail, () => {
-              vm.$router.push({
-                path: '/home'
-              })
-            })
-          },
-          // 重置支出详情 itemDetail
-          reset() {
-            let bill = this.$route.params.bill,
-              today = expenseTB.getter("today")
-            this.itemDetail = {
-              img: '/static/img/question.png',
-              type: '类别',
-              date: today,
-              address: '',
-              money: '',
-              mess: ''
-            }
-            if (!!bill && bill != ":bill") {
-              bill = JSON.parse(bill)
-              ext.extend(this.itemDetail, bill)
-              this.itemDetail.img = "/static/img/" + bill.img
-            }
-          }
-      },
-      components: {
-        XHeader,
-        OutItems,
-        Scroller
+      // 重置支出详情 itemDetail
+      reset () {
+        let bill = this.$route.params.bill
+        let today = expenseTB.getter('today')
+        this.itemDetail = {
+          img: '/static/img/question.png',
+          type: '类别',
+          date: today,
+          address: '',
+          money: '',
+          mess: ''
+        }
+        if (!!bill && bill !== ':bill') {
+          bill = JSON.parse(bill)
+          ext.extend(this.itemDetail, bill)
+          this.itemDetail.img = '/static/img/' + bill.img
+        }
       }
+    },
+    components: {
+      XHeader,
+      OutItems,
+      Scroller
+    }
   }
 </script>

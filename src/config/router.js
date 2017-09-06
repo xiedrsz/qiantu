@@ -5,13 +5,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-
-import App from "../App"
+import App from '../App'
+import store from '../vuex/store'
 
 // 引入路由插件
 Vue.use(VueRouter)
 
-import store from '../vuex/store'
 const commit = store.commit || store.dispatch
 
 // 创建路由

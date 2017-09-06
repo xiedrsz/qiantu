@@ -56,7 +56,7 @@
     name: 'x-menu',
     store: store,
     computed: {
-      menuClass() {
+      menuClass () {
         return this.$store.state.menuClass
       }
     },
@@ -73,11 +73,11 @@
           path: '/' + page
         })
       },
-      check() {
+      check () {
         wealthTB.check()
         window.location.reload()
       },
-      monthly() {}
+      monthly () {}
     }
   }
 </script>

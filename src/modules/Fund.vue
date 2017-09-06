@@ -75,22 +75,19 @@
 <script>
   import {
     XHeader, Group, Cell, Badge, Selector
-  }
-  from 'vux'
+  } from 'vux'
 
   import {
     Flip, OutItems, OrderList
-  }
-  from '../components'
+  } from '../components'
 
   import DisPie from '../components/echart/DisPie.vue'
-
   import ext from '../libs/extend.min'
   import wealthTB from '../tables/wealthTB'
 
   export default {
     name: 'fund',
-    data() {
+    data () {
       return {
         datas: {
           name: '',
@@ -117,75 +114,74 @@
         index: ''
       }
     },
-    mounted() {},
     methods: {
-      flip(item) {
-          this.reset()
-          if (item !== null) {
-            ext.extend(this.form, item)
-          }
-          this.$refs.flip.flip()
-        },
-        select(res) {
-          this.form.icon = res.src
-        },
-        save() {
-          // Todo, check
-          wealthTB.save(this.form, () => {
-            this.flip(null);
-            // 保存到服务器
-            wealthTB.push()
-            this.$refs.orderlist.cal()
-          })
-        },
-        reset() {
-          let index = this.index + "-"
-          this.form = {
-            pos: index,
-            icon: '',
-            name: '',
-            value: 0.00,
-            account: '0.00%',
-            type: '',
-            mess: '',
-            list: []
-          }
-        },
-        go(item) {
-          let pos = item.pos,
-            type = item.type
-          if (type == '0') {
-            this.$router.push({
-              name: 'fund',
-              params: {
-                index: pos
-              }
-            })
-            this.refresh()
-          } else {
-            this.$router.push({
-              name: 'wealthItem',
-              params: {
-                index: pos
-              }
-            })
-          }
-        },
-        refresh() {
-          let index = "" + this.$route.params.index,
-            arr = index.split("-").reverse(),
-            len = arr.length
-          this.index = index
-          this.datas = wealthTB.temp
-          while (len) {
-            index = +arr[--len]
-            this.datas = this.datas.list[index]
-          }
-          
-          !!this.$refs.dispie && this.$refs.dispie.refresh(this.datas.list)
+      flip (item) {
+        this.reset()
+        if (item !== null) {
+          ext.extend(this.form, item)
         }
+        this.$refs.flip.flip()
+      },
+      select (res) {
+        this.form.icon = res.src
+      },
+      save () {
+        // Todo, check
+        wealthTB.save(this.form, () => {
+          this.flip(null)
+          // 保存到服务器
+          wealthTB.push()
+          this.$refs.orderlist.cal()
+        })
+      },
+      reset () {
+        let index = this.index + '-'
+        this.form = {
+          pos: index,
+          icon: '',
+          name: '',
+          value: 0.00,
+          account: '0.00%',
+          type: '',
+          mess: '',
+          list: []
+        }
+      },
+      go (item) {
+        let pos = item.pos
+        let type = item.type
+        if (type === '0') {
+          this.$router.push({
+            name: 'fund',
+            params: {
+              index: pos
+            }
+          })
+          this.refresh()
+        } else {
+          this.$router.push({
+            name: 'wealthItem',
+            params: {
+              index: pos
+            }
+          })
+        }
+      },
+      refresh () {
+        let index = '' + this.$route.params.index
+        let arr = index.split('-').reverse()
+        let len = arr.length
+        this.index = index
+        this.datas = wealthTB.temp
+        while (len) {
+          index = +arr[--len]
+          this.datas = this.datas.list[index]
+        }
+
+        !!this.$refs.dispie && this.$refs.dispie.refresh(this.datas.list)
+      }
     },
-    created() {
+    created () {
       this.refresh()
     },
     watch: {

@@ -35,6 +35,21 @@ let webpackConfig = {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.vue$/,
+        loader: 'eslint',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.js$/,
+        loader: 'eslint',
+        include: [
+          path.join(projectRoot, 'src')
+        ],
+        exclude: [/node_modules/, path.join(projectRoot, 'src/libs')]
+      }
+    ],
     loaders: [
       {
         test: /\.vue$/,

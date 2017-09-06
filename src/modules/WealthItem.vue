@@ -75,48 +75,41 @@
 <script>
   import {
     XHeader, Group, Cell, Scroller
-  }
-  from 'vux'
+  } from 'vux'
 
   import {
     Flip
-  }
-  from '../components'
+  } from '../components'
 
   import {
-    dataApi, ext
-  }
-  from '../libs'
+    dataApi
+  } from '../libs'
 
   import wealthTB from '../tables/wealthTB'
-
   import LineChart from '../components/echart/LineChart.vue'
 
   let lastSpread = 0
 
   export default {
     name: 'wealth-item',
-    data() {
+    data () {
       return {
         datas: {},
         form: {
-          money: "",
-          spread: "",
-          date: dataApi.format("YYYY年MM月DD日"),
-          mess: ""
+          money: '',
+          spread: '',
+          date: dataApi.format('YYYY年MM月DD日'),
+          mess: ''
         },
-        money: "",
-        spread: ""
+        money: '',
+        spread: ''
       }
     },
-    mounted() {
-
-    },
-    created() {
-      let index = "" + this.$route.params.index,
-        arr = index.split("-").reverse(),
-        len = arr.length,
-        i = index
+    created () {
+      let index, arr, len
+      index = '' + this.$route.params.index
+      arr = index.split('-').reverse()
+      len = arr.length
       this.datas = wealthTB.temp
       while (len) {
         index = +arr[--len]
@@ -127,69 +120,75 @@
       })
     },
     methods: {
-      flip(index) {
-          this.reset()
-          if (index !== null) {
-            this.form = this.datas.list[index]
-            this.spread = +this.form.spread
-            this.datas.value = +this.datas.value - this.spread;
-            lastSpread = this.spread
-          }
-          this.$refs.flip.flip()
-        },
-        // 保存
-        save() {
-          let len = this.datas.list.length,
-            index = this.form.index,
-            pos = "" + this.$route.params.index
-
-          this.datas.value = +this.money;
-          (index == undefined) && (this.form.index = len, this.datas.list = this.datas.list.concat([this.form]));
-
-          // 重算财富
-          wealthTB.calc(pos, this.spread - lastSpread)
-          lastSpread = 0;
-          // 保存到服务器
-          wealthTB.push()
-
-          this.flip(null)
-
-          this.$nextTick(() => {
-            this.$refs.scroller.reset()
-          })
-        },
-        // 重置form
-        reset() {
-          this.form = {
-            money: "",
-            spread: "",
-            date: dataApi.format("YYYY年MM月DD日"),
-            mess: ""
-          }
-          this.money = ""
+      flip (index) {
+        this.reset()
+        if (index !== null) {
+          this.form = this.datas.list[index]
+          this.spread = +this.form.spread
+          this.datas.value = +this.datas.value - this.spread
+          lastSpread = this.spread
         }
+        this.$refs.flip.flip()
+      },
+      // 保存
+      save () {
+        let len, index, pos
+        len = this.datas.list.length
+        index = this.form.index
+        pos = '' + this.$route.params.index
+
+        this.datas.value = +this.money
+        if (index === undefined) {
+          this.form.index = len
+          this.datas.list = this.datas.list.concat([this.form])
+        }
+
+        // 重算财富
+        wealthTB.calc(pos, this.spread - lastSpread)
+        lastSpread = 0
+        // 保存到服务器
+        wealthTB.push()
+
+        this.flip(null)
+
+        this.$nextTick(() => {
+          this.$refs.scroller.reset()
+        })
+      },
+      // 重置form
+      reset () {
+        this.form = {
+          money: '',
+          spread: '',
+          date: dataApi.format('YYYY年MM月DD日'),
+          mess: ''
+        }
+        this.money = ''
+      }
     },
     watch: {
-      money(val, old) {
-          if (val !== "") {
-            let current = +val,
-              recent = +this.datas.value,
-              spread = current - recent;
-            (spread == 0) && (spread = "")
-            this.form.spread = (+spread).toFixed(2)
-            this.spread = (+spread).toFixed(2) - 0
-          } else {
-            this.spread = ""
-          }
-        },
-        spread(val, old) {
-          if (val !== "") {
-            let recent = +this.datas.value,
-              money = recent + val
-            this.form.money = money.toFixed(2)
-            this.money = money.toFixed(2) - 0
-          }
+      money (val, old) {
+        if (val !== '') {
+          let current, recent, spread
+          current = +val
+          recent = +this.datas.value
+          spread = current - recent;
+          (spread === 0) && (spread = '')
+          this.form.spread = (+spread).toFixed(2)
+          this.spread = (+spread).toFixed(2) - 0
+        } else {
+          this.spread = ''
         }
+      },
+      spread (val, old) {
+        if (val !== '') {
+          let recent, money
+          recent = +this.datas.value
+          money = recent + val
+          this.form.money = money.toFixed(2)
+          this.money = money.toFixed(2) - 0
+        }
+      }
     },
     components: {
       XHeader,

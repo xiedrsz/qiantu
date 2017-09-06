@@ -19,34 +19,33 @@
 
   </div>
 </template>
+
 <script>
   import {
     XHeader, Group, Cell, XInput
-  }
-  from 'vux'
+  } from 'vux'
+  
   import {
     XMenu
-  }
-  from '../components'
+  } from '../components'
 
   import Pie from '../components/echart/Pie.vue'
   import DisPie from '../components/echart/DisPie.vue'
   import Histogram from '../components/echart/Histogram.vue'
 
   import store from '../vuex/store'
+  
   const commit = store.commit || store.dispatch
-
-  import echarts from 'echarts'
 
   export default {
     name: 'statistics',
-    data() {
+    data () {
       return {
-        title: "收益明细"
+        title: '收益明细'
       }
     },
     methods: {
-      openMenu() {
+      openMenu () {
         commit('UPDATE_MENUCLASS', 'menu_animation')
       }
     },
@@ -56,7 +55,7 @@
       Pie,
       DisPie,
       Histogram,
-      Group, 
+      Group,
       Cell,
       XInput
     }

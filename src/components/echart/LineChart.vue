@@ -7,15 +7,16 @@
   import echarts from 'echarts'
   import option from './options/line'
 
-  function calc(datas) {
-    let date = datas.map((item) => {
-        return item.date
-      }),
-      sum = 0,
-      data = datas.map((item) => {
-        sum += +item.spread
-        return sum
-      })
+  function calc (datas) {
+    let date, sum, data
+    date = datas.map(item => {
+      return item.date
+    })
+    sum = 0
+    data = datas.map(item => {
+      sum += +item.spread
+      return sum
+    })
 
     return {
       date: date,
@@ -44,7 +45,7 @@
         }
       }
     },
-    mounted() {
+    mounted () {
       // 创建图表
       let chartData = calc(this.data)
       option.xAxis.data = chartData.date

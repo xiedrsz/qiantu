@@ -6,7 +6,7 @@ const DefaultOpt = {
   // 提示栏
   tooltip: {
     trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
+    formatter: '{a} <br/>{b} : {c} ({d}%)'
   },
   // 遮罩层明亮程度配置
   visualMap: {
@@ -54,19 +54,20 @@ const DefaultOpt = {
       // 显示动画
       animationType: 'scale',
       animationEasing: 'elasticOut',
-      animationDelay: function(idx) {
-        return Math.random() * 200;
+      animationDelay: function (idx) {
+        return Math.random() * 200
       }
-  }]
+    }
+  ]
 }
 
-class dispie extends Object {
-  constructor(source) {
+class Dispie extends Object {
+  constructor (source) {
     let option = {}
     let data = []
     ext.extend(true, option, DefaultOpt)
     ext.extend(true, data, source)
-    
+
     data = data.filter(item => {
       return item.value > 0
     })
@@ -74,11 +75,11 @@ class dispie extends Object {
     data.sort((a, b) => {
       return a.value - b.value
     })
-    
+
     option.series[0].data = data
 
     super(option)
   }
 }
 
-export default dispie
+export default Dispie

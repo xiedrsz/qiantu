@@ -75,33 +75,30 @@
 <script>
   import {
     XHeader, Group, Cell, Badge, Selector
-  }
-  from 'vux'
+  } from 'vux'
+  
   import {
     XMenu, Flip, OutItems, OrderList
-  }
-  from '../components'
+  } from '../components'
 
   import Pie from '../components/echart/Pie.vue'
-
   import store from '../vuex/store'
-  const commit = store.commit || store.dispatch
-
   import ext from '../libs/extend.min'
-
   import wealthTB from '../tables/wealthTB'
+  
+  const commit = store.commit || store.dispatch
 
   export default {
     name: 'wealth',
-    data() {
+    data () {
       return {
         datas: wealthTB.temp,
         form: {
-          icon: "",
-          name: "",
+          icon: '',
+          name: '',
           value: 0.00,
-          account: "0.00%",
-          mess: "",
+          account: '0.00%',
+          mess: '',
           list: []
         },
         defaultIcon: '/static/img/question.png',
@@ -109,47 +106,47 @@
       }
     },
     methods: {
-      openMenu() {
-          commit('UPDATE_MENUCLASS', 'menu_animation')
-        },
-        go(item) {
-          let index = item.pos
-          this.$router.push({
-            name: 'fund',
-            params: {
-              index: index
-            }
-          })
-        },
-        flip(item) {
-          this.reset()
-          if (item !== null) {
-            ext.extend(this.form, item)
+      openMenu () {
+        commit('UPDATE_MENUCLASS', 'menu_animation')
+      },
+      go (item) {
+        let index = item.pos
+        this.$router.push({
+          name: 'fund',
+          params: {
+            index: index
           }
-          this.$refs.flip.flip()
-        },
-        select(res) {
-          this.form.icon = res.src
-        },
-        save() {
-          // Todo, check
-          wealthTB.save(this.form, () => {
-            this.flip();
-            // 保存到服务器
-            wealthTB.push()
-            this.$refs.orderlist.cal()
-          })
-        },
-        reset() {
-          this.form = {
-            icon: '',
-            name: '',
-            value: 0.00,
-            account: '0.00%',
-            mess: '',
-            list: []
-          }
+        })
+      },
+      flip (item) {
+        this.reset()
+        if (item !== null) {
+          ext.extend(this.form, item)
         }
+        this.$refs.flip.flip()
+      },
+      select (res) {
+        this.form.icon = res.src
+      },
+      save () {
+        // Todo, check
+        wealthTB.save(this.form, () => {
+          this.flip()
+          // 保存到服务器
+          wealthTB.push()
+          this.$refs.orderlist.cal()
+        })
+      },
+      reset () {
+        this.form = {
+          icon: '',
+          name: '',
+          value: 0.00,
+          account: '0.00%',
+          mess: '',
+          list: []
+        }
+      }
     },
     components: {
       XHeader,

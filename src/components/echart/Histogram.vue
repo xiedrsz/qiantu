@@ -9,13 +9,13 @@
   
   export default {
     name: 'histogram',
-    mounted() {
+    mounted () {
       // 创建图表
       let myChart = echarts.init(this.$refs.main)
       myChart.setOption(option)
 
       // Enable data zoom when user click bar.
-      let zoomSize = 6;
+      let zoomSize = 6
 
       // 自定义点击放大事件
       myChart.on('click', (params) => {

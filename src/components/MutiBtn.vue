@@ -31,8 +31,8 @@
     data () {
       return {
         typing: false,
-        btnMess: "取消",
-        message: ""
+        btnMess: '取消',
+        message: ''
       }
     },
     methods: {
@@ -41,9 +41,9 @@
         let vm = this
         navigator.xfySpeech.recognize((data) => {
           let result = data.result
-          vm.$emit("on-submit", result)
+          vm.$emit('on-submit', result)
         }, (err) => {
-          console.log("Erro: " + err)
+          console.log('Erro: ' + err)
         })
       },
       // 切换输入模式
@@ -52,20 +52,20 @@
       },
       // 提交
       submit () {
-        if (this.btnMess == "提交") {
+        if (this.btnMess === '提交') {
           this.$emit('on-submit', this.message)
         }
-        this.message = ""
-        this.btnMess = "取消"
+        this.message = ''
+        this.btnMess = '取消'
         this.chtyping()
       }
     },
     watch: {
       message () {
-        if (!!this.message) {
-          this.btnMess = "提交"
+        if (this.message) {
+          this.btnMess = '提交'
         } else {
-          this.btnMess = "取消"
+          this.btnMess = '取消'
         }
       }
     }

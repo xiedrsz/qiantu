@@ -30,13 +30,14 @@
         }
       }
     },
-    data() {
-      let today = new Date(),
-        YYYY = today.getFullYear(),
-        MM = today.getMonth() + 1,
-        DD = today.getDate();
+    data () {
+      let today, YYYY, MM, DD
+      today = new Date()
+      YYYY = today.getFullYear()
+      MM = today.getMonth() + 1
+      DD = today.getDate()
 
-      today = YYYY + "年" + MM + "月" + DD + "日";
+      today = YYYY + '年' + MM + '月' + DD + '日'
       return {
         today: today
       }

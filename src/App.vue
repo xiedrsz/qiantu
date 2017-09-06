@@ -16,23 +16,21 @@
 
 <script>
   import store from './vuex/store'
-
   import {
     Loading,
     Toast
-  }
-  from 'vux'
+  } from 'vux'
 
   export default {
     store: store,
     computed: {
-      direction() {
+      direction () {
         return this.$store.state.direction
       },
-      showLoading() {
+      showLoading () {
         return this.$store.state.showLoading
       },
-      toastOPT() {
+      toastOPT () {
         return this.$store.state.toastOPT
       }
     },

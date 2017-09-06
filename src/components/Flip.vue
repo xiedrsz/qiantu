@@ -12,25 +12,25 @@
 <script>
   export default {
     name: 'flip',
-    data() {
+    data () {
       return {
-        fClass: "out",
-        bClass: "in"
+        fClass: 'out',
+        bClass: 'in'
       }
     },
     methods: {
-      flip() {
-        let tmp = this.bClass;
-        if (tmp == "in") {
-          this.bClass = "out"
+      flip () {
+        let tmp = this.bClass
+        if (tmp === 'in') {
+          this.bClass = 'out'
         } else {
-          this.fClass = "out"
+          this.fClass = 'out'
         }
         setTimeout(() => {
-          if (tmp == "in") {
-            this.fClass = "in"
+          if (tmp === 'in') {
+            this.fClass = 'in'
           } else {
-            this.bClass = "in"
+            this.bClass = 'in'
           }
         }, 225)
       }

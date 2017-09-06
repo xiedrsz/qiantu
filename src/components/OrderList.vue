@@ -10,8 +10,7 @@
 <script>
   import {
     Group, Scroller
-  }
-  from 'vux'
+  } from 'vux'
 
   import ext from '../libs/extend.min'
 
@@ -25,21 +24,21 @@
         }
       }
     },
-    data() {
+    data () {
       return {
         list: []
       }
     },
-    mounted() {
+    mounted () {
       this.cal()
     },
     methods: {
-      cal() {
+      cal () {
         // 排序，防止污染源
-        let tmp = [],
-          timer;
-        ext.extend(true, tmp, this.datas);
-        
+        let tmp = []
+        let timer
+        ext.extend(true, tmp, this.datas)
+
         this.$nextTick(() => {
           tmp.sort((a, b) => {
             return b.value - a.value
@@ -49,11 +48,11 @@
             clearTimeout(timer)
             this.$refs.scroller.reset()
           }, 100)
-        });
+        })
       }
     },
     watch: {
-      datas() {
+      datas () {
         this.cal()
       }
     },

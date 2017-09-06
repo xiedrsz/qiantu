@@ -1,25 +1,27 @@
-'use strict';
-
 // import ext from '../libs/extend.min'
+/**
+ * 遗留改进:
+ * [1] 研究 props
+ */
 
-export default class table {
-  constructor(temp) {
-    this.temp = temp || {};
+export default class {
+  constructor (temp) {
+    this.temp = temp || {}
   }
 
   /**
    * @Function 初始化
    * @Param temp Object
    */
-  init(temp) {
-    this.temp = temp;
+  init (temp) {
+    this.temp = temp
   }
 
   /**
    * @Function 读取器
    * @Param attr String 属性名
    */
-  getter(attr) {
+  getter (attr) {
     return this.temp[attr]
   }
 
@@ -28,15 +30,8 @@ export default class table {
    * @Param attr String 属性名
    * @Param value 值
    */
-  setter(attr, value) {
+  setter (attr, value) {
     this.temp[attr] = value
     return this
   }
-
 }
-
-
-/**
- * 遗留改进:
- * [1] 研究 props
- */

@@ -1,14 +1,11 @@
-import {
-  ext
-}
-from '../../../libs'
+import { ext } from '../../../libs'
 
 // 默认配置
 const DefaultOpt = {
   backgroundColor: '#2c343c',
   tooltip: {
     trigger: 'item',
-    formatter: "{a} <br/>{b}: {c} ({d}%)"
+    formatter: '{a} <br/>{b}: {c} ({d}%)'
   },
   // 图表配置
   series: [{
@@ -57,16 +54,19 @@ const DefaultOpt = {
  *    }]
  *  }
  */
-function calc(list) {
-  let data1 = list.map((item) => {
-      return {
-        name: item.name,
-        value: +item.value,
-        list: item.list
-      }
-    }),
-    temp = [],
-    data2 = []
+function calc (list) {
+  let data1
+  let temp
+  let data2
+  data1 = list.map((item) => {
+    return {
+      name: item.name,
+      value: +item.value,
+      list: item.list
+    }
+  })
+  temp = []
+  data2 = []
 
   data1 = data1.filter(item => {
     if (item.value > 0) {
@@ -78,7 +78,7 @@ function calc(list) {
   })
 
   temp.forEach(item => {
-    if (+item.value > 0){
+    if (+item.value > 0) {
       data2.push({
         name: item.name,
         value: +item.value
@@ -92,15 +92,15 @@ function calc(list) {
   }
 }
 
-class pie extends Object {
-  constructor(list) {
-    let option = {},
-      datas = calc(list)
+class Pie extends Object {
+  constructor (list) {
+    let option = {}
+    let datas = calc(list)
     ext.extend(true, option, DefaultOpt)
     option.series[0].data = datas.data1
     option.series[1].data = datas.data2
-    super(option);
+    super(option)
   }
 }
 
-export default pie
+export default Pie

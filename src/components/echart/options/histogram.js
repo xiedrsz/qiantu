@@ -1,18 +1,18 @@
 import echarts from 'echarts'
 
 // x轴标签
-let dataAxis = ['旗滨股份', '鑫科材料', '大东南'];
+let dataAxis = ['旗滨股份', '鑫科材料', '大东南']
 
 // 图表数据
-let data = [32.15, 39.85, 57.64];
+let data = [32.15, 39.85, 57.64]
 
 // 最大高度
-let yMax = 60;
+let yMax = 60
 
 // 背景数据
-let dataShadow = [];
+let dataShadow = []
 for (var i = 0; i < data.length; i++) {
-  dataShadow.push(yMax);
+  dataShadow.push(yMax)
 }
 
 let option = {
@@ -92,6 +92,6 @@ let option = {
       },
       data: data
     }]
-};
+}
 
 export { option, dataAxis, data }

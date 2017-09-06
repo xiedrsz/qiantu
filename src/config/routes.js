@@ -16,8 +16,7 @@ import {
   Wealth,
   Fund,
   WealthItem
-}
-from '../modules'
+} from '../modules'
 
 module.exports = [
   {
