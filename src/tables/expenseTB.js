@@ -42,7 +42,8 @@ expenseTB.pull = (callback) => {
   // 处理结果
   function deal (res) {
     // 更新列表
-    expenseTB.temp.lists = expenseTB.temp.lists.concat(res.lists)
+    // expenseTB.temp.lists = expenseTB.temp.lists.concat(res.lists)
+    expenseTB.temp.lists = [].concat(res.lists)
     // 计算今日支出
     let temp = expenseTB.temp.lists.filter((item) => {
       return item.date === expenseTB.temp.today
@@ -77,6 +78,8 @@ expenseTB.push = (rb) => {
   }).then((data) => {
     // SUCCESS
     localDB.saveDict('unPullEList', [])
+    // Todo, 此处后台待修复
+    expenseTB.pull()
     !!rb && rb(1)
   }, (e) => {
     // FAIL
@@ -119,17 +122,21 @@ expenseTB.getOutItems = (rb) => {
  * @param callback 回调函数
  */
 expenseTB.saveOutItem = (itemDetail, callback) => {
-  let date = itemDetail.date
-  let showTip = itemDetail.showTip
-  let oldType = itemDetail.oldType
-  let detail = {
+  // 账单日期，新关键字提示，旧分类，账单详情（被保存的），账单金额，当天账单详情, 旧账单索引, 旧账单金额
+  let date, showTip, oldType, detail, amount, temp, index, oldMoney
+
+  index = itemDetail.index
+  date = itemDetail.date
+  showTip = itemDetail.showTip
+  oldType = itemDetail.oldType
+  detail = {
     img: itemDetail.img,
     type: itemDetail.type,
     mess: itemDetail.mess,
     money: parseFloat(itemDetail.money).toFixed(2)
   }
-  let amount = parseFloat(detail.money)
-  let temp = expenseTB.temp.lists.filter((item) => {
+  amount = parseFloat(detail.money)
+  temp = expenseTB.temp.lists.filter((item) => {
     return item.date === date
   })
 
@@ -142,6 +149,11 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
   if (temp[0]) {
     temp[0].detail.push(detail)
     amount += parseFloat(temp[0].amount)
+    if (index !== undefined) {
+      oldMoney = +temp[0].detail[index].money
+      amount = amount - oldMoney
+      temp[0].detail[index] = temp[0].detail.pop()
+    }
     temp[0].amount = amount.toFixed(2)
     localDB.update(temp[0])
   } else {
@@ -152,13 +164,12 @@ expenseTB.saveOutItem = (itemDetail, callback) => {
     }
     expenseTB.temp.lists.push(temp)
     localDB.update(temp)
+    temp = [temp]
   }
 
   // 更新今日支出
   if (date === expenseTB.temp.today) {
-    let acTmp = expenseTB.temp.amount
-    acTmp = parseFloat(detail.money) + parseFloat(acTmp)
-    expenseTB.temp.amount = acTmp.toFixed(2)
+    expenseTB.temp.amount = temp[0].amount
   }
 
   // 回调

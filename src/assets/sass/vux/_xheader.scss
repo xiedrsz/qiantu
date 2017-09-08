@@ -54,21 +54,8 @@
 }
 
 .vux-header .vux-header-left .left-arrow {
-	position: absolute;
-	width: 30px;
-	height: 30px;
-	top: -5px;
-	left: -5px;
 	&:before {
-		content: "";
-		position: absolute;
-		width: 12px;
-		height: 12px;
-		border: 1px solid $x-header-arrow-color;
-		border-width: 1px 0 0 1px;
-		transform: rotate(315deg);
-		top: 8px;
-		left: 7px;
+    border-color: #fff !important;
 	}
 }
 
