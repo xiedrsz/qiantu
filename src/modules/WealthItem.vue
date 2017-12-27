@@ -27,6 +27,14 @@
               <input type="number" placeholder="差额" v-model="spread" />
             </div>
           </div>
+          <div class="w-form">
+            <div class="i-icon">
+              <img src="/static/img/classify.png" />
+            </div>
+            <div class="r-txt-left">
+              <selector placeholder="请选择财务类型" :options="list" v-model="form.finance"></selector>
+            </div>
+          </div>
           <div class="ac-input">
             <div>
               <img src="/static/img/calander.png" />
@@ -74,7 +82,7 @@
 </template>
 <script>
   import {
-    XHeader, Group, Cell, Scroller
+    XHeader, Group, Cell, Scroller, Selector
   } from 'vux'
 
   import {
@@ -99,10 +107,18 @@
           money: '',
           spread: '',
           date: dataApi.format('YYYY年MM月DD日'),
-          mess: ''
+          mess: '',
+          finance: '0'
         },
         money: '',
-        spread: ''
+        spread: '',
+        list: [{
+          key: '0',
+          value: '不纳入会计统计'
+        }, {
+          key: '1',
+          value: '纳入会计统计'
+        }]
       }
     },
     created () {
@@ -124,9 +140,12 @@
         this.reset()
         if (index !== null) {
           this.form = this.datas.list[index]
+          !this.form.finance && (this.form.finance = '0')
           this.spread = +this.form.spread
           this.datas.value = +this.datas.value - this.spread
           lastSpread = this.spread
+        } else {
+          this.form.finance = '0'
         }
         this.$refs.flip.flip()
       },
@@ -196,7 +215,8 @@
       LineChart,
       Group,
       Cell,
-      Scroller
+      Scroller,
+      Selector
     }
   }
 </script>
