@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+/**
+ * weui样式本地化
+ * UI组件的重写覆盖
+ */
+
+// 主按钮
+.weui-btn_primary {
+  background-color: @blue;
+  &:not(.weui-btn_disabled):active {
+    background-color: #ACE0FF;
+  }
+}
+
+.vux-header {
+  background-color: transparent;
+  font-weight: bold;
+  .vux-header-title {
+    font-size: .17rem;
+    color: #979797;
+  }
+  .vux-header-left {
+    color: #333333;
+  }
+  .vux-header-right a {
+    margin-left: 2em;
+  }
+}
+
+// 表单
+.weui-cells {
+  margin-top: .77em;
+}
+
+.weui-label {
+  color: #7D7D7D;
+}
+
+.vux-datetime {
+  color: #7D7D7D;
+}
+
+// 底线
+.vux-divider {
+  margin-top: 1em;
+  color: #CCCCCC;
+}
+
+// 开关
+.weui-switch:checked {
+  border-color: #85B3EE;
+  background-color: #85B3EE;
+}

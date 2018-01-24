@@ -1,0 +1,44 @@
+[
+  {
+    "amount": 16,
+    "ratio": 0.1,
+    "abbreviation": "支宝",
+    "namekey": "namekey"
+  },
+  {
+    "amount": 16,
+    "ratio": 0.5,
+    "abbreviation": "理通",
+    "namekey": "namekey"
+  },
+  {
+    "amount": 16,
+    "ratio": 0.05,
+    "abbreviation": "上行",
+    "namekey": "namekey"
+  },
+  {
+    "amount": 2,
+    "ratio": 0.15,
+    "abbreviation": "工行",
+    "namekey": "namekey"
+  },
+  {
+    "amount": 4,
+    "ratio": 0.05,
+    "abbreviation": "招行",
+    "namekey": "namekey"
+  },
+  {
+    "amount": 81,
+    "ratio": 0.1,
+    "abbreviation": "中行",
+    "namekey": "namekey"
+  },
+  {
+    "amount": 20,
+    "ratio": 0.05,
+    "abbreviation": "邮储",
+    "namekey": "namekey"
+  }
+]

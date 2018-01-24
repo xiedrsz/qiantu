@@ -4,33 +4,90 @@
  * 函数
  */
 
-// 扩展, 用法见 readme.md
 @mixin print($declarations) {
-    @each $property,
-    $value in $declarations {
-        #{$property}: $value
-    }
+  @each $property,
+  $value in $declarations {
+    #{$property}: $value
+  }
 }
 
-// 一像素边框
-@mixin border($declarations:(border: 1px solid, border-radius: 5px)) {
-    @include print($declarations);
-    @media screen and (-webkit-min-device-pixel-ratio: 2) {
-        position: relative;
-        border: 0;
-        &:before {
-            content: "";
-            width: 200%;
-            height: 200%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            -webkit-transform: scale(.5);
-            -webkit-transform-origin: 0 0;
-            padding: 1px;
-            -webkit-box-sizing: border-box;
-            pointer-events: none;
-            @include print($declarations);
-        }
+@mixin border-radius($declarations:(border: 1px solid $bordercolor, border-radius: $border-radius)) {
+  @include print($declarations);
+  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+    position: relative;
+    border: 0;
+    &:before {
+      content: "";
+      width: 200%;
+      height: 200%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-transform: scale(.5);
+      -webkit-transform-origin: 0 0;
+      padding: 1px;
+      -webkit-box-sizing: border-box;
+      pointer-events: none;
+      @include print($declarations);
     }
+  }
+}
+
+//ci-border && ci-border-radius
+@mixin ci-border($border-color: $bordercolor) {
+  border: 1px solid $border-color;
+  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+    position: relative;
+    border: 0;
+    &:before {
+      content: "";
+      width: 200%;
+      height: 200%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid $border-color;
+      -webkit-transform: scale(.5);
+      -webkit-transform-origin: 0 0;
+      padding: 1px;
+      -webkit-box-sizing: border-box;
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin border-line($border-color: $main-border-color) {
+  border: none;
+  background-image: linear-gradient(0deg, $border-color, $border-color 50%, transparent 50%);
+  background-position: bottom;
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+}
+
+.inbox:before {
+  top: 0;
+  transform: scaleY(.5);
+  transform-origin: top center;
+}
+
+.inbox:after,
+.inbox:before {
+  content: " ";
+  position: absolute;
+  background-color: #e5e5e5;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.inbox:after {
+  bottom: 0;
+  transform: scaleY(.5);
+  transform-origin: bottom center;
+  left: 0;
+}
+
+// both will has a inline
+.ci-border {
+  @include ci-border;
 }
