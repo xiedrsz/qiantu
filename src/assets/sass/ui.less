@@ -4,157 +4,9 @@
  * 页面样式
  */
 
-.ui-form {
-  margin: .1rem;
-  .weui-cells:before {
-    content: none;
-  }
-  .weui-cells__title {
-    font-size: .17rem;
-    font-weight: bold;
-  }
-}
-
-.ui-bill {
-  .weui-cells:after {
-    border-bottom: 3px solid #ACE0FF;
-  }
-  .weui-input {
-    font-weight: bold;
-    font-size: .34rem;
-  }
-}
-
-.ui-panel {
-  margin-top: 5px;
-  padding-top: 10px;
-  border-radius: .1rem .1rem 0 0;
-  background-image: -webkit-gradient(linear, 0 0, right top, from(#269DF5), to(#0D78F7));
-  color: #FFFFFF;
-  .vux-header-title {
-    color: #FFFFFF;
-  }
-  .wealth {
-    text-align: center;
-    padding-top: .2rem;
-    .main {
-      font-size: 2em;
-      font-weight: bold;
-    }
-  }
-  .number {
-    display: flex;
-    text-align: center;
-    padding: .3rem 0 .1rem;
-    div {
-      flex: 1;
-    }
-    .main {
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-    /*.pdl-1 {
-      padding-left: 1em;
-    }
-    .pdl-15 {
-      padding-left: 1.5em;
-    }
-    .pdl-2 {
-      padding-left: 2em;
-    }
-    .pdl-25 {
-      padding-left: 2.5em;
-    }*/
-  }
-  .vux-tab {
-    background-color: transparent;
-    background-image: -webkit-gradient(linear, 0 0, right 0, from(#34B1F4), to(transparent));
-    .vux-tab-item.vux-tab-selected {
-      position: relative;
-      opacity: 1;
-      &:after {
-        content: ' ';
-        width: .32rem;
-        position: absolute;
-        left: 36%;
-        bottom: .05rem;
-        border-bottom: 3px solid #FFFFFF;
-      }
-    }
-  }
-  .tab {
-    font-size: .17rem;
-    opacity: .5;
-    color: #FFFFFF;
-  }
-}
-
 .ui-wealthes {
   padding: .12rem;
-  height: 366px;
-}
-
-.ui-wealth {
-  position: relative;
-  padding: .18rem;
-  box-shadow: 0 .04rem .10rem #ACE0FF;
-  margin-bottom: .36rem;
-  border-radius: .05rem;
-  .name {
-    .main-txt;
-  }
-  .labels {
-    .flex;
-    margin-top: .08rem;
-  }
-  .label {
-    display: block;
-    border: 1px solid @blue;
-    color: @blue;
-    padding: 0 .05rem;
-    border-radius: .03rem;
-    background-color: #DCF0FF;
-  }
-  .card {
-    .flex;
-    padding: .16rem 0;
-    div {
-      flex: 1;
-      p:first-child {
-        font-weight: bold;
-      }
-      p:last-child {
-        color: @grey;
-      }
-    }
-  }
-  .go {
-    background-color: #37A6FF;
-    font-size: .32rem;
-    padding: 0 .1rem;
-    border-radius: .04rem;
-    position: absolute;
-    right: 0;
-    bottom: -.24rem;
-    transform: rotate(180deg);
-    box-shadow: 0 -.04rem .1rem #ACE0FF;
-  }
-  .bill {
-    line-height: .5rem;
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-}
-
-.ui-null {
-  color: @grey;
-  text-align: center;
-  i {
-    font-size: 4.2em;
-  }
-  p {
-    font-size: .8em;
-  }
+//  height: 366px;
 }
 
 .ui-plan {
@@ -162,87 +14,6 @@
   padding-bottom: .2rem;
   div:first-child {
     background-color: #FFFFFF;
-  }
-  .weui-cells:before {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  .weui-cells__title {
-    font-size: .17rem;
-    font-weight: bold;
-  }
-  .weui-wepay-flow__state {
-    background-color: #FFFFFF;
-    border: 3px solid @blue;
-  }
-  .weui-wepay-flow__title-bottom {
-    .date {
-      position: absolute;
-      bottom: .44rem;
-      color: @grey;
-    }
-  }
-  .weui-wepay-flow__line {
-    background: none;
-    margin: 0 4px;
-    &.weui-wepay-flow__line_done .weui-wepay-flow__process {
-      height: 2px;
-      background-color: @blue;
-    }
-    &.weui-wepay-flow__line_ing .weui-wepay-flow__process {
-      width: 100%;
-      height: 2px;
-      background-color: transparent;
-      background: linear-gradient(to right, @blue, @blue 5px, transparent 5px, transparent);
-      background-size: 10px 100%;
-    }
-    .weui-wepay-flow__info-top {
-      background-color: transparent;
-      color: @blue;
-      &:after {
-        content: none;
-      }
-    }
-  }
-}
-
-.ui-calc {
-  position: fixed;
-  bottom: .5rem;
-  width: 100%;
-  box-shadow: 0 -.04rem .10rem #ACE0FF;
-  div {
-    display: flex;
-    position: relative;
-    a {
-      position: relative;
-      flex: 1;
-      text-align: center;
-      height: 3em;
-      line-height: 3em;
-      background-color: #FFFFFF;
-      &:not(: last-child):after {
-        .border;
-        top: 0;
-        right: 0;
-        width: 1px;
-        height: 200%;
-        border-right: 1px solid #D9D9D9;
-        color: #D9D9D9;
-      }
-      &:active {
-        background-color: #D9D9D9;
-      }
-    }
-    &:not(:last-child):after {
-      .border;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      height: 1px;
-      border-top: 1px solid #D9D9D9;
-      color: #D9D9D9;
-    }
   }
 }
 
@@ -320,6 +91,29 @@
 .ui-analyze {
   padding-top: .2rem;
   position: relative;
+  .sound {
+    height: .2rem;
+    background: #FFFFFF;
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    top: 0;
+    border-radius: 0 0 .18rem .18rem;
+    .icon-heng {
+      font-size: 2.6em;
+      position: absolute;
+      top: -.5em;
+      left: 35%;
+      color: #E0E3E5;
+    }
+    .icon-dian {
+      font-size: 2.6em;
+      position: absolute;
+      top: -21px;
+      left: calc(~"35% + 43px");
+      color: #E0E3E5;
+    }
+  }
   .title {
     display: flex;
     text-align: center;
@@ -385,12 +179,6 @@
     padding: .05rem;
     position: absolute;
     left: .1rem;
-  }
-  .c-blue {
-    color: #537DB2;
-  }
-  .c-red1 {
-    color: #FC7D70;
   }
   .money {
     font-weight: bold;
@@ -473,6 +261,7 @@
   flex-wrap: wrap;
   background-color: #FFFFFF;
   .item {
+    flex: 1;
     text-align: center;
     font-size: .8em;
     padding: .1rem;
@@ -491,11 +280,6 @@
       }
     }
   }
-}
-
-.page {
-  background-color: #FDFDFD;
-  height: 100%;
 }
 
 .ui-wname {
@@ -586,4 +370,10 @@
       text-align: right;
     }
   }
+}
+
+// 修复
+.icon-syn {
+  font-size: .24rem;
+  font-weight: 100;
 }

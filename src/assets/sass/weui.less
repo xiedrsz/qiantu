@@ -4,15 +4,7 @@
  * weui样式本地化
  * UI组件的重写覆盖
  */
-
-// 主按钮
-.weui-btn_primary {
-  background-color: @blue;
-  &:not(.weui-btn_disabled):active {
-    background-color: #ACE0FF;
-  }
-}
-
+// 页头
 .vux-header {
   background-color: transparent;
   font-weight: bold;
@@ -20,8 +12,8 @@
     font-size: .17rem;
     color: #979797;
   }
-  .vux-header-left {
-    color: #333333;
+  .vux-header-left, .vux-header-right a {
+    color: @dark;
   }
   .vux-header-right a {
     margin-left: 2em;
@@ -39,12 +31,6 @@
 
 .vux-datetime {
   color: #7D7D7D;
-}
-
-// 底线
-.vux-divider {
-  margin-top: 1em;
-  color: #CCCCCC;
 }
 
 // 开关

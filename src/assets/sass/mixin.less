@@ -3,28 +3,37 @@
 /**
  * 函数样式表格定义
  */
+// 边框
+.border {
+  content: " ";
+  position: absolute;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
 
-//可实现带边框弧度的线条
-@mixin border-radius( @border-line, @border-radius) {
-    border: 1px solid @border-line;
-    border-radius: @border-radius;
-    @media screen and (-webkit-min-device-pixel-ratio: 2) {
-        position: relative;
-        border: 0;
-        &:before {
-            content: "";
-            width: 200%;
-            height: 200%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            -webkit-transform: scale(.5);
-            -webkit-transform-origin: 0 0;
-            padding: 1px;
-            -webkit-box-sizing: border-box;
-            pointer-events: none;
-            border: 1px solid @border-line;
-            border-radius: @border-radius;
-        }
+// 可实现带边框弧度的线条，尚未用到
+.border-radius( @border-line, @border-radius) {
+  border: 1px solid @border-line;
+  border-radius: @border-radius;
+  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+    position: relative;
+    border: 0;
+    &:before {
+      content: "";
+      width: 200%;
+      height: 200%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-transform: scale(.5);
+      -webkit-transform-origin: 0 0;
+      padding: 1px;
+      -webkit-box-sizing: border-box;
+      pointer-events: none;
+      border: 1px solid @border-line;
+      border-radius: @border-radius;
     }
+  }
 }

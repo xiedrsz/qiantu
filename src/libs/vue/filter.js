@@ -14,8 +14,8 @@ Vue.filter('suffix', (value, label, isFront) => {
 
 /**
  * 货币格式化
- * @param  {[type]} (s,      n             [description]
- * @return {[type]}          [description]
+ * @param  num 小数点位数
+ * @return eg: 13,489.02
  */
 Vue.filter('fmoney', (str, num) => {
   let n = num > 0 && num <= 20 ? num : 2
@@ -29,4 +29,18 @@ Vue.filter('fmoney', (str, num) => {
     t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != len ? ',' : '')
   }
   return t.split('').reverse().join('') + '.' + r
+})
+
+/**
+ * 正负符号
+ * @return eg: + 8.09 OR 
+ */
+Vue.filter('signature', (str) => {
+  let signature = '+'
+  str = +str
+  if (str < 0) {
+    signature = '−'
+    str = -str
+  }
+  return `${signature} ${str}`
 })

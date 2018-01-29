@@ -11,7 +11,6 @@
           <a class="flex-1 underline">账单</a>
           <!--<a class="flex-1">分析</a>-->
         </p>
-        <i slot="right" class="iconfont icon-gou c-white"></i>
       </x-header>
       <swiper v-model="tabIndex" :show-dots="false" height="100px">
         <swiper-item v-for="(item, index) in wealthes" :key="index">

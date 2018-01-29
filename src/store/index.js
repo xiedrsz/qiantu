@@ -9,7 +9,9 @@ import * as getters from './getters'
 import state from './state'
 import mutations from './mutations'
 import createLogger from 'vuex/dist/logger'
-import insure from './modules/insure'
+import device from './modules/device'
+import treasure from './modules/treasure'
+import bill from './modules/bill'
 
 Vue.use(Vuex)
 
@@ -23,6 +25,8 @@ export default new Vuex.Store({
   strict: debug,
   plugins: debug ? [createLogger()] : [],
   modules: {
-    insure
+    device,
+    treasure,
+    bill
   }
 })
