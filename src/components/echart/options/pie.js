@@ -42,7 +42,7 @@ const DefaultOpt = {
 /**
  * @Function 运算
  * @Param list Array 财富列表
- * @Return ret Object 
+ * @Return ret Object
  *  eg: {
  *    data1: [{
  *      value: 37782.44,
