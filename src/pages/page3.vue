@@ -29,6 +29,7 @@
 
     <group>
       <datetime v-model="date" title="交易日期："></datetime>
+      <x-button>jj</x-button>
     </group>
     <group>
       <x-switch title="出入账：" v-model="job"></x-switch>

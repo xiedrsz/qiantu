@@ -1,6 +1,6 @@
 import 'babel-polyfill'
 import Vue from 'vue'
-import FastClick from 'fastclick'
+// import FastClick from 'fastclick'
 import App from './App'
 import store from './store'
 import '@/libs'
@@ -9,7 +9,7 @@ import './config'
 // 引入样式
 require('./assets/sass/app.less')
 
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 /* eslint-disable no-new */
 new Vue({
