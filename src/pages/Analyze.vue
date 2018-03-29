@@ -16,9 +16,13 @@
         </a>
       </x-header>
     </div>
-    <pie />
-    <chart />
-    <graph />
+    <scroller lock-x ref="scroller" :height="sheight">
+      <div>
+        <pie title="储蓄分布图" :list="children" />
+        <chart />
+        <graph />
+      </div>
+    </scroller>
   </div>
 </template>
 <script>
@@ -30,10 +34,23 @@ import Graph from '@/components/Graph'
 
 export default {
   name: 'Analyze',
+  data () {
+    return {
+      sheight: ''
+    }
+  },
   computed: {
     isSyn () {
       return this.$store.state.device.isSyn
+    },
+    children () {
+      return this.$store.getters.get_children
     }
+  },
+  created () {
+    let height = this.$store.state.device.height
+    height = height - 90
+    this.sheight = `${height}px`
   },
   methods: {
     // 详情

@@ -62,7 +62,7 @@
         </div>
       </div>
     </scroller>
-    <a class="ui-add" href="#/bill">
+    <a class="ui-add" @click="add" >
       <i class="iconfont icon-add c-white"></i>
       <div class="heng"></div>
     </a>
@@ -142,12 +142,25 @@ export default {
     },
     // 查看/修改账单
     view (item) {
+      console.log(this.prompt)
       this.$router.push({
         path: '/bill',
         query: {
           ...item
         }
       })
+    },
+    // 新建账单
+    add () {
+      let list = this.$store.getters.get_wealth
+      let len = list.length
+      if (len) {
+        this.$router.push({
+          path: '/bill'
+        })
+      } else {
+        this.$prompt('当前集合没有财富，请创建')
+      }
     }
   },
   components: {

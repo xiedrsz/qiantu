@@ -1,29 +1,17 @@
 <template>
   <div class="ui-chart">
-    <div class="ctitle">总资产分布图</div>
+    <div class="ctitle">{{title}}</div>
     <canvas ref="canvas"></canvas>
     <div class="total">
       <p>总资产</p>
-      <p>482927.89</p>
+      <p>{{total}}</p>
     </div>
     <div class="list">
-      <div class="list-item">
+      <div class="list-item" v-for="item in list" :key="item.id">
         <i></i>
-        <span>国寿嘉年月月盈</span>
-        <span>28,988.08</span>
-        <span>29.98%</span>
-      </div>
-      <div class="list-item">
-        <i></i>
-        <span>国寿嘉年月月盈</span>
-        <span>28,988.08</span>
-        <span>29.98%</span>
-      </div>
-      <div class="list-item">
-        <i></i>
-        <span>国寿嘉年月月盈</span>
-        <span>28,988.08</span>
-        <span>29.98%</span>
+        <span>{{item.name}}</span>
+        <span>{{item.amount | fmoney}}</span>
+        <span>{{item.proportion | suffix('%')}}</span>
       </div>
     </div>
   </div>
@@ -31,10 +19,10 @@
 <script>
 import F2 from '@antv/f2'
 import _ from 'lodash'
-import data from './data.json'
 const WIDTH = document.documentElement.clientWidth * 0.96
 const HIGHT = WIDTH * 0.8
 const r = WIDTH * 0.34 - 44
+
 // 外延距离
 const OFFSET = 18
 const lineHeight = 24
@@ -93,7 +81,7 @@ function drawLabel (label, chart) {
     fill: label._color
   })
   // 绘制标签
-  F2.Graphic.drawText(origin.abbreviation, {
+  F2.Graphic.drawText(origin.name, {
     x: label._side === 'left' ? pos.x - LABEL_LEN : pos.x,
     y: pos.y - 4
   }, canvas, _.assign({}, label, { fill: '#79839D', fontSize: 14, fontFamily: 'PS-Helvetica,  Helvetica, sans-serif, Arial' }))
@@ -181,112 +169,155 @@ function antiCollision (chart, center, half, isRight) {
     drawLabel(label, chart)
   })
 }
+// 创建环形图
+function createPie (el, data) {
+  // 创建图表
+  let chart = new F2.Chart({
+    el,
+    width: WIDTH,
+    height: HIGHT
+  })
+  // 载入数据源
+  chart.source(data)
+  // 设置坐标系
+  chart.coord('polar', {
+    transposed: true,
+    innerRadius: 0.34
+  })
+  // 设置坐标轴
+  chart.axis(false)
+  // 配置图表类型等属性
+  chart.interval()
+    .position('namekey*amount')
+    .size(88)
+    .color('name')
+    .adjust('stack')
+  // 渲染图表
+  chart.render()
+
+  const geom = chart.get('geoms')[0]
+  const shapesData = geom.get('shapeDatas')
+  const coord = geom.get('coord')
+  const center = coord.center
+  let sum = 0
+
+  // 分离标签
+  // step 1: 分离标签
+  const labels = []
+  const halves = [
+    [], // left
+    [] // right
+  ]
+  shapesData.forEach(data => {
+    const label = {}
+    let angle
+    const percent = label._percent = data._origin.amount
+    if (_.isNumber(data.x)) {
+      angle = getPointAngle(center, {
+        x: data.x,
+        y: data.y[0]
+      })
+    } else {
+      const startAngle = getPointAngle(center, {
+        x: data.x[0],
+        y: data.y[0]
+      })
+      let endAngle = getPointAngle(center, {
+        x: data.x[1],
+        y: data.y[1]
+      })
+      if (startAngle >= endAngle) {
+        endAngle = endAngle + Math.PI * 2
+      }
+      angle = (startAngle + endAngle) / 2
+    }
+    const edgePoint = getEndPoint(center, angle, r + 4)
+    const routerPoint = getEndPoint(center, angle, r + OFFSET + 4)
+
+    _.merge(label, {
+      _angle: angle,
+      _anchor: edgePoint,
+      _router: routerPoint,
+      _origin: data._origin,
+      _color: data.color,
+      _side: 'right',
+      fontSize: 12,
+      x: routerPoint.x,
+      y: routerPoint.y,
+      r: r + OFFSET
+    })
+    if ((sum + percent / 2) > 0.5 || (sum === 0.5 && percent === 0)) {
+      label._side = 'left'
+      halves[0].push(label)
+    } else {
+      halves[1].push(label)
+    }
+    sum += percent
+    labels.push(label)
+  })
+
+  const maxCountForOneSide = parseInt(totalHeight / lineHeight, 10)
+
+  let timer = setTimeout(() => {
+    halves.forEach((half, index) => {
+      // step 2: reduce labels
+      if (half.length > maxCountForOneSide) {
+        half.sort((a, b) => {
+          return b._percent - a._percent
+        })
+        half.splice(maxCountForOneSide, half.length - maxCountForOneSide)
+      }
+
+      // step 3: distribute position (x and y)
+      half.sort((a, b) => a.y - b.y)
+      antiCollision(chart, center, half, index)
+      clearTimeout(timer)
+    })
+  }, 2000)
+}
+
 export default {
   name: 'Chart',
-  mounted () {
-    // 创建图表
-    let chart = new F2.Chart({
-      el: this.$refs.canvas,
-      width: WIDTH,
-      height: HIGHT
-    })
-    // 载入数据源
-    chart.source(data)
-    // 设置坐标系
-    chart.coord('polar', {
-      transposed: true,
-      innerRadius: 0.34
-    })
-    // 设置坐标轴
-    chart.axis(false)
-    // 配置图表类型等属性
-    chart.interval()
-      .position('namekey*ratio')
-      .size(88)
-      .color('abbreviation')
-      .adjust('stack')
-    // 渲染图表
-    chart.render()
-
-    const geom = chart.get('geoms')[0]
-    const shapesData = geom.get('shapeDatas')
-    const coord = geom.get('coord')
-    const center = coord.center
-    let sum = 0
-
-    // 分离标签
-    // step 1: 分离标签
-    const labels = []
-    const halves = [
-      [], // left
-      [] // right
-    ]
-    shapesData.forEach(data => {
-      const label = {}
-      let angle
-      const percent = label._percent = data._origin.ratio
-      if (_.isNumber(data.x)) {
-        angle = getPointAngle(center, {
-          x: data.x,
-          y: data.y[0]
-        })
-      } else {
-        const startAngle = getPointAngle(center, {
-          x: data.x[0],
-          y: data.y[0]
-        })
-        let endAngle = getPointAngle(center, {
-          x: data.x[1],
-          y: data.y[1]
-        })
-        if (startAngle >= endAngle) {
-          endAngle = endAngle + Math.PI * 2
-        }
-        angle = (startAngle + endAngle) / 2
+  props: {
+    title: {
+      type: String,
+      default: '总资产分布图'
+    },
+    list: {
+      type: Array,
+      default () {
+        return [{
+          amount: 0,
+          code: '00-00',
+          icon: 'defaultw.png',
+          id: 2,
+          iscollection: true,
+          mgdbId: '',
+          name: '储蓄',
+          note: '',
+          proportion: '0.00',
+          short: '储蓄'
+        }]
       }
-      const edgePoint = getEndPoint(center, angle, r + 4)
-      const routerPoint = getEndPoint(center, angle, r + OFFSET + 4)
-
-      _.merge(label, {
-        _angle: angle,
-        _anchor: edgePoint,
-        _router: routerPoint,
-        _origin: data._origin,
-        _color: data.color,
-        _side: 'right',
-        fontSize: 12,
-        x: routerPoint.x,
-        y: routerPoint.y,
-        r: r + OFFSET
-      })
-      if ((sum + percent / 2) > 0.5 || (sum === 0.5 && percent === 0)) {
-        label._side = 'left'
-        halves[0].push(label)
-      } else {
-        halves[1].push(label)
-      }
-      sum += percent
-      labels.push(label)
-    })
-
-    const maxCountForOneSide = parseInt(totalHeight / lineHeight, 10)
-
-    let timer = setTimeout(() => {
-      halves.forEach((half, index) => {
-        // step 2: reduce labels
-        if (half.length > maxCountForOneSide) {
-          half.sort((a, b) => {
-            return b._percent - a._percent
-          })
-          half.splice(maxCountForOneSide, half.length - maxCountForOneSide)
-        }
-
-        // step 3: distribute position (x and y)
-        half.sort((a, b) => a.y - b.y)
-        antiCollision(chart, center, half, index)
-        clearTimeout(timer)
-      })
-    }, 2000)
+    }
+  },
+  computed: {
+    total () {
+      let sum = _.map(this.list, ({amount}) => +amount)
+      sum = _.sum(sum).toFixed(2)
+      return sum
+    }
+  },
+  watch: {
+    // todo
+    list (val, old) {
+      let data = _.map(val, ({name, proportion}) => ({
+        name,
+        amount: proportion / 100,
+        namekey: 'namekey'
+      }))
+      createPie(this.$refs.canvas, data)
+    }
   }
 }
 </script>

@@ -103,6 +103,17 @@ export default {
     }
   },
   activated () {
+    // 没有财富
+    console.log(this.treasure)
+    /* if (!this.treasure.icon) {
+      this.$router.push({
+        name: 'Info',
+        params: {
+          isCurrent: 0
+        }
+      })
+      return
+    } */
     let query = this.$route.query
     let {id, code, money, date, recorded, note} = query
     if (code) {
