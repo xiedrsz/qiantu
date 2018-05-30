@@ -69,9 +69,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
-      // 自定义变量
-      manifest: 'manifest="qiantu.manifest"',
-      cordova: '<script type="text/javascript" src="/static/cordova.js"></script>'
+      // 自定义变量, 暂时屏蔽
+      manifest: 'manifest="qiantu.manifest"'
+      // cordova: '<script type="text/javascript" src="/static/cordova.js"></script>'
     }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({

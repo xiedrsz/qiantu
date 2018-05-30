@@ -4,7 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <title>vue-webpack</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="口袋管家">
+  <link rel="apple-touch-icon-precomposed" href="./static/img/icon.png" />
+  <link rel="apple-touch-startup-image" href="./static/img/start.png" sizes="1242*2208">
+  <title>口袋管家</title>
 </head>
 
 <body>
@@ -12,6 +17,6 @@
   <!-- built files will be auto injected -->
 </body>
 <!-- 引入 cordova 插件 PC 上开发时可屏蔽 -->
-<%= htmlWebpackPlugin.options.cordova %>
+<!-- <%= htmlWebpackPlugin.options.cordova %> -->
 
 </html>

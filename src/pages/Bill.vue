@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <div class="ui-ui">
-      <div class="sound">
+      <!--<div class="sound">
         <i class="iconfont icon-heng"></i>
         <i class="iconfont icon-dian"></i>
-      </div>
+      </div>-->
       <x-header :left-options="{showBack: false}">
         <i slot="left" class="iconfont icon-rise c-white" @click="goBack"></i>
         <p class="c-white title">
@@ -13,9 +13,9 @@
         <i slot="right" v-show="id" @click="remove" class="iconfont icon-trash thin c-white"></i>
       </x-header>
       <swiper v-model="tabIndex" :show-dots="false" height="100px">
-        <swiper-item>
+        <swiper-item v-if="!id">
           <div class="ui-info">
-            <img :src="'/static/img/'+treasure.icon" />
+            <img :src="'./static/img/'+treasure.icon" @click="viewInfo"/>
             <div class="flex">
               <div class="name">
                 <p>{{treasure.name}}</p>
@@ -27,7 +27,7 @@
         </swiper-item>
         <swiper-item>
           <div class="ui-info">
-            <img :src="'/static/img/'+treasure.icon" />
+            <img :src="'./static/img/'+treasure.icon" @click="viewInfo"/>
             <div class="flex">
               <div class="name">
                 <p>{{treasure.name}}</p>
@@ -44,7 +44,7 @@
     <scroller lock-x ref="scroller" height="202px">
       <div class="ui-wls">
         <div class="item" :class="{selected: index===selected}" v-for="(item, index) in wealth" :key="item.code" @click="selected=index">
-          <img :src="'/static/img/'+item.icon" />
+          <img :src="'./static/img/'+item.icon" />
           <p>{{item.short}}</p>
         </div>
       </div>
@@ -159,6 +159,7 @@ export default {
       let {mgdbId, code} = this.treasure
       let {id, money, date, recorded, note} = this
       let lastMoney = +(this.$route.query.money || 0)
+      let lastCode = this.$route.query.code
       let diff = (money - lastMoney).toFixed(2)
       let bill = {
         id,
@@ -171,6 +172,15 @@ export default {
         code,
         diff
       }
+      // 切换了财富
+      if (lastCode && lastCode !== code) {
+        this.$store.dispatch('calc_amount', {
+          code: lastCode,
+          diff: -lastMoney
+        })
+        bill.diff = money
+      }
+      // 校验
       let flag = new Check(bill, {
         money: {
           auth: ['NotNull'],
@@ -180,7 +190,6 @@ export default {
         this.$prompt(message)
       })
       if (flag) {
-        console.log(bill)
         this.$store.dispatch('save_bill', {
           bill,
           handle () {
@@ -203,6 +212,17 @@ export default {
         handle () {
           console.log('删除成功')
           self.goBack()
+        }
+      })
+    },
+    // 查看财富详情
+    viewInfo () {
+      let code = this.treasure.code
+      this.$store.commit('tr_set_current', code)
+      this.$router.push({
+        name: 'Info',
+        params: {
+          isCurrent: 1
         }
       })
     }

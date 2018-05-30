@@ -54,10 +54,8 @@ body {
   font-family: PS-Helvetica, 'Sketch-Heiti SC', Helvetica, sans-serif, Arial;
   font-size: .16rem;
   width: 100%;
-//  min-height: 100%;
   overflow-x: hidden;
-  // color: @dark;
-  background: @bg-color;
+  background: #6774E4;
   -webkit-user-select: none;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
@@ -129,6 +127,7 @@ a {
   display: block;
   -webkit-touch-callout: none;
   text-decoration: none;
+  color: inherit;
 }
 
 :focus {
@@ -271,4 +270,8 @@ hr {
 
 html, body, #app {
   height: 100%;
+}
+
+#app {
+  background: @bg-color;
 }

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <x-menu />
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -7,7 +8,7 @@
     <loading v-model="showLoading" text="载入中"></loading>
     <toast v-model="toastOPT.show" type="text" :width="toastOPT.width" :class="{ 'toast-text':toastOPT.type =='text' }">
       <div slot>
-        <img v-show="toastOPT.type!='text'" class="g-toast-img" :src="'../static/img/' +toastOPT.type+ '.png'"/>
+        <img v-show="toastOPT.type!='text'" class="g-toast-img" :src="'./static/img/' +toastOPT.type+ '.png'"/>
         <p :class="{ 'g-toast-p':toastOPT.type!='text' }">{{toastOPT.msg}}</p>
       </div>
     </toast>
@@ -28,6 +29,7 @@
 import { Loading, XDialog, Toast } from 'vux'
 import { mapGetters, mapMutations } from 'vuex'
 import _ from 'lodash'
+import XMenu from './pages/XMenu'
 import { diff } from '@/libs/util'
 export default {
   name: 'app',
@@ -91,7 +93,7 @@ export default {
     })
   },
   components: {
-    Loading, XDialog, Toast
+    Loading, XDialog, Toast, XMenu
   }
 }
 

@@ -21,12 +21,14 @@
 }
 
 // 转场效果 设计 完成 开始
+// 出
 .vux-pop-out-enter-active,
+// 进
 .vux-pop-in-enter-active {
   width: 100%;
   position: fixed;
-  -webkit-animation-duration: .3s;
-  animation-duration: .3s;
+  -webkit-animation-duration: .8s;
+  animation-duration: .8s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   -webkit-backface-visibility: hidden;
@@ -34,6 +36,7 @@
 }
 
 .vux-pop-out-enter-active {
+  left: 0 !important;
   -webkit-animation-name: popInLeft;
   animation-name: popInLeft;
 }

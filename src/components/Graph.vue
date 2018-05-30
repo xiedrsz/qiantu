@@ -6,51 +6,47 @@
 </template>
 <script>
 import F2 from '@antv/f2'
+// import _ from 'lodash'
 const WIDTH = document.documentElement.clientWidth * 0.96
 const HIGHT = WIDTH * 0.8
 F2.Global.pixelRatio = window.devicePixelRatio
 
 // 创建Graph
-function createGraph (canvas) {
-  const data = [
-    { time: '一', tem: 5010, city: 'beijing' },
-    { time: '二', tem: 5022, city: 'beijing' },
-    { time: '三', tem: 5020, city: 'beijing' },
-    { time: '四', tem: 5026, city: 'beijing' },
-    { time: '五', tem: 5020, city: 'beijing' },
-    { time: '六', tem: 5026, city: 'beijing' },
-    { time: '日', tem: 5028, city: 'beijing' }
-  ]
+function createGraph (canvas, data) {
   const chart = new F2.Chart({
     el: canvas,
     width: WIDTH,
     height: HIGHT,
-    padding: [30, 10, 30, 30]
+    padding: [40, 10, 30, 40]
   })
   const defs = {
-    time: {
+    date: {
       tickCount: 7,
-      range: [ 0, 1 ]
-    },
-    tem: {
-      tickCount: 10,
-      min: 5000,
+      range: [ 0, 1 ],
       formatter (val) {
-        if (val === 5000) {
-          return '5K'
+        return val.replace(/\d{4}-\d{2}-/, '')
+      }
+    },
+    amount: {
+      tickCount: 10,
+      formatter (val) {
+        let result = val % 1000
+        if (result) {
+          return ~~result
         } else {
-          return val - 5000
+          result = val / 1000
+          return `${~~result}K`
         }
       }
     }
   }
-    // 配置time刻度文字样式
+  // 配置date刻度文字样式
   const label = {
     fill: '#979797',
     font: '14px san-serif',
     offset: 6
   }
-  chart.axis('time', {
+  chart.axis('date', {
     label (text, index, total) {
       const cfg = label
         // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
@@ -64,7 +60,7 @@ function createGraph (canvas) {
     }
   })
     // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
-  chart.axis('tem', {
+  chart.axis('amount', {
     min: 8,
     label: {
       fontSize: 14
@@ -76,29 +72,42 @@ function createGraph (canvas) {
   linearGradient.addColorStop(0.5, '#fff')
   linearGradient.addColorStop(0, 'rgb(15, 141, 232)')
   // 绘制渐变色区域图
-  chart.area().position('time*tem')
-    .color('city', function (city) {
-      if (city === 'beijing') {
-        return linearGradient
-      }
-      return 'rgba(1, 1, 1, 0)'
+  chart.area().position('date*amount')
+    .color('graph', function () {
+      return linearGradient
     })
     .style({
       opacity: 0.6
     })
     .shape('smooth')
 
-  chart.line().size(2).position('time*tem')
-    .color('city')
+  chart.line().size(2).position('date*amount')
     .shape('smooth')
 
   chart.render()
+  return chart
 }
 
 export default {
   name: 'Graph',
+  props: {
+    list: {
+      type: Array,
+      default () {
+        return [
+          { date: '1', amount: 5010 }
+        ]
+      }
+    }
+  },
   mounted () {
-    createGraph(this.$refs.canvas)
+    this.chart = createGraph(this.$refs.canvas, this.list)
+  },
+  watch: {
+    // todo
+    list (val, old) {
+      this.chart.changeData(val)
+    }
   }
 }
 </script>

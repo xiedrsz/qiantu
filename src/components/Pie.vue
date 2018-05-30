@@ -4,11 +4,11 @@
     <canvas ref="canvas"></canvas>
     <div class="total">
       <p>总资产</p>
-      <p>{{total}}</p>
+      <p>{{total | fmoney}}</p>
     </div>
     <div class="list">
-      <div class="list-item" v-for="item in list" :key="item.id">
-        <i></i>
+      <div class="list-item" v-for="(item, index) in tList" :key="item.id">
+        <i :style="{backgroundColor: colors[index]}"></i>
         <span>{{item.name}}</span>
         <span>{{item.amount | fmoney}}</span>
         <span>{{item.proportion | suffix('%')}}</span>
@@ -196,7 +196,7 @@ function createPie (el, data) {
   chart.render()
 
   const geom = chart.get('geoms')[0]
-  const shapesData = geom.get('shapeDatas')
+  let shapesData = geom.get('shapeDatas')
   const coord = geom.get('coord')
   const center = coord.center
   let sum = 0
@@ -274,10 +274,12 @@ function createPie (el, data) {
       clearTimeout(timer)
     })
   }, 2000)
+  shapesData = _.map(shapesData, 'color')
+  return shapesData
 }
 
 export default {
-  name: 'Chart',
+  name: 'Pie',
   props: {
     title: {
       type: String,
@@ -301,22 +303,30 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      colors: []
+    }
+  },
   computed: {
+    tList () {
+      return _.filter(this.list, ({amount}) => +amount)
+    },
     total () {
-      let sum = _.map(this.list, ({amount}) => +amount)
+      let sum = _.map(this.tList, ({amount}) => +amount)
       sum = _.sum(sum).toFixed(2)
       return sum
     }
   },
   watch: {
     // todo
-    list (val, old) {
-      let data = _.map(val, ({name, proportion}) => ({
-        name,
+    tList (val, old) {
+      let data = _.map(val, ({name, short, proportion}) => ({
+        name: short || name,
         amount: proportion / 100,
         namekey: 'namekey'
       }))
-      createPie(this.$refs.canvas, data)
+      this.colors = createPie(this.$refs.canvas, data)
     }
   }
 }

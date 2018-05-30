@@ -16,7 +16,7 @@ ManifestPlugin.prototype.apply = function(compiler) {
     for (var filename in compilation.assets) {
       if (/html/.test(filename))
         continue;
-      filelist += ('/' + filename + '\n');
+      filelist += ('./' + filename + '\n');
     }
 
     template = template.replace("replacement", filelist);

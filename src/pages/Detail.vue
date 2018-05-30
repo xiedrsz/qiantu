@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="ui-ui">
-      <div class="sound">
+      <!-- <div class="sound">
         <i class="iconfont icon-heng"></i>
         <i class="iconfont icon-dian"></i>
-      </div>
+      </div> -->
       <x-header :left-options="{showBack: false}">
-        <i slot="left" class="iconfont icon-menu c-white"></i>
+        <i slot="left" class="iconfont icon-menu c-white" @click="toggleMenu"></i>
         <p class="c-white title">
           <a class="flex-1 underline">详情</a>
           <a class="flex-1" @click="swipe">分析</a>
@@ -25,9 +25,13 @@
         <p>
           <span class="main">{{treasure.amount | fmoney(2)}}</span>
         </p>
-        <p class="mgt-5">
+        <p class="mgt-5" v-if="!/^00-03/.test(treasure.code)">
           <span>月增长速度:</span>
           <span class="yuan">{{treasure.speed}}</span>
+        </p>
+        <p class="mgt-5" v-if="/^00-03/.test(treasure.code)">
+          <span>年化收益率:</span>
+          <span class="yield">{{myield}}%</span>
         </p>
       </a>
     </div>
@@ -52,7 +56,7 @@
           <div class="bill" v-for="(item, index) in billes" :key="index">
             <div class="date">{{item.date}}</div>
             <div class="detail" v-for="(temp, i) in item.list" :key="i" @click="view(temp)">
-              <img :src="'/static/img/'+temp.icon" />
+              <img :src="'./static/img/'+temp.icon" />
               <div class="flex">
                 <div class="flex-1">{{temp.name}}</div>
                 <div class="money" :class="{'c-blue': temp.money < 0, 'c-red': temp.money >= 0}">{{temp.money|signature}}</div>
@@ -70,7 +74,6 @@
 </template>
 <script>
 import { XHeader, Scroller } from 'vux'
-
 export default {
   name: 'Detail',
   data () {
@@ -108,16 +111,27 @@ export default {
     },
     billes () {
       return this.$store.getters.get_billes
+    },
+    myield () {
+      return this.$store.getters.get_current_yield
     }
   },
   methods: {
+    // 收展菜单
+    toggleMenu () {
+      this.$store.commit('dv_toggle_mode')
+    },
     // 分析
     swipe () {
       this.$emit('swipe', 1)
     },
     // 同步
     syn () {
-      this.$store.commit('dv_set_issyn')
+      // 更新缓存
+      if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update()
+      }
+      window.location.reload()
     },
     // 设置当前财富
     setCurrent (code) {

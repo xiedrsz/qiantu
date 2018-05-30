@@ -10,19 +10,23 @@ const Props = {
   treasure: ['id', 'mgdbId', 'name', 'short', 'code', 'icon', 'note', 'iscollection', 'amount'],
   bill: ['id', 'mgdbId', 'trId', 'trMgdbId', 'money', 'date', 'recorded', 'note']
 }
+const Icons = ['defaultw.png', 'jj.png', 'gp.png', 'wallet.png', 'wh.png', 'jd.png', 'gshbank.png', 'shbank.png', 'zhgbank.png', 'zhshbank.png', 'chxbank.png', 'zhxbank.png', 'zhfb.png', 'thsh.png', 'zhsh.png', 'pa.png', 'lct.png', 'lq.png', 'lqt.png']
+const Tables = ['treasure', 'bill']
 
 const state = {
   // 设备高度
   height: HEIGHT,
   // 是否在同步
-  isSyn: 0
+  isSyn: 0,
+  // 菜单
+  mode: ''
 }
 
 const getters = {
   // 获取图标
   get_icons (state, getters) {
     // Todo
-    return ['shbank.png']
+    return Icons
   }
 }
 
@@ -33,6 +37,14 @@ const mutations = {
       state.isSyn = status
     } else {
       state.isSyn = !state.isSyn
+    }
+  },
+  // 设置菜单
+  dv_toggle_mode (state, mode) {
+    if (mode === undefined) {
+      state.mode = state.mode === 'out' ? 'in' : 'out'
+    } else {
+      state.mode = mode
     }
   }
 }
@@ -88,6 +100,20 @@ const actions = {
       let id = item.id
       db[flag].delete(id)
     })
+  },
+  // 备份
+  async dv_import_db ({
+    commit,
+    state
+  }, option) {
+    let {data, cb} = option
+    data = JSON.parse(data)
+    data = _.pick(data, Tables)
+    _.forEach(data, async (list, table) => {
+      await db[table].clear()
+      await db[table].bulkPut(list)
+    })
+    cb && cb()
   }
 }
 

@@ -2,6 +2,7 @@
  * @Description 财富业务数据流
  */
 import _ from 'lodash'
+import moment from 'moment'
 
 // 属性
 const trProps = ['id', 'mgdbId', 'name', 'short', 'code', 'icon', 'note', 'iscollection', 'amount']
@@ -49,6 +50,10 @@ const getters = {
         proportion
       }
     })
+    // 排序
+    children.sort((a, b) => {
+      return b.proportion - a.proportion
+    })
     return children
   },
   // 获取集合
@@ -59,7 +64,7 @@ const getters = {
     list = _.map(list, item => ({key: item.code, value: item.name}))
     return list
   },
-  // 获取财富列表，子集或兄弟
+  // 获取财富列表，子集或自己
   get_wealth (state, getters) {
     let current = state.current
     let treasure = _.filter(state.list, {
@@ -69,7 +74,9 @@ const getters = {
     let reg
     let result
     if (!iscollection) {
-      current = current.slice(0, -3)
+      // current = current.slice(0, -3)
+      // 返回自己
+      return [treasure]
     }
     reg = new RegExp(`^${current}-`)
     result = _.filter(state.list, item => {
@@ -97,6 +104,47 @@ const getters = {
       let flag2 = item.iscollection === false
       return flag1 && flag2
     })
+    return result
+  },
+  // 收益计算(年化收益率)
+  get_current_yield (state, getters) {
+    let current = getters.get_treasure
+    let bills = getters.get_billes
+    let amount = current.amount
+    bills = _.map(bills, ({date, list}) => {
+      let money = _.sum(_.map(list, ({money}) => +money))
+      list = _.filter(list, ({recorded}) => !recorded)
+      let myield = _.sum(_.map(list, ({money}) => +money))
+      amount -= money
+      money = money.toFixed(2)
+      myield = myield.toFixed(2)
+      amount = amount.toFixed(2)
+      return {
+        date, money, myield, amount
+      }
+    })
+    let result = _.reduceRight(bills, ({last, yields = []}, {date, myield, amount}) => {
+      if (last) {
+        let mLast = moment(last)
+        let mdate = moment(date)
+        let days = mdate.diff(mLast, 'days')
+        let annualized = myield / amount / days * 365 * 100 || 0
+        !annualized && (days = 0)
+        annualized = annualized.toFixed(2)
+        yields.push({
+          annualized,
+          days
+        })
+      }
+      return {
+        last: date,
+        yields
+      }
+    }, {})
+    result = result.yields
+    let totalDays = _.sum(_.map(result, 'days'))
+    result = _.sum(_.map(result, ({annualized, days}) => annualized * days)) / totalDays || 0
+    result = result.toFixed(2)
     return result
   }
 }

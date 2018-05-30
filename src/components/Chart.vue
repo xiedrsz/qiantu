@@ -77,70 +77,114 @@ F2.Shape.registerShape('interval', 'borderRadius', {
     fillRoundRect(cxt, x, y, width, height, radius, fillColor)
   }
 })
+
+// 创建图片
+function createChart (el, data) {
+  // Step 1: 创建 Chart 对象
+  const chart = new F2.Chart({
+    el: el,
+    width: WIDTH,
+    height: HIGHT,
+    padding: [30, 10, 30, 10]
+  })
+  // Step 2: 载入数据源
+  chart.source(data, {
+    tem: {
+      tickCount: 5
+    }
+  })
+  chart.axis('month', {
+    label: {
+      font: 'PS-Helvetica,  Helvetica, sans-serif, Arial',
+      fill: '#79839D'
+    },
+    line: null,
+    grid: null
+  })
+  chart.axis('tem', {
+    label: null,
+    grid: null
+  })
+  // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+  chart
+    .interval()
+    .position('month*tem')
+    .color('isProfit', isProfit => (isProfit ? '#FF4858' : '#6774E4'))
+    .shape('borderRadius')
+    .size(15)
+  // y轴方向的缩放动画
+  chart.animate({
+    type: 'scaley'
+  })
+  // 辅助元素
+  /* data.forEach((obj, index) => {
+    // 文字部分
+    chart.guide().html([ obj.month, obj.tem ], `<div style='color: #79839D;'><span>${fmoney(obj.tem)}</span></div>`, {
+      align: 'bc',
+      offset: [ 0, -24 ]
+    })
+  }) */
+  // Step 4: 渲染图表
+  chart.render()
+  return chart
+}
+
+// 金额格式化
+function fmoney (str, num) {
+  let n = num > 0 && num <= 20 ? num : 0
+  let s = parseFloat((str + '').replace(/[^\d.-]/g, '')).toFixed(n) + ''
+  let l = s.split('.')[0].split('').reverse()
+  let r = s.split('.')[1]
+  let t = ''
+  let i = 0
+  let len = l.length
+  let res = ''
+  for (; i < len; i++) {
+    t += l[i] + ((i + 1) % 3 === 0 && (i + 1) !== len ? ',' : '')
+  }
+  res = t.split('').reverse().join('')
+  return r ? (res + '.' + r) : res
+}
 export default {
   name: 'Chart',
-  mounted () {
-    // F2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
-    const data = [
-      { tem: 200, month: '1月', isProfit: 0 },
-      { tem: 510, month: '2月', isProfit: 1 },
-      { tem: 59, month: '3月', isProfit: 1 },
-      { tem: 50, month: '4月', isProfit: 0 },
-      { tem: 450, month: '5月', isProfit: 1 },
-      { tem: 140, month: '6月', isProfit: 0 },
-      { tem: 690, month: '7月', isProfit: 1 },
-      { tem: 36, month: '8月', isProfit: 1 },
-      { tem: 146, month: '9月', isProfit: 1 },
-      { tem: 746, month: '10月', isProfit: 0 },
-      { tem: 316, month: '11月', isProfit: 1 },
-      { tem: 349, month: '12月', isProfit: 1 }
-    ]
-    // Step 1: 创建 Chart 对象
-    const chart = new F2.Chart({
-      el: this.$refs.canvas,
-      width: WIDTH,
-      height: HIGHT,
-      padding: [30, 10, 30, 10]
-    })
-    // Step 2: 载入数据源
-    chart.source(data, {
-      tem: {
-        tickCount: 5
+  props: {
+    list: {
+      type: Array,
+      default () {
+        return [
+          { tem: 200, month: '1月', isProfit: 0 },
+          { tem: 510, month: '2月', isProfit: 1 },
+          { tem: 59, month: '3月', isProfit: 1 },
+          { tem: 50, month: '4月', isProfit: 0 },
+          { tem: 450, month: '5月', isProfit: 1 },
+          { tem: 140, month: '6月', isProfit: 0 },
+          { tem: 690, month: '7月', isProfit: 1 },
+          { tem: 36, month: '8月', isProfit: 1 },
+          { tem: 146, month: '9月', isProfit: 1 },
+          { tem: 746, month: '10月', isProfit: 0 },
+          { tem: 316, month: '11月', isProfit: 1 },
+          { tem: 349, month: '12月', isProfit: 1 }
+        ]
       }
-    })
-    chart.axis('month', {
-      label: {
-        font: 'PS-Helvetica,  Helvetica, sans-serif, Arial',
-        fill: '#79839D'
-      },
-      line: null,
-      grid: null
-    })
-    chart.axis('tem', {
-      label: null,
-      grid: null
-    })
-    // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-    chart
-      .interval()
-      .position('month*tem')
-      .color('isProfit', isProfit => (isProfit ? '#FF4858' : '#6774E4'))
-      .shape('borderRadius')
-      .size(15)
-    // y轴方向的缩放动画
-    chart.animate({
-      type: 'scaley'
-    })
-    // 辅助元素
-    data.forEach((obj, index) => {
-      // 文字部分
-      chart.guide().html([ obj.month, obj.tem ], `<div style='color: #79839D;'><span>${obj.tem}</span></div>`, {
-        align: 'bc',
-        offset: [ 0, -24 ]
+    }
+  },
+  mounted () {
+    this.chart = createChart(this.$refs.canvas, this.list)
+  },
+  watch: {
+    // todo
+    list (val, old) {
+      this.chart.guide().clear()
+      this.chart.changeData(val)
+      val.forEach((obj, index) => {
+        // 文字部分
+        this.chart.guide().html([ obj.month, obj.tem ], `<div style='color: #79839D;'><span>${fmoney(obj.tem)}</span></div>`, {
+          align: 'bc',
+          offset: [ 0, -24 ]
+        })
       })
-    })
-    // Step 4: 渲染图表
-    chart.render()
+      this.chart.repaint()
+    }
   }
 }
 </script>

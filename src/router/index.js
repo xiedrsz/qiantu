@@ -4,10 +4,12 @@ import Home from '@/pages/Home'
 import Bill from '@/pages/Bill'
 import Page3 from '@/pages/Page3'
 import Info from '@/pages/Info'
+import Backups from '@/pages/Backups'
 
 Vue.use(Router)
 
 export default new Router({
+  // mode: 'history',
   routes: [{
     path: '/',
     redirect: '/home'
@@ -27,5 +29,9 @@ export default new Router({
     name: 'Info',
     path: '/info/:isCurrent',
     component: Info
+  }, {
+    name: 'Backups',
+    path: '/backups/:isCurrent',
+    component: Backups
   }]
 })

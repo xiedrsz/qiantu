@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <div class="ui-ui">
-      <div class="sound">
+      <!--<div class="sound">
         <i class="iconfont icon-heng"></i>
         <i class="iconfont icon-dian"></i>
-      </div>
+      </div>-->
       <x-header :left-options="{showBack: false}">
         <i slot="left" class="iconfont icon-rise c-white" @click="goBack"></i>
         <p class="c-white title">
@@ -14,7 +14,7 @@
       <swiper :show-dots="false" height="100px">
         <swiper-item>
           <div class="ui-wname">
-            <img :src="'/static/img/'+treasure.icon" />
+            <img :src="'./static/img/'+treasure.icon" />
             <input type="text" v-model="treasure.name" />
           </div>
         </swiper-item>
@@ -22,15 +22,16 @@
     </div>
     <scroller lock-x ref="scroller" height="162px" class="bg-white">
       <div class="ui-wls">
-        <div class="item selected" v-for="item in icons" :key="item" @click="setIcon(item)">
-          <img :src="'/static/img/'+item" />
+        <div class="item" v-for="item in icons" :key="item" @click="setIcon(item)" :class="{'selected': treasure.icon === item}">
+          <img :src="'./static/img/'+item" />
         </div>
       </div>
     </scroller>
     <group>
       <selector title="归属：" v-model="treasure.parent" :options="collection" direction="rtl"></selector>
-      <x-switch title="集合：" v-model="treasure.iscollection"></x-switch>
       <x-input title="简称：" v-model="treasure.short" text-align="right"></x-input>
+      <x-switch title="集合：" v-model="treasure.iscollection"></x-switch>
+      <!--<cell title="标签：" value="看看" is-link></cell>-->
       <x-textarea v-model="treasure.note" placeholder="备注" :max="20"></x-textarea>
     </group>
     <div class="ui-add" @click="save">
@@ -40,7 +41,7 @@
   </div>
 </template>
 <script>
-import { XHeader, Group, XInput, Selector, Swiper, SwiperItem, Scroller, XSwitch, XTextarea } from 'vux'
+import { XHeader, Group, XInput, Selector, Swiper, SwiperItem, Scroller, XSwitch, XTextarea, Cell } from 'vux'
 import _ from 'lodash'
 import { Check } from '@/libs/check'
 import { compareObj } from '@/libs/util'
@@ -126,7 +127,7 @@ export default {
     }
   },
   components: {
-    XHeader, Group, XInput, Selector, Swiper, SwiperItem, Scroller, XSwitch, XTextarea
+    XHeader, Group, XInput, Selector, Swiper, SwiperItem, Scroller, XSwitch, XTextarea, Cell
   }
 }
 </script>

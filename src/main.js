@@ -1,6 +1,5 @@
 import 'babel-polyfill'
 import Vue from 'vue'
-// import FastClick from 'fastclick'
 import App from './App'
 import store from './store'
 import '@/libs'
@@ -9,9 +8,14 @@ import './config'
 // 引入样式
 require('./assets/sass/app.less')
 
-// FastClick.attach(document.body)
+// 路由跳转前
+router.beforeEach((to, from, next) => {
+  // 关闭菜单
+  store.commit('dv_toggle_mode', '')
+  next()
+})
 
-/* eslint-disable no-new */
+// 创建应用实例
 new Vue({
   router,
   store,
