@@ -10,7 +10,7 @@ const Props = {
   treasure: ['id', 'mgdbId', 'name', 'short', 'code', 'icon', 'note', 'iscollection', 'amount'],
   bill: ['id', 'mgdbId', 'trId', 'trMgdbId', 'money', 'date', 'recorded', 'note']
 }
-const Icons = ['defaultw.png', 'jj.png', 'gp.png', 'wallet.png', 'wh.png', 'jd.png', 'gshbank.png', 'shbank.png', 'zhgbank.png', 'zhshbank.png', 'chxbank.png', 'zhxbank.png', 'zhfb.png', 'thsh.png', 'zhsh.png', 'pa.png', 'lct.png', 'lq.png', 'lqt.png']
+const Icons = ['defaultw.png', 'jj.png', 'gp.png', 'wallet.png', 'wh.png', 'jd.png', 'gshbank.png', 'shbank.png', 'zhgbank.png', 'zhshbank.png', 'chxbank.png', 'zhxbank.png', 'nybank.png', 'zhfb.png', 'thsh.png', 'zhsh.png', 'pa.png', 'lct.png', 'lq.png', 'lqt.png']
 const Tables = ['treasure', 'bill']
 
 const state = {

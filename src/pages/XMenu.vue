@@ -14,8 +14,16 @@
           </a>
         </li>
         <li>
-          <img src="../assets/img/setting.svg" />
-          <span>设置</span>
+          <a href="#/ranking">
+            <img src="../assets/img/ranking.svg" />
+            <span>排行榜</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <img src="../assets/img/setting.svg" />
+            <span>设置</span>
+          </a>
         </li>
       </ul>
       <div class="ui-menu-logout">

@@ -174,11 +174,13 @@ export default {
   watch: {
     // todo
     list (val, old) {
-      this.chart.guide().clear()
+      console.log(val)
+      console.log(fmoney)
       this.chart.changeData(val)
+      this.chart.guide().clear()
       val.forEach((obj, index) => {
         // 文字部分
-        this.chart.guide().html([ obj.month, obj.tem ], `<div style='color: #79839D;'><span>${fmoney(obj.tem)}</span></div>`, {
+        this.chart.guide().html([ obj.month, obj.tem ], `<div style='color: #79839D;font-size: 10px'><span>${fmoney(obj.tem)}</span></div>`, {
           align: 'bc',
           offset: [ 0, -24 ]
         })

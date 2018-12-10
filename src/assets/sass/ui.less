@@ -430,7 +430,7 @@
       line-height: .7rem;
       font-size: .18rem;
       position: relative;
-      &:active {
+      &:hover {
         background: #F6F6F6;
         opacity: .6;
       }
@@ -454,6 +454,112 @@
       right: 0;
       top: 0;
       width: .36rem;
+    }
+  }
+}
+
+.ui-rank {
+  display: flex;
+  padding: 0 .3rem .2rem;
+  .item {
+    flex: 1;
+    text-align: center;
+    color: #FFFFFF;
+    .name {
+      font-size: .12rem;
+      white-space: nowrap;
+    }
+    .no {
+      background-position: center;
+      background-repeat: no-repeat;
+      height: .32rem;
+      line-height: .38rem;
+      font-size: .12rem;
+      font-weight: bold;
+      color: #E8F1F7;
+    }
+    .no1 {
+      background-image: url(../img/first.svg);
+    }
+    .no2 {
+      background-image: url(../img/ranking.svg);
+    }
+    .no3 {
+      background-image: url(../img/third.svg);
+    }
+  }
+  .first {
+    .polygon;
+  }
+  .second {
+    .polygon;
+    margin-top: .4rem;
+    div {
+      width: .5rem;
+      height: .7rem;
+    }
+    .inner img {
+      width: 90%;
+      margin-top: .13rem;
+    }
+  }
+  &-item {
+    padding: .15rem .1rem .15rem .9rem;
+    background-color: #F3F8FD;
+    position: relative;
+    height: .4rem;
+    line-height: .4rem;
+    border-radius: .05rem;
+    margin-top: 1em;
+    color: #77819C;
+    .rank {
+      background-image: url(../img/other.svg);
+      width: 32px;
+      text-align: center;
+      color: #E8F1F7;
+      line-height: 28px;
+      font-size: .1rem;
+      position: absolute;
+      left: .05rem;
+      top: 30%;
+    }
+    .head {
+      background-color: #6774E4;
+      border-radius: 50%;
+      width: .3rem;
+      padding: .05rem;
+      position: absolute;
+      left: .4rem;
+    }
+    &:active {
+      background-color: #FAFAFA;
+      opacity: .6;
+    }
+  }
+}
+
+// 多边形
+.polygon {
+  margin-top: .2rem;
+  div {
+    width: .7rem;
+    height: .7rem;
+    overflow: hidden;
+  }
+  .wrapper {
+    margin: .2rem auto .1rem;
+  }
+  .cont {
+    transform: rotateZ(60deg);
+  }
+
+  .inner {
+    transform: rotateZ(-120deg);
+    background: #777;
+    cursor: pointer;
+    img {
+      margin-top: .03rem;
+      transform: rotate(60deg);
     }
   }
 }

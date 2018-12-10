@@ -5,6 +5,7 @@ import Bill from '@/pages/Bill'
 import Page3 from '@/pages/Page3'
 import Info from '@/pages/Info'
 import Backups from '@/pages/Backups'
+import Ranking from '@/pages/Ranking'
 
 Vue.use(Router)
 
@@ -33,5 +34,9 @@ export default new Router({
     name: 'Backups',
     path: '/backups/:isCurrent',
     component: Backups
+  }, {
+    path: '/ranking',
+    name: 'Ranking',
+    component: Ranking
   }]
 })

@@ -31,7 +31,7 @@
       <selector title="归属：" v-model="treasure.parent" :options="collection" direction="rtl"></selector>
       <x-input title="简称：" v-model="treasure.short" text-align="right"></x-input>
       <x-switch title="集合：" v-model="treasure.iscollection"></x-switch>
-      <!--<cell title="标签：" value="看看" is-link></cell>-->
+      <cell title="标签：" value="看看" is-link></cell>
       <x-textarea v-model="treasure.note" placeholder="备注" :max="20"></x-textarea>
     </group>
     <div class="ui-add" @click="save">

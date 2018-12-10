@@ -67,11 +67,12 @@ const getters = {
       let m = (12 + curM - i) % 12 || 12
       sum[m] = sum[m] || 0
       result.push({
-        tem: sum[m],
+        tem: sum[m] > 0 ? sum[m] : -sum[m],
         month: `${m}月`,
         isProfit: sum[m] >= 0
       })
     }
+    result = _.filter(result, ({tem}) => tem)
     return result.reverse()
   },
   // 获取当前财富近一月每日变动, Todo

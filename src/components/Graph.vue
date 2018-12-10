@@ -30,20 +30,34 @@ function createGraph (canvas, data) {
     amount: {
       tickCount: 10,
       formatter (val) {
-        let result = val % 1000
-        if (result) {
-          return ~~result
-        } else {
-          result = val / 1000
-          return `${~~result}K`
+        let result = ~~val + ''
+        let len = result.length
+        if (len >= 5) {
+          if (val % 10000) {
+          // if (len < 5) {
+            val = result = result.slice(-4)
+            len = 4
+          } else {
+            result = val / 10000
+            return `${~~result}W`
+          }
         }
+        if (len === 4) {
+          if (val % 1000) {
+            return `${result.substring(1, 4)}`
+          } else {
+            result = val / 1000
+            return `${~~result}K`
+          }
+        }
+        return result
       }
     }
   }
   // 配置date刻度文字样式
   const label = {
     fill: '#979797',
-    font: '14px san-serif',
+    font: '12px san-serif',
     offset: 6
   }
   chart.axis('date', {
@@ -63,7 +77,7 @@ function createGraph (canvas, data) {
   chart.axis('amount', {
     min: 8,
     label: {
-      fontSize: 14
+      fontSize: 10
     }
   })
   chart.source(data, defs)

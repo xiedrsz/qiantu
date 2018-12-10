@@ -3,9 +3,48 @@
  */
 import _ from 'lodash'
 import moment from 'moment'
+import Chained from '@/libs/Chained'
 
 // 属性
 const trProps = ['id', 'mgdbId', 'name', 'short', 'code', 'icon', 'note', 'iscollection', 'amount']
+
+let calcYield = (bills, amount) => {
+  bills = _.map(bills, ({date, list}) => {
+    let money = _.sum(_.map(list, ({money}) => +money))
+    list = _.filter(list, ({recorded}) => !recorded)
+    let myield = _.sum(_.map(list, ({money}) => +money))
+    amount -= money
+    money = money.toFixed(2)
+    myield = myield.toFixed(2)
+    amount = amount.toFixed(2)
+    return {
+      date, money, myield, amount
+    }
+  })
+  let result = _.reduceRight(bills, ({last, yields = []}, {date, myield, amount}) => {
+    if (last) {
+      let mLast = moment(last)
+      let mdate = moment(date)
+      let days = mdate.diff(mLast, 'days')
+      let annualized = myield / amount / days * 365 * 100 || 0
+      !annualized && (days = 0)
+      annualized = annualized.toFixed(2)
+      yields.push({
+        annualized,
+        days
+      })
+    }
+    return {
+      last: date,
+      yields
+    }
+  }, {})
+  result = result.yields
+  let totalDays = _.sum(_.map(result, 'days'))
+  result = _.sum(_.map(result, ({annualized, days}) => annualized * days)) / totalDays || 0
+  result = result.toFixed(2)
+  return result
+}
 
 const state = {
   // 财富列表
@@ -146,6 +185,44 @@ const getters = {
     result = _.sum(_.map(result, ({annualized, days}) => annualized * days)) / totalDays || 0
     result = result.toFixed(2)
     return result
+  },
+  // 获取排行榜
+  get_ranking (state, getters) {
+    // Todo
+    let bills = getters.get_bList
+    let wealths = new Chained(state.list)
+    let ranking = wealths
+      .filter(({code, iscollection, amount}) => {
+        return /^00-03/.test(code) && !iscollection && +amount
+      })
+      .map(({icon, name, id, amount}) => {
+        let bill = new Chained(bills)
+          .filter({trId: id})
+          .groupBy('date')
+          .mapValues((value, key) => {
+            return {
+              date: key,
+              list: value
+            }
+          })
+          .values()
+          .over()
+          .sort((a, b) => {
+            let date1 = a.date
+            let date2 = b.date
+            return moment(date1).isBefore(date2)
+          })
+        let myield = calcYield(bill, amount)
+        return {
+          icon, name, myield
+        }
+      })
+      .filter(({myield}) => +myield)
+      .over()
+      .sort((a, b) => {
+        return b.myield - a.myield
+      })
+    return ranking
   }
 }
 
