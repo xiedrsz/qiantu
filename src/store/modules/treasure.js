@@ -188,40 +188,40 @@ const getters = {
   },
   // 获取排行榜
   get_ranking (state, getters) {
-    // Todo
     let bills = getters.get_bList
     let wealths = new Chained(state.list)
     let ranking = wealths
-      .filter(({code, iscollection, amount}) => {
-        return /^00-24/.test(code) && !iscollection && +amount
-      })
-      .map(({icon, name, id, amount}) => {
-        let bill = new Chained(bills)
-          .filter({trId: id})
-          .groupBy('date')
-          .mapValues((value, key) => {
-            return {
-              date: key,
-              list: value
-            }
-          })
-          .values()
-          .over()
-          .sort((a, b) => {
-            let date1 = a.date
-            let date2 = b.date
-            return moment(date1).isBefore(date2)
-          })
-        let myield = calcYield(bill, amount)
+    .filter(({code, iscollection, amount}) => {
+      return /^00-24/.test(code) && !iscollection && +amount
+    })
+    .map(({icon, name, id, amount}) => {
+      let bill = new Chained(bills)
+      .filter({trId: id})
+      .groupBy('date')
+      .mapValues((value, key) => {
         return {
-          icon, name, myield
+          date: key,
+          list: value
         }
       })
-      .filter(({myield}) => +myield)
+      .values()
       .over()
       .sort((a, b) => {
-        return b.myield - a.myield
+        let date1 = moment(a.date)
+        let date2 = moment(b.date)
+        let flag = date2.diff(date1, 'days')
+        return flag
       })
+      let myield = calcYield(bill, amount)
+      return {
+        icon, name, myield
+      }
+    })
+    .filter(({myield}) => +myield)
+    .over()
+    .sort((a, b) => {
+      return b.myield - a.myield
+    })
     return ranking
   }
 }
@@ -289,7 +289,6 @@ const actions = {
     }, treasure)
     if (id) {
       if (~changes.indexOf('parent')) {
-        console.log('归属发生了变化')
         treasure.code = code
         dispatch('calc_amount', {
           code: oldParent,
@@ -299,9 +298,6 @@ const actions = {
           code: parent,
           diff: amount
         })
-      }
-      if (~changes.indexOf('iscollection')) {
-        console.log('是否集合发生了变化')
       }
     }
     treasure = _.pick(treasure, trProps)

@@ -172,10 +172,7 @@ export default {
     this.chart = createChart(this.$refs.canvas, this.list)
   },
   watch: {
-    // todo
     list (val, old) {
-      console.log(val)
-      console.log(fmoney)
       this.chart.changeData(val)
       this.chart.guide().clear()
       val.forEach((obj, index) => {

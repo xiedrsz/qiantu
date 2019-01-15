@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     save () {
-      console.log('保存')
     }
   },
   components: {

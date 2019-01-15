@@ -112,7 +112,6 @@ export default {
       this.$store.dispatch('save_treasure', {
         treasure,
         handle () {
-          console.log('保存成功')
           self.treasure = {
             name: '',
             icon: 'defaultw.png',

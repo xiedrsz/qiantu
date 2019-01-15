@@ -64,7 +64,6 @@ Vue.http.interceptors.request.use((config) => {
   return config
 }, (error) => {
   commit('SET_LOADING', true)
-  console.log(error)
   return Promise.reject(error)
 })
 

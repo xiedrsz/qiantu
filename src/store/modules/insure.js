@@ -117,8 +117,6 @@ const actions = {
     let resultInfo = response.resultInfo
     let message = resultInfo.message
     let returnCode = resultInfo.returnCode
-    console.log(resultInfo)
-    console.log('orderId:' + orderId)
     if (returnCode === '1') {
       commit('insure_setInsurer', insurer)
       commit('insure_setOrderInfo', {
@@ -149,7 +147,6 @@ const actions = {
     let message = resultInfo.message
     let returnCode = resultInfo.returnCode
     let orderStr = response.order_Str
-    console.log(response)
     if (returnCode === '1') {
       commit('insure_setOrderInfo', orderInfo)
       return orderStr
@@ -178,11 +175,7 @@ const actions = {
     let returnCode = resultInfo.returnCode
     let proposalNo = response.proposalNo
     let policyNo = response.policyNo
-    console.log(response)
     if (returnCode === '1') {
-      console.log(resultInfo)
-      console.log('proposalNo:' + proposalNo)
-      console.log('policyNo:' + policyNo)
       commit('insure_setOrderInfo', {
         policyNo
       })
@@ -197,7 +190,6 @@ const actions = {
     commit,
     state
   }, option) {
-    // commit('SET_LOADING', true)
     let orderInfo = option.orderInfo
     let res = await Vue.http.request({
       procedure: 'getOrderInfoList',
@@ -205,16 +197,12 @@ const actions = {
         ...orderInfo
       }
     })
-    // commit('SET_LOADING', false)
     let response = res.Envelope.Body.getOrderInfoListResponse.return
     let resultInfo = response.resultInfo
     let message = resultInfo.message
     let returnCode = resultInfo.returnCode
-    console.log(response)
     let mobileOrderInfoDto = response.mobileOrderInfoDto
     let policyNo = mobileOrderInfoDto.policyNo
-    // let orderId = mobileOrderInfoDto.orderId
-    console.log(response)
     if (returnCode === '1') {
       commit('insure_setOrderInfo', {
         policyNo

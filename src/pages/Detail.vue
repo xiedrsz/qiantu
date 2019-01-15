@@ -25,11 +25,11 @@
         <p>
           <span class="main">{{treasure.amount | fmoney(2)}}</span>
         </p>
-        <p class="mgt-5" v-if="!/^00-03/.test(treasure.code)">
+        <p class="mgt-5" v-if="!/^00-24/.test(treasure.code)">
           <span>月增长速度:</span>
           <span class="yuan">{{treasure.speed}}</span>
         </p>
-        <p class="mgt-5" v-if="/^00-03/.test(treasure.code)">
+        <p class="mgt-5" v-if="/^00-24/.test(treasure.code)">
           <span>年化收益率:</span>
           <span class="yield">{{myield}}%</span>
         </p>
@@ -156,7 +156,6 @@ export default {
     },
     // 查看/修改账单
     view (item) {
-      console.log(this.prompt)
       this.$router.push({
         path: '/bill',
         query: {

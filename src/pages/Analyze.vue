@@ -58,10 +58,6 @@ export default {
     height = height - 90
     this.sheight = `${height}px`
   },
-  mounted () {
-    // let kk = this.$store.getters.get_tr_change
-    // console.log(kk)
-  },
   methods: {
     // 详情
     swipe () {

@@ -104,7 +104,6 @@ export default {
   },
   activated () {
     // 没有财富
-    console.log(this.treasure)
     /* if (!this.treasure.icon) {
       this.$router.push({
         name: 'Info',
@@ -193,7 +192,6 @@ export default {
         this.$store.dispatch('save_bill', {
           bill,
           handle () {
-            console.log('保存成功')
             self.goBack()
           }
         })
@@ -210,7 +208,6 @@ export default {
           money
         },
         handle () {
-          console.log('删除成功')
           self.goBack()
         }
       })

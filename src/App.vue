@@ -50,8 +50,6 @@ export default {
     tList: {
       handler (val, old) {
         let todoList = diff(val, old)
-        console.log('tList')
-        console.log(todoList)
         todoList = _.map(todoList, item => {
           return {
             ...item,
@@ -66,8 +64,6 @@ export default {
     },
     bList (val, old) {
       let todoList = diff(val, old)
-      console.log('bList')
-      console.log(todoList)
       todoList = _.map(todoList, item => {
         return {
           ...item,

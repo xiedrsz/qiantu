@@ -66,7 +66,7 @@
             <img class="head" :src="'./static/img/' + item.icon" />
             <div class="flex">
               <div class="flex-1">{{item.name}}</div>
-              <div class="money c-red">{{item.myield + '%'}}</div>
+              <div class="money" :class="{'c-blue': item.myield < 0, 'c-red': item.myield >= 0}">{{item.myield + '%'}}</div>
             </div>
           </div>
         </div>

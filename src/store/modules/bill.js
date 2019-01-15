@@ -37,9 +37,10 @@ const getters = {
     })
     // 排序
     result.sort((a, b) => {
-      let date1 = a.date
-      let date2 = b.date
-      return moment(date1).isBefore(date2)
+      let date1 = moment(a.date)
+      let date2 = moment(b.date)
+      let flag = date2.diff(date1, 'days')
+      return flag
     })
     return result
   },
