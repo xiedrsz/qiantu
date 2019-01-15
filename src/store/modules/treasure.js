@@ -193,7 +193,7 @@ const getters = {
     let wealths = new Chained(state.list)
     let ranking = wealths
       .filter(({code, iscollection, amount}) => {
-        return /^00-03/.test(code) && !iscollection && +amount
+        return /^00-24/.test(code) && !iscollection && +amount
       })
       .map(({icon, name, id, amount}) => {
         let bill = new Chained(bills)
