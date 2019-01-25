@@ -4,6 +4,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 import Chained from '@/libs/Chained'
+import FMath from '@/libs/financial'
 
 // 属性
 const trProps = ['id', 'mgdbId', 'name', 'short', 'code', 'icon', 'note', 'iscollection', 'amount']
@@ -147,44 +148,34 @@ const getters = {
   },
   // 收益计算(年化收益率)
   get_current_yield (state, getters) {
-    let current = getters.get_treasure
     let bills = getters.get_billes
-    let amount = current.amount
-    bills = _.map(bills, ({date, list}) => {
-      let money = _.sum(_.map(list, ({money}) => +money))
-      list = _.filter(list, ({recorded}) => !recorded)
-      let myield = _.sum(_.map(list, ({money}) => +money))
-      amount -= money
-      money = money.toFixed(2)
-      myield = myield.toFixed(2)
-      amount = amount.toFixed(2)
-      return {
-        date, money, myield, amount
-      }
-    })
-    let result = _.reduceRight(bills, ({last, yields = []}, {date, myield, amount}) => {
-      if (last) {
-        let mLast = moment(last)
-        let mdate = moment(date)
-        let days = mdate.diff(mLast, 'days')
-        let annualized = myield / amount / days * 365 * 100 || 0
-        !annualized && (days = 0)
-        annualized = annualized.toFixed(2)
-        yields.push({
-          annualized,
-          days
-        })
-      }
-      return {
-        last: date,
-        yields
-      }
-    }, {})
-    result = result.yields
-    let totalDays = _.sum(_.map(result, 'days'))
-    result = _.sum(_.map(result, ({annualized, days}) => annualized * days)) / totalDays || 0
+    let result
+    bills = FMath.transform(bills)
+    result = FMath.calcYield(bills)
     result = result.toFixed(2)
     return result
+  },
+  // 获取历史年化收益率
+  get_annual_yield (state, getters) {
+    let bills = getters.get_billes
+    let result
+    bills = FMath.transform(bills)
+    result = FMath.calcYields(bills)
+    result.reverse()
+    return result
+  },
+  // 获取每月收益
+  get_month_yield (state, getters) {
+    let bills = getters.get_billes
+    let result
+    bills = FMath.transform(bills)
+    result = FMath.monthyYields(bills)
+    return result
+  },
+  // 获取每日资产
+  get_daily_property (state, getters) {
+    let bills = getters.get_billes
+    return FMath.dailyProperty(bills)
   },
   // 获取排行榜
   get_ranking (state, getters) {

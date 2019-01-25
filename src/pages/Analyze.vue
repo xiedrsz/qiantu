@@ -1,10 +1,6 @@
 <template>
   <div>
     <div class="ui-analyze">
-      <!-- <div class="sound">
-        <i class="iconfont icon-heng"></i>
-        <i class="iconfont icon-dian"></i>
-      </div> -->
       <x-header :left-options="{showBack: false}">
         <i slot="left" class="iconfont icon-menu" @click="toggleMenu"></i>
         <p class="title">
@@ -18,9 +14,10 @@
     </div>
     <scroller lock-x ref="scroller" :height="sheight">
       <div>
-        <pie title="储蓄分布图" :list="children" v-show="children.length" />
-        <chart :list="trchange" />
-        <graph :list="trdaily" />
+        <pie title="资产分布" :list="children" v-show="children.length" />
+        <chart title="累计收益" :list="monthYields" />
+        <graph title="资产变动" :list="dailyProperty" />
+        <graph title="年化收益率" :list="yields"/>
         <div style="height: 1px"></div>
       </div>
     </scroller>
@@ -28,6 +25,7 @@
 </template>
 <script>
 import { XHeader, Scroller } from 'vux'
+import _ from 'lodash'
 import Pie from '@/components/Pie'
 import Chart from '@/components/Chart'
 import Graph from '@/components/Graph'
@@ -46,11 +44,33 @@ export default {
     children () {
       return this.$store.getters.get_children
     },
-    trchange () {
-      return this.$store.getters.get_tr_change
+    monthYields () {
+      let res = this.$store.getters.get_month_yield
+      return _.map(res, ({month, yields}) => {
+        return {
+          tem: yields,
+          month: `${month}月`,
+          isProfit: yields >= 0
+        }
+      })
     },
-    trdaily () {
-      return this.$store.getters.get_tr_daily
+    dailyProperty () {
+      let res = this.$store.getters.get_daily_property
+      return _.map(res, ({date, property}) => {
+        return {
+          date,
+          amount: property
+        }
+      })
+    },
+    yields () {
+      let res = this.$store.getters.get_annual_yield
+      return _.map(res, ({date, yields}) => {
+        return {
+          date,
+          amount: yields
+        }
+      })
     }
   },
   created () {

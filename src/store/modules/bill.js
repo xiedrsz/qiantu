@@ -44,7 +44,7 @@ const getters = {
     })
     return result
   },
-  // 获取当前财富近一年各月变动
+  // 获取当前财富近一年各月变 Todo 即将废弃
   get_tr_change (state, getters) {
     let children = getters.get_child_wealth
     let list = state.list
@@ -76,7 +76,7 @@ const getters = {
     result = _.filter(result, ({tem}) => tem)
     return result.reverse()
   },
-  // 获取当前财富近一月每日变动, Todo
+  // 获取当前财富近一月每日变动, Todo, 即将废弃
   get_tr_daily (state, getters) {
     // 财富子集
     let children = getters.get_child_wealth
@@ -105,7 +105,7 @@ const getters = {
       let money = _.sum(_.map(listTmp, ({money}) => +money)) || 0
       result.push({
         date: tmpTime,
-        amount: +amount
+        amount: +amount || 0
       })
       amount -= money
       tmpTime = moment(tmpTime).subtract(1, 'days')

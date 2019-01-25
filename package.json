@@ -23,7 +23,7 @@
     "vux": "^2.2.1"
   },
   "devDependencies": {
-    "@antv/f2": "^3.0.2-beta",
+    "@antv/f2": "^3.3.4",
     "@antv/g2": "^3.0.4-beta.4",
     "@antv/g2-plugin-slider": "^2.0.1",
     "autoprefixer": "^6.7.2",

@@ -116,8 +116,41 @@ function compareObj (val, old) {
   return result
 }
 
+/**
+ * @func 生成随机颜色
+ */
+function randomColor () {
+  let r = _.random(100).toString(16)
+  let g = _.random(100).toString(16)
+  let b = _.random(255).toString(16)
+  return `#${r}${g}${b}`
+}
+
+/**
+ * @func 金额格式化
+ * @param str 金额
+ * @param [num=0] 保留小数点数，默认0
+ */
+function fmoney (str, num) {
+  let n = num > 0 && num <= 20 ? num : 0
+  let s = parseFloat((str + '').replace(/[^\d.-]/g, '')).toFixed(n) + ''
+  let l = s.split('.')[0].split('').reverse()
+  let r = s.split('.')[1]
+  let t = ''
+  let i = 0
+  let len = l.length
+  let res = ''
+  for (; i < len; i++) {
+    t += l[i] + ((i + 1) % 3 === 0 && (i + 1) !== len ? ',' : '')
+  }
+  res = t.split('').reverse().join('')
+  return r ? (res + '.' + r) : res
+}
+
 export {
   copyCol,
   diff,
-  compareObj
+  compareObj,
+  randomColor,
+  fmoney
 }

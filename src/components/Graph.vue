@@ -1,12 +1,14 @@
 <template>
   <div class="ui-chart">
-    <div class="ctitle">收益曲线</div>
-    <canvas ref="canvas"></canvas>
+    <div class="ctitle">{{title}}</div>
+    <canvas ref="canvas" :width="width" :height="height"></canvas>
+    <div class="mask" @click="create" v-if="!chart">
+      <img src="../assets/img/graph.svg" />
+    </div>
   </div>
 </template>
 <script>
 import F2 from '@antv/f2'
-// import _ from 'lodash'
 const WIDTH = document.documentElement.clientWidth * 0.96
 const HIGHT = WIDTH * 0.8
 F2.Global.pixelRatio = window.devicePixelRatio
@@ -34,7 +36,6 @@ function createGraph (canvas, data) {
         let len = result.length
         if (len >= 5) {
           if (val % 10000) {
-          // if (len < 5) {
             val = result = result.slice(-4)
             len = 4
           } else {
@@ -63,7 +64,7 @@ function createGraph (canvas, data) {
   chart.axis('date', {
     label (text, index, total) {
       const cfg = label
-        // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
+      // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
       if (index === 0) {
         cfg.textAlign = 'start'
       }
@@ -73,29 +74,35 @@ function createGraph (canvas, data) {
       return cfg
     }
   })
-    // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
+  // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
   chart.axis('amount', {
-    min: 8,
+    min: 0,
     label: {
       fontSize: 10
     }
   })
+
   chart.source(data, defs)
 
-  let linearGradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, 500)
-  linearGradient.addColorStop(0.5, '#fff')
-  linearGradient.addColorStop(0, 'rgb(15, 141, 232)')
+  chart.tooltip({
+    showCrosshairs: true,
+    showItemMarker: false,
+    onShow: ev => {
+      let items = ev.items
+      items[0].name = null
+      items[0].value = items[0].origin.amount.toFixed(2)
+      ev.items.pop()
+    }
+  })
+
   // 绘制渐变色区域图
   chart.area().position('date*amount')
-    .color('graph', function () {
-      return linearGradient
-    })
-    .style({
-      opacity: 0.6
-    })
+    .color('l(90) 0:#1890ff 1:#f7f7f7')
     .shape('smooth')
 
-  chart.line().size(2).position('date*amount')
+  // Todo 渐变色有BUG, 暂时屏蔽
+  // chart.line().size(2).color('l(90) 0:#1890FF 1:#f7f7f7').position('date*amount')
+  chart.line().size(2).color('#1890FF').position('date*amount')
     .shape('smooth')
 
   chart.render()
@@ -105,22 +112,53 @@ function createGraph (canvas, data) {
 export default {
   name: 'Graph',
   props: {
+    title: {
+      type: String,
+      default: '曲线图'
+    },
     list: {
       type: Array,
       default () {
-        return [
-          { date: '1', amount: 5010 }
-        ]
+        return [{
+          date: '2019-01-01', amount: 18.93
+        }, {
+          date: '2019-01-07', amount: 18.01
+        }, {
+          date: '2019-01-08', amount: 13.76
+        }, {
+          date: '2019-01-09', amount: 12.10
+        }, {
+          date: '2019-01-10', amount: 10.09
+        }, {
+          date: '2019-01-11', amount: 9.89
+        }, {
+          date: '2019-01-12', amount: 4.00
+        }]
       }
     }
   },
-  mounted () {
-    this.chart = createGraph(this.$refs.canvas, this.list)
+  data () {
+    return {
+      width: WIDTH,
+      height: HIGHT,
+      chart: null
+    }
   },
   watch: {
-    // todo
     list (val, old) {
-      this.chart.changeData(val)
+      if (this.chart) {
+        let len = val.length
+        val = len > 1 ? val : []
+        this.chart.changeData(val)
+      }
+    }
+  },
+  methods: {
+    create () {
+      let list = this.list
+      let len = list.length
+      list = len > 1 ? list : []
+      this.chart = createGraph(this.$refs.canvas, list)
     }
   }
 }
