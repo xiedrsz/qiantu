@@ -10,7 +10,7 @@ import F2, {Util, G} from '@antv/f2'
 const Group = G.Group
 const WIDTH = document.documentElement.clientWidth * 0.96
 const HIGHT = WIDTH * 0.76
-const COLORS = ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0', '#3436C7', '#223273']
+const COLORS = ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0', '#3436C7', '#223273', '#333333', '#33CCFF', '#660000']
 
 // 转换列表
 function transformList (list) {
@@ -223,7 +223,7 @@ export default {
       type: Array,
       default () {
         return [{
-          amount: 0,
+          amount: 100,
           code: '00-00',
           icon: 'defaultw.png',
           id: 2,
