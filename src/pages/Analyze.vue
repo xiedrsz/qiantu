@@ -42,7 +42,8 @@ export default {
       return this.$store.state.device.isSyn
     },
     children () {
-      return this.$store.getters.get_children
+      let res = this.$store.getters.get_children
+      return _.filter(res, ({amount}) => +amount)
     },
     monthYields () {
       let res = this.$store.getters.get_month_yield
