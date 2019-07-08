@@ -48,10 +48,11 @@ export default {
     monthYields () {
       let res = this.$store.getters.get_month_yield
       return _.map(res, ({month, yields}) => {
+        let isProfit = yields >= 0
         return {
-          tem: yields,
+          tem: isProfit ? yields : -yields,
           month: `${month}月`,
-          isProfit: yields >= 0
+          isProfit
         }
       })
     },

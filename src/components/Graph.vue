@@ -9,12 +9,14 @@
 </template>
 <script>
 import F2 from '@antv/f2'
+import _ from 'lodash'
 const WIDTH = document.documentElement.clientWidth * 0.96
 const HIGHT = WIDTH * 0.8
 F2.Global.pixelRatio = window.devicePixelRatio
 
 // 创建Graph
 function createGraph (canvas, data) {
+  const uid = _.random(100)
   const chart = new F2.Chart({
     el: canvas,
     width: WIDTH,
@@ -84,7 +86,43 @@ function createGraph (canvas, data) {
 
   chart.source(data, defs)
 
+  chart.guide().html({
+    position: ['min', 'max'],
+    html:
+      `<div id="tooltipWrapper${uid}" style="height: 45px; background-color: rgba(255, 255, 200, 0.1); line-height: 45px;">
+        <div id="tooltipName${uid}" style="float:left;font-size:12px;color:#2E2E2E;margin-left:18px;"></div>
+        <div id="tooltipValue${uid}" style="float:right;font-size:12px;color:#2E2E2E;margin-right:18px;"></div>
+      </div>`,
+    offsetY: -22.5
+  })
+
   chart.tooltip({
+    showCrosshairs: true,
+    custom: true, // 自定义 tooltip 内容框
+    onChange: function onChange (obj) {
+      let items = obj.items
+      let originData = items[0].origin
+      let date = originData.date
+      let value = originData.amount.toFixed(2)
+      let tooltipWrapper = document.getElementById(`tooltipWrapper${uid}`)
+      let tooltipName = document.getElementById(`tooltipName${uid}`)
+      let tooltipValue = document.getElementById(`tooltipValue${uid}`)
+
+      tooltipWrapper.style.width = `${WIDTH}px`
+      tooltipWrapper.style.left = 0
+
+      tooltipName.innerText = `日期: ${date}`
+      tooltipValue.innerText = value
+
+      tooltipWrapper.style.display = 'block'
+    },
+    onHide: function onHide () {
+      let tooltipWrapper = document.getElementById(`tooltipWrapper${uid}`)
+      tooltipWrapper.style.display = 'none'
+    }
+  })
+
+  /* chart.tooltip({
     showCrosshairs: true,
     showItemMarker: false,
     onShow: ev => {
@@ -93,7 +131,7 @@ function createGraph (canvas, data) {
       items[0].value = items[0].origin.amount.toFixed(2)
       ev.items.pop()
     }
-  })
+  }) */
 
   // 绘制渐变色区域图
   chart.area().position('date*amount')
