@@ -68,6 +68,27 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "newquotation" */ '../views/NewQuotation.vue')
     }
+  },
+  {
+    path: '/quotation',
+    name: 'quotation',
+    component: function () {
+      return import(/* webpackChunkName: "quotation" */ '../views/Quotation.vue')
+    }
+  },
+  {
+    path: '/report',
+    name: 'report',
+    component: function () {
+      return import(/* webpackChunkName: "report" */ '../views/Report.vue')
+    }
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: function () {
+      return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
+    }
   }
 ]
 
