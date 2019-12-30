@@ -34,3 +34,7 @@ npm run lint
 
 * 驼峰
 * 首字母大写
+
+### 路由规则
+
+* 路由 path webpackChunkName 全部使用小写

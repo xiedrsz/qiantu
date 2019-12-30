@@ -26,6 +26,48 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "backup" */ '../views/Backup.vue')
     }
+  },
+  {
+    path: '/calendar',
+    name: 'calendar',
+    component: function () {
+      return import(/* webpackChunkName: "calendar" */ '../views/Calendar.vue')
+    }
+  },
+  {
+    path: '/newbill',
+    name: 'newBill',
+    component: function () {
+      return import(/* webpackChunkName: "newbill" */ '../views/NewBill.vue')
+    }
+  },
+  {
+    path: '/newevent',
+    name: 'newEvent',
+    component: function () {
+      return import(/* webpackChunkName: "newevent" */ '../views/NewEvent.vue')
+    }
+  },
+  {
+    path: '/newplan',
+    name: 'newPlan',
+    component: function () {
+      return import(/* webpackChunkName: "newplan" */ '../views/NewPlan.vue')
+    }
+  },
+  {
+    path: '/newproperty',
+    name: 'newProperty',
+    component: function () {
+      return import(/* webpackChunkName: "newproperty" */ '../views/NewProperty.vue')
+    }
+  },
+  {
+    path: '/newquotation',
+    name: 'newQuotation',
+    component: function () {
+      return import(/* webpackChunkName: "newquotation" */ '../views/NewQuotation.vue')
+    }
   }
 ]
 
