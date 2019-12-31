@@ -16,7 +16,7 @@
 <script>
 import { NavBar, Icon, Cell, Field, Button } from 'vant'
 export default {
-  name: 'newBill',
+  name: 'NewBill',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

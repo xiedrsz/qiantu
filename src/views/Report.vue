@@ -41,7 +41,7 @@
 <script>
 import { NavBar, Icon, Row, Col, RadioGroup, Radio, CellGroup, Cell } from 'vant'
 export default {
-  name: 'quotation',
+  name: 'Report',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

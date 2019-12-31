@@ -17,7 +17,7 @@
 <script>
 import { NavBar, Icon, Field, Tabbar, TabbarItem } from 'vant'
 export default {
-  name: 'backup',
+  name: 'Backup',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

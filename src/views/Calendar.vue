@@ -145,7 +145,7 @@
 <script>
 import { NavBar, Icon, Row, Col, CellGroup, Cell } from 'vant'
 export default {
-  name: 'calendar',
+  name: 'Calendar',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

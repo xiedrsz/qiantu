@@ -22,7 +22,7 @@
 <script>
 import { NavBar, Icon, CellGroup, Cell, Divider, Tabbar, TabbarItem } from 'vant'
 export default {
-  name: 'quotation',
+  name: 'Quotation',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

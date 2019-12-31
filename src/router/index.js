@@ -22,72 +22,100 @@ const routes = [
   },
   {
     path: '/backup',
-    name: 'backup',
+    name: 'Backup',
     component: function () {
       return import(/* webpackChunkName: "backup" */ '../views/Backup.vue')
     }
   },
   {
     path: '/calendar',
-    name: 'calendar',
+    name: 'Calendar',
     component: function () {
       return import(/* webpackChunkName: "calendar" */ '../views/Calendar.vue')
     }
   },
   {
     path: '/newbill',
-    name: 'newBill',
+    name: 'NewBill',
     component: function () {
       return import(/* webpackChunkName: "newbill" */ '../views/NewBill.vue')
     }
   },
   {
     path: '/newevent',
-    name: 'newEvent',
+    name: 'NewEvent',
     component: function () {
       return import(/* webpackChunkName: "newevent" */ '../views/NewEvent.vue')
     }
   },
   {
     path: '/newplan',
-    name: 'newPlan',
+    name: 'NewPlan',
     component: function () {
       return import(/* webpackChunkName: "newplan" */ '../views/NewPlan.vue')
     }
   },
   {
     path: '/newproperty',
-    name: 'newProperty',
+    name: 'NewProperty',
     component: function () {
       return import(/* webpackChunkName: "newproperty" */ '../views/NewProperty.vue')
     }
   },
   {
     path: '/newquotation',
-    name: 'newQuotation',
+    name: 'NewQuotation',
     component: function () {
       return import(/* webpackChunkName: "newquotation" */ '../views/NewQuotation.vue')
     }
   },
   {
     path: '/quotation',
-    name: 'quotation',
+    name: 'Quotation',
     component: function () {
       return import(/* webpackChunkName: "quotation" */ '../views/Quotation.vue')
     }
   },
   {
     path: '/report',
-    name: 'report',
+    name: 'Report',
     component: function () {
       return import(/* webpackChunkName: "report" */ '../views/Report.vue')
     }
   },
   {
     path: '/setting',
-    name: 'setting',
+    name: 'Setting',
     component: function () {
       return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
+    }
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: function () {
+      return import(/* webpackChunkName: "account" */ '../views/Account.vue')
+    }
+  },
+  {
+    path: '/collection',
+    name: 'Collection',
+    component: function () {
+      return import(/* webpackChunkName: "collection" */ '../views/Collection.vue')
+    }
+  },
+  {
+    path: '/plan',
+    name: 'Plan',
+    component: function () {
+      return import(/* webpackChunkName: "plan" */ '../views/Plan.vue')
+    }
+  },
+  {
+    path: '/planinfo',
+    name: 'PlanInfo',
+    component: function () {
+      return import(/* webpackChunkName: "planinfo" */ '../views/PlanInfo.vue')
     }
   }
 ]

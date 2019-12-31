@@ -13,7 +13,7 @@
 <script>
 import { NavBar, Icon, Cell, Field, Button } from 'vant'
 export default {
-  name: 'newQuotation',
+  name: 'NewQuotation',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

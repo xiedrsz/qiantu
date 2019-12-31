@@ -17,7 +17,7 @@
 <script>
 import { NavBar, Icon, Cell, Tabbar, TabbarItem } from 'vant'
 export default {
-  name: 'setting',
+  name: 'Setting',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,

@@ -31,7 +31,7 @@
 <script>
 import { NavBar, Icon, Cell, Field, SwitchCell, Row, Tag, Button, Tabbar, TabbarItem } from 'vant'
 export default {
-  name: 'newPlan',
+  name: 'NewPlan',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
