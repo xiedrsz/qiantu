@@ -1,13 +1,15 @@
 <template>
   <div>
-    <van-nav-bar title="总资产">
-      <van-icon slot="right" name="more-o"></van-icon>
+    <!-- 标题头 -->
+    <van-nav-bar title="总资产" :leftArrow="showBack" @click-left="goBack">
+      <van-icon slot="right" name="plus" @click="add"></van-icon>
     </van-nav-bar>
+    <!-- 账户概要 -->
     <div>
       <van-row>
         <p style="padding-left:15px">总市值（元）</p>
       </van-row>
-      <van-cell isLink size="large">
+      <van-cell size="large">
         <div>
           <span style="font-size:27px">2580.07</span>
           <span>(200.89份)</span>
@@ -18,14 +20,15 @@
         <van-col>流出1234.98</van-col>
       </van-row>
     </div>
+    <!-- 子级账户 -->
     <div>
       <van-cell-group>
-        <van-cell title="理财通" isLink icon="star-o">400</van-cell>
-        <van-cell title="支付宝" isLink icon="star-o">2.48</van-cell>
-        <p slot="title">
+        <p slot="title" @click="changeCollection">
           <span>基金</span>
           <span style="float:right">21899.99</span>
         </p>
+        <van-cell title="理财通" isLink icon="star-o" @click="gotoAccount">400</van-cell>
+        <van-cell title="支付宝" isLink icon="star-o">2.48</van-cell>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="东莞证券" isLink icon="star-o">400</van-cell>
@@ -50,6 +53,49 @@ export default {
     [Cell.name]: Cell,
     [Col.name]: Col,
     [CellGroup.name]: CellGroup
+  },
+  data () {
+    return {
+      showBack: false
+    }
+  },
+  watch: {
+    $route (value) {
+      let query = value.query
+      let { current } = query
+      this.showBack = current !== undefined
+    }
+  },
+  mounted () {
+    let query = this.$route.query
+    let { current } = query
+    this.showBack = current !== undefined
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    add () {
+      this.$router.push({
+        path: '/newproperty'
+      })
+    },
+    changeCollection () {
+      this.$router.push({
+        path: '/',
+        query: {
+          current: 0
+        }
+      })
+    },
+    gotoAccount () {
+      this.$router.push({
+        path: '/account',
+        query: {
+          current: 0
+        }
+      })
+    }
   }
 }
 </script>

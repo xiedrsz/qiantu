@@ -5,10 +5,25 @@ import Collection from '../views/Collection.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  // 账户模块
   {
     path: '/',
     name: 'Collection',
     component: Collection
+  },
+  {
+    path: '/newproperty',
+    name: 'NewProperty',
+    component: function () {
+      return import(/* webpackChunkName: "newproperty" */ '../views/NewProperty.vue')
+    }
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: function () {
+      return import(/* webpackChunkName: "account" */ '../views/Account.vue')
+    }
   },
   {
     path: '/backup',
@@ -46,13 +61,6 @@ const routes = [
     }
   },
   {
-    path: '/newproperty',
-    name: 'NewProperty',
-    component: function () {
-      return import(/* webpackChunkName: "newproperty" */ '../views/NewProperty.vue')
-    }
-  },
-  {
     path: '/newquotation',
     name: 'NewQuotation',
     component: function () {
@@ -78,13 +86,6 @@ const routes = [
     name: 'Setting',
     component: function () {
       return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
-    }
-  },
-  {
-    path: '/account',
-    name: 'Account',
-    component: function () {
-      return import(/* webpackChunkName: "account" */ '../views/Account.vue')
     }
   },
   {
