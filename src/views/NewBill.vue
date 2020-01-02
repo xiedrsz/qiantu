@@ -1,7 +1,7 @@
 <template>
   <div>
-    <van-nav-bar title="新增账单" leftArrow>
-      <van-icon slot="right" name="delete"></van-icon>
+    <van-nav-bar title="新增账单" leftArrow @click-left="goBack">
+      <van-icon v-if="id" slot="right" name="delete" @click="onDelete"></van-icon>
     </van-nav-bar>
     <van-cell title="账单类型" isLink>投资计划</van-cell>
     <van-cell title="资金账户" isLink>余额+</van-cell>
@@ -9,7 +9,7 @@
     <van-cell title="日期" isLink>2019年12月25日</van-cell>
     <van-field value="400" label="金额" inputAlign="right"></van-field>
     <van-field type="textarea" placeholder="备注"></van-field>
-    <van-button type="info" size="large" round>确定</van-button>
+    <van-button type="info" size="large" round @click="confirm">确定</van-button>
   </div>
 </template>
 
@@ -23,6 +23,28 @@ export default {
     [Cell.name]: Cell,
     [Field.name]: Field,
     [Button.name]: Button
+  },
+  data () {
+    return {
+      id: ''
+    }
+  },
+  mounted () {
+    let id = this.$route.query.id
+    this.id = id
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    onDelete () {
+      console.log('Todo')
+      this.goBack()
+    },
+    confirm () {
+      console.log('Todo')
+      this.goBack()
+    }
   }
 }
 </script>

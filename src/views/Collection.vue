@@ -39,11 +39,15 @@
         </p>
       </van-cell-group>
     </div>
+    <!-- MTabbar -->
+    <m-tabbar></m-tabbar>
   </div>
 </template>
 
 <script>
 import { NavBar, Icon, Row, Cell, Col, CellGroup } from 'vant'
+import MTabbar from '@/components/Tabbar'
+
 export default {
   name: 'Collection',
   components: {
@@ -52,7 +56,8 @@ export default {
     [Row.name]: Row,
     [Cell.name]: Cell,
     [Col.name]: Col,
-    [CellGroup.name]: CellGroup
+    [CellGroup.name]: CellGroup,
+    MTabbar
   },
   data () {
     return {
