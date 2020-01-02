@@ -33,6 +33,7 @@ const routes = [
       return import(/* webpackChunkName: "newbill" */ '../views/NewBill.vue')
     }
   },
+  // 报表模块
   {
     path: '/backup',
     name: 'Backup',
