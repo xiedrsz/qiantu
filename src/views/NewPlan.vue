@@ -1,8 +1,10 @@
 <template>
   <div>
-    <van-nav-bar title="新增计划" leftArrow>
-      <van-icon slot="right" name="delete"></van-icon>
+    <!-- 标题头 -->
+    <van-nav-bar title="新增计划" leftArrow @click-left="goBack">
+      <van-icon v-if="id" slot="right" name="delete" @click="onDelete"></van-icon>
     </van-nav-bar>
+    <!-- 表单 -->
     <van-cell title="产品" isLink>招商中证白酒指数</van-cell>
     <van-field label="金额" value="400" inputAlign="right"></van-field>
     <van-cell title="计划周期" isLink>每两周二</van-cell>
@@ -18,18 +20,12 @@
       <span style="color:#3a4dff">08月20日</span>
       <span>，遇非交易日顺延</span>
     </p>
-    <van-button type="info" size="large" round>确定</van-button>
-    <van-tabbar>
-      <van-tabbar-item icon="home-o">财富</van-tabbar-item>
-      <van-tabbar-item icon="home-o">消费</van-tabbar-item>
-      <van-tabbar-item icon="home-o">计划</van-tabbar-item>
-      <van-tabbar-item icon="home-o">设置</van-tabbar-item>
-    </van-tabbar>
+    <van-button type="info" size="large" round @click="confirm">确定</van-button>
   </div>
 </template>
 
 <script>
-import { NavBar, Icon, Cell, Field, SwitchCell, Row, Tag, Button, Tabbar, TabbarItem } from 'vant'
+import { NavBar, Icon, Cell, Field, SwitchCell, Row, Tag, Button } from 'vant'
 export default {
   name: 'NewPlan',
   components: {
@@ -40,9 +36,29 @@ export default {
     [SwitchCell.name]: SwitchCell,
     [Row.name]: Row,
     [Tag.name]: Tag,
-    [Button.name]: Button,
-    [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem
+    [Button.name]: Button
+  },
+  data () {
+    return {
+      id: ''
+    }
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    onDelete () {
+      console.log('Todo')
+      this.goBack()
+    },
+    confirm () {
+      console.log('Todo')
+      this.goBack()
+    }
+  },
+  mounted () {
+    let id = this.$route.query.id
+    this.id = id
   }
 }
 </script>

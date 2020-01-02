@@ -50,6 +50,14 @@ const routes = [
     }
   },
   {
+    path: '/newplan',
+    name: 'NewPlan',
+    component: function () {
+      return import(/* webpackChunkName: "newplan" */ '../views/NewPlan.vue')
+    }
+  },
+  // 设置模块
+  {
     path: '/backup',
     name: 'Backup',
     component: function () {
@@ -68,13 +76,6 @@ const routes = [
     name: 'NewEvent',
     component: function () {
       return import(/* webpackChunkName: "newevent" */ '../views/NewEvent.vue')
-    }
-  },
-  {
-    path: '/newplan',
-    name: 'NewPlan',
-    component: function () {
-      return import(/* webpackChunkName: "newplan" */ '../views/NewPlan.vue')
     }
   },
   {
