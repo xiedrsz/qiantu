@@ -1,8 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="新增资产" leftArrow>
-      <van-icon slot="right" name="delete"></van-icon>
-    </van-nav-bar>
+    <van-nav-bar title="新增资产" leftArrow @click-left="goBack"></van-nav-bar>
     <van-field label="名称" inputAlign="right" placeholder="招商中证白酒指数"></van-field>
     <van-field label="代码" inputAlign="right" placeholder="161725"></van-field>
     <van-switch-cell title="集合"></van-switch-cell>
@@ -15,7 +13,7 @@
       <van-tag size="large" plain round>标签内容</van-tag>
     </van-row>
     <van-field type="textarea" placeholder="备注"></van-field>
-    <van-button type="info" size="large" round>确定</van-button>
+    <van-button type="info" size="large" round @click="confirm">确定</van-button>
   </div>
 </template>
 
@@ -32,6 +30,15 @@ export default {
     [Row.name]: Row,
     [Tag.name]: Tag,
     [Button.name]: Button
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    confirm () {
+      console.log('Todo')
+      this.goBack()
+    }
   }
 }
 </script>
