@@ -1,8 +1,10 @@
 <template>
   <div>
+    <!-- 标题头 -->
     <van-nav-bar title="我的计划">
-      <van-icon slot="right" name="more-o"></van-icon>
+      <van-icon slot="right" name="plus" @click="gotoPlan()"></van-icon>
     </van-nav-bar>
+    <!-- 计划概要 -->
     <div>
       <van-row>
         <p style="padding-left:15px;text-align:center">总计划数</p>
@@ -15,12 +17,13 @@
         <van-col>流出1234.98</van-col>
       </van-row>
     </div>
+    <!-- 计划详情 -->
     <div>
       <van-row>
         <p style="padding-left:15px">详情</p>
       </van-row>
       <van-panel>
-        <van-cell slot="header" title="招商中证白酒指数" isLink label="余额+" center>累计转入800</van-cell>
+        <van-cell slot="header" title="招商中证白酒指数" isLink label="余额+" center @click="gotoPlan(11)">累计转入800</van-cell>
         <van-row>
           <van-col span="8" style="text-align:center">
             <div>计划日期</div>
@@ -54,11 +57,15 @@
         </van-row>
       </van-panel>
     </div>
+    <!-- MTabbar -->
+    <m-tabbar></m-tabbar>
   </div>
 </template>
 
 <script>
 import { NavBar, Icon, Row, Col, Panel, Cell } from 'vant'
+import MTabbar from '@/components/Tabbar'
+
 export default {
   name: 'Plan',
   components: {
@@ -67,7 +74,21 @@ export default {
     [Row.name]: Row,
     [Col.name]: Col,
     [Panel.name]: Panel,
-    [Cell.name]: Cell
+    [Cell.name]: Cell,
+    MTabbar
+  },
+  methods: {
+    gotoPlan (id) {
+      let options = {
+        path: '/newplan'
+      }
+      if (id !== undefined) {
+        options.query = {
+          id
+        }
+      }
+      this.$router.push(options)
+    }
   }
 }
 </script>

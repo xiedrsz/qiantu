@@ -41,6 +41,14 @@ const routes = [
       return import(/* webpackChunkName: "report" */ '../views/Report.vue')
     }
   },
+  // 计划模块
+  {
+    path: '/plan',
+    name: 'Plan',
+    component: function () {
+      return import(/* webpackChunkName: "plan" */ '../views/Plan.vue')
+    }
+  },
   {
     path: '/backup',
     name: 'Backup',
@@ -88,13 +96,6 @@ const routes = [
     name: 'Setting',
     component: function () {
       return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
-    }
-  },
-  {
-    path: '/plan',
-    name: 'Plan',
-    component: function () {
-      return import(/* webpackChunkName: "plan" */ '../views/Plan.vue')
     }
   },
   {
