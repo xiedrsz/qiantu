@@ -1,13 +1,13 @@
 <template>
   <div>
-    <van-nav-bar title="余额+">
-      <van-icon slot="right" name="more-o"></van-icon>
-    </van-nav-bar>
+    <!-- 标题头 -->
+    <van-nav-bar title="余额+" leftArrow @click-left="goBack"></van-nav-bar>
+    <!-- 账户概要 -->
     <div>
       <van-row>
         <p style="padding-left:15px">总市值（元）</p>
       </van-row>
-      <van-cell isLink size="large">
+      <van-cell size="large">
         <div>
           <span style="font-size:27px">2580.07</span>
           <span>(200.89份)</span>
@@ -19,16 +19,17 @@
       </van-row>
     </div>
     <div style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px">
-      <van-button icon="star-o" size="large" type="info">记一笔</van-button>
+      <van-button icon="star-o" size="large" type="info" @click="gotoBill()">记一笔</van-button>
     </div>
+    <!-- 账单列表 -->
     <div>
       <van-cell-group>
-        <van-cell title="定投计划" isLink icon="star-o">+ ￥400</van-cell>
-        <van-cell title="收益浮动" isLink icon="star-o">+ ￥2.48</van-cell>
         <p slot="title">
           <span>12月</span>
           <span style="float:right">+12000，-8000</span>
         </p>
+        <van-cell title="定投计划" isLink icon="star-o" @click="gotoBill(11)">+ ￥400</van-cell>
+        <van-cell title="收益浮动" isLink icon="star-o">+ ￥2.48</van-cell>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="定投计划" isLink icon="star-o">+ ￥400</van-cell>
@@ -54,6 +55,22 @@ export default {
     [Col.name]: Col,
     [Button.name]: Button,
     [CellGroup.name]: CellGroup
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    gotoBill (id) {
+      let options = {
+        path: '/newbill'
+      }
+      if (id !== undefined) {
+        options.query = {
+          id
+        }
+      }
+      this.$router.push(options)
+    }
   }
 }
 </script>

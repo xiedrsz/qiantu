@@ -25,6 +25,14 @@ const routes = [
       return import(/* webpackChunkName: "account" */ '../views/Account.vue')
     }
   },
+  // 账单模块
+  {
+    path: '/newbill',
+    name: 'NewBill',
+    component: function () {
+      return import(/* webpackChunkName: "newbill" */ '../views/NewBill.vue')
+    }
+  },
   {
     path: '/backup',
     name: 'Backup',
@@ -37,13 +45,6 @@ const routes = [
     name: 'Calendar',
     component: function () {
       return import(/* webpackChunkName: "calendar" */ '../views/Calendar.vue')
-    }
-  },
-  {
-    path: '/newbill',
-    name: 'NewBill',
-    component: function () {
-      return import(/* webpackChunkName: "newbill" */ '../views/NewBill.vue')
     }
   },
   {
