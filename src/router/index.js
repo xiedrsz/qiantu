@@ -50,6 +50,13 @@ const routes = [
     }
   },
   {
+    path: '/planinfo',
+    name: 'PlanInfo',
+    component: function () {
+      return import(/* webpackChunkName: "planinfo" */ '../views/PlanInfo.vue')
+    }
+  },
+  {
     path: '/newplan',
     name: 'NewPlan',
     component: function () {
@@ -97,13 +104,6 @@ const routes = [
     name: 'Setting',
     component: function () {
       return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
-    }
-  },
-  {
-    path: '/planinfo',
-    name: 'PlanInfo',
-    component: function () {
-      return import(/* webpackChunkName: "planinfo" */ '../views/PlanInfo.vue')
     }
   }
 ]

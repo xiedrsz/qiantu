@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="计划详情" leftArrow></van-nav-bar>
+    <van-nav-bar title="计划详情" leftArrow @click-left="goBack"></van-nav-bar>
     <div>
       <van-row>
         <p style="padding-left:15px;text-align:none;margin-top:0;margin-bottom:0">招商中证白酒指数</p>
@@ -58,6 +58,11 @@ export default {
     [Steps.name]: Steps,
     [Step.name]: Step,
     [Button.name]: Button
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    }
   }
 }
 </script>

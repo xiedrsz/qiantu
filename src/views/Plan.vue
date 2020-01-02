@@ -2,7 +2,7 @@
   <div>
     <!-- 标题头 -->
     <van-nav-bar title="我的计划">
-      <van-icon slot="right" name="plus" @click="gotoPlan()"></van-icon>
+      <van-icon slot="right" name="plus" @click="onAdd"></van-icon>
     </van-nav-bar>
     <!-- 计划概要 -->
     <div>
@@ -78,12 +78,15 @@ export default {
     MTabbar
   },
   methods: {
+    onAdd () {
+      this.$router.push({
+        path: '/newplan'
+      })
+    },
     gotoPlan (id) {
       let options = {
-        path: '/newplan'
-      }
-      if (id !== undefined) {
-        options.query = {
+        path: '/planinfo',
+        query: {
           id
         }
       }
