@@ -1,12 +1,13 @@
 <template>
   <div>
+    <!-- 标题头 -->
     <van-nav-bar>
       <div slot="title">
         <span style="margin-right:0.5em">理财通</span>
         <van-icon name="arrow-down" :size="12" color="#000000"></van-icon>
       </div>
-      <van-icon slot="right" name="home-o"></van-icon>
     </van-nav-bar>
+    <!-- 图表 -->
     <div>
       <van-row justify="space-around" type="flex" style="padding-top:10px;text-align:center">
         <van-col span="5">
@@ -31,15 +32,20 @@
       </van-radio-group>
       <div style="background-color:#f8ffd7;padding-bottom:260px;text-align:center">改成轮播图</div>
     </div>
+    <!-- 内容 -->
     <van-cell-group>
-      <van-cell label="200.89" isLink center icon="home-o" title="易方达信用债">43%</van-cell>
-      <van-cell title="招商中证白酒指数" label="899.01" isLink center icon="home-o">57%</van-cell>
+      <van-cell label="200.89" center icon="home-o" title="易方达信用债">43%</van-cell>
+      <van-cell title="招商中证白酒指数" label="899.01" center icon="home-o">57%</van-cell>
     </van-cell-group>
+    <!-- MTabbar -->
+    <m-tabbar></m-tabbar>
   </div>
 </template>
 
 <script>
 import { NavBar, Icon, Row, Col, RadioGroup, Radio, CellGroup, Cell } from 'vant'
+import MTabbar from '@/components/Tabbar'
+
 export default {
   name: 'Report',
   components: {
@@ -50,7 +56,8 @@ export default {
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [CellGroup.name]: CellGroup,
-    [Cell.name]: Cell
+    [Cell.name]: Cell,
+    MTabbar
   }
 }
 </script>

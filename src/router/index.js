@@ -35,6 +35,13 @@ const routes = [
   },
   // 报表模块
   {
+    path: '/report',
+    name: 'Report',
+    component: function () {
+      return import(/* webpackChunkName: "report" */ '../views/Report.vue')
+    }
+  },
+  {
     path: '/backup',
     name: 'Backup',
     component: function () {
@@ -74,13 +81,6 @@ const routes = [
     name: 'Quotation',
     component: function () {
       return import(/* webpackChunkName: "quotation" */ '../views/Quotation.vue')
-    }
-  },
-  {
-    path: '/report',
-    name: 'Report',
-    component: function () {
-      return import(/* webpackChunkName: "report" */ '../views/Report.vue')
     }
   },
   {
