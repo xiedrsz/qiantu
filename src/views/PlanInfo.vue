@@ -1,12 +1,15 @@
 <template>
   <div>
+    <!-- 标题头 -->
     <van-nav-bar title="计划详情" leftArrow @click-left="goBack"></van-nav-bar>
+    <!-- 计划概览 -->
     <div>
       <van-row>
         <p style="padding-left:15px;text-align:none;margin-top:0;margin-bottom:0">招商中证白酒指数</p>
       </van-row>
-      <van-cell title="每两周二" label="从 余额+ 转入 400元" center>管理计划</van-cell>
+      <van-cell title="每两周二" label="从 余额+ 转入 400元" center @click="onManage">管理计划</van-cell>
     </div>
+    <!-- 实施详情 -->
     <div>
       <van-row>
         <van-col span="12" style="text-align:center">
@@ -42,7 +45,6 @@
         </van-step>
       </van-steps>
     </div>
-    <van-button size="large">查看计划产品</van-button>
   </div>
 </template>
 
@@ -59,10 +61,28 @@ export default {
     [Step.name]: Step,
     [Button.name]: Button
   },
+  data () {
+    return {
+      id: ''
+    }
+  },
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    onManage () {
+      let id = this.id
+      this.$router.push({
+        path: '/newplan',
+        query: {
+          id
+        }
+      })
     }
+  },
+  mounted () {
+    let id = this.$route.query.id
+    this.id = id
   }
 }
 </script>
