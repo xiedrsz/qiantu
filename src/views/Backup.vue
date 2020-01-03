@@ -1,29 +1,35 @@
 <template>
   <div>
-    <van-nav-bar title="导入/备份" leftArrow>
-      <van-icon slot="right" name="search"></van-icon>
-      <van-icon slot="right" name="search"></van-icon>
+    <van-nav-bar title="导入/备份" leftArrow @click-left="goBack">
+      <van-icon slot="right" name="search" @click="onCopy"></van-icon>
     </van-nav-bar>
     <van-field type="textarea" placeholder="预设内容"></van-field>
-    <van-tabbar>
-      <van-tabbar-item icon="home-o">财富</van-tabbar-item>
-      <van-tabbar-item icon="home-o">消费</van-tabbar-item>
-      <van-tabbar-item icon="home-o">计划</van-tabbar-item>
-      <van-tabbar-item icon="home-o">设置</van-tabbar-item>
-    </van-tabbar>
+    <van-button type="info" size="large" round @click="onImport">导入</van-button>
   </div>
 </template>
 
 <script>
-import { NavBar, Icon, Field, Tabbar, TabbarItem } from 'vant'
+import { NavBar, Icon, Field, Button } from 'vant'
 export default {
   name: 'Backup',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
     [Field.name]: Field,
-    [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem
+    [Button.name]: Button
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    onCopy () {
+      console.log('Todo Copy')
+    },
+    onImport () {
+      console.log('Todo')
+      let depth = window.history.length - 2
+      this.$router.go(-depth)
+    }
   }
 }
 </script>

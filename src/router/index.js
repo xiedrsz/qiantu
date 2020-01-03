@@ -65,6 +65,13 @@ const routes = [
   },
   // 设置模块
   {
+    path: '/setting',
+    name: 'Setting',
+    component: function () {
+      return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
+    }
+  },
+  {
     path: '/backup',
     name: 'Backup',
     component: function () {
@@ -97,13 +104,6 @@ const routes = [
     name: 'Quotation',
     component: function () {
       return import(/* webpackChunkName: "quotation" */ '../views/Quotation.vue')
-    }
-  },
-  {
-    path: '/setting',
-    name: 'Setting',
-    component: function () {
-      return import(/* webpackChunkName: "setting" */ '../views/Setting.vue')
     }
   }
 ]

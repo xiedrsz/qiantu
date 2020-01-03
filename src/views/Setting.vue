@@ -1,29 +1,24 @@
 <template>
   <div>
-    <van-nav-bar title="设置" leftArrow>
-      <van-icon slot="right" name="plus"></van-icon>
-    </van-nav-bar>
-    <van-cell icon="home-o" title="导入/备份" isLink></van-cell>
-    <van-cell icon="home-o" title="投资日历" isLink></van-cell>
-    <van-tabbar>
-      <van-tabbar-item icon="home-o">财富</van-tabbar-item>
-      <van-tabbar-item icon="home-o">消费</van-tabbar-item>
-      <van-tabbar-item icon="home-o">计划</van-tabbar-item>
-      <van-tabbar-item icon="home-o">设置</van-tabbar-item>
-    </van-tabbar>
+    <van-nav-bar title="设置"></van-nav-bar>
+    <van-cell icon="home-o" title="导入/备份" isLink to="/backup"></van-cell>
+    <van-cell icon="home-o" title="投资日历" isLink to="/calendar"></van-cell>
+    <!-- MTabbar -->
+    <m-tabbar></m-tabbar>
   </div>
 </template>
 
 <script>
-import { NavBar, Icon, Cell, Tabbar, TabbarItem } from 'vant'
+import { NavBar, Icon, Cell } from 'vant'
+import MTabbar from '@/components/Tabbar'
+
 export default {
   name: 'Setting',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
     [Cell.name]: Cell,
-    [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem
+    MTabbar
   }
 }
 </script>
