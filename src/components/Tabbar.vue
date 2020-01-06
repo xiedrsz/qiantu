@@ -10,7 +10,7 @@
 <script>
 import { Tabbar, TabbarItem } from 'vant'
 export default {
-  name: 'Backup',
+  name: 'MTabbar',
   props: {
     actived: {
       type: Number,
