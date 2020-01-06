@@ -1,26 +1,23 @@
 <template>
   <div>
-    <van-nav-bar title="招商中证白酒指数" leftArrow>
-      <van-icon slot="right" name="plus"></van-icon>
+    <!-- 标题头 -->
+    <van-nav-bar title="招商中证白酒指数" leftArrow @click-left="goBack">
+      <van-icon slot="right" name="plus" @click="gotoInfo()"></van-icon>
     </van-nav-bar>
+    <!-- 行情走势图 -->
     <div style="height:200px;background-color:#eff9ff"></div>
+    <!-- 详情 -->
     <van-cell-group title="行情">
-      <van-cell isLink title="2019.08.31">2.08</van-cell>
+      <van-cell isLink title="2019.08.31" @click="gotoInfo(11)">2.08</van-cell>
       <van-cell isLink title="2019.08.31">2.08</van-cell>
       <van-cell isLink title="2019.08.31">2.08</van-cell>
     </van-cell-group>
     <van-divider>没有更多了</van-divider>
-    <van-tabbar>
-      <van-tabbar-item icon="home-o">财富</van-tabbar-item>
-      <van-tabbar-item icon="home-o">消费</van-tabbar-item>
-      <van-tabbar-item icon="home-o">计划</van-tabbar-item>
-      <van-tabbar-item icon="home-o">设置</van-tabbar-item>
-    </van-tabbar>
   </div>
 </template>
 
 <script>
-import { NavBar, Icon, CellGroup, Cell, Divider, Tabbar, TabbarItem } from 'vant'
+import { NavBar, Icon, CellGroup, Cell, Divider } from 'vant'
 export default {
   name: 'Quotation',
   components: {
@@ -28,9 +25,21 @@ export default {
     [Icon.name]: Icon,
     [CellGroup.name]: CellGroup,
     [Cell.name]: Cell,
-    [Divider.name]: Divider,
-    [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem
+    [Divider.name]: Divider
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    gotoInfo (id) {
+      let options = {
+        path: '/newquotation'
+      }
+      if (id) {
+        options.query = { id }
+      }
+      this.$router.push(options)
+    }
   }
 }
 </script>

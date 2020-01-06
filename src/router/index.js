@@ -25,6 +25,21 @@ const routes = [
       return import(/* webpackChunkName: "account" */ '../views/Account.vue')
     }
   },
+  // 行情模块
+  {
+    path: '/quotation',
+    name: 'Quotation',
+    component: function () {
+      return import(/* webpackChunkName: "quotation" */ '../views/Quotation.vue')
+    }
+  },
+  {
+    path: '/newquotation',
+    name: 'NewQuotation',
+    component: function () {
+      return import(/* webpackChunkName: "newquotation" */ '../views/NewQuotation.vue')
+    }
+  },
   // 账单模块
   {
     path: '/newbill',
@@ -90,20 +105,6 @@ const routes = [
     name: 'NewEvent',
     component: function () {
       return import(/* webpackChunkName: "newevent" */ '../views/NewEvent.vue')
-    }
-  },
-  {
-    path: '/newquotation',
-    name: 'NewQuotation',
-    component: function () {
-      return import(/* webpackChunkName: "newquotation" */ '../views/NewQuotation.vue')
-    }
-  },
-  {
-    path: '/quotation',
-    name: 'Quotation',
-    component: function () {
-      return import(/* webpackChunkName: "quotation" */ '../views/Quotation.vue')
     }
   }
 ]

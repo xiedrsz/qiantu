@@ -1,6 +1,8 @@
 <template>
   <div>
+    <!-- 标题头 -->
     <van-nav-bar title="新增资产" leftArrow @click-left="goBack"></van-nav-bar>
+    <!-- 表单 -->
     <van-field label="名称" inputAlign="right" placeholder="招商中证白酒指数"></van-field>
     <van-field label="代码" inputAlign="right" placeholder="161725"></van-field>
     <van-switch-cell title="集合"></van-switch-cell>
@@ -20,7 +22,7 @@
 <script>
 import { NavBar, Icon, Cell, Field, SwitchCell, Row, Tag, Button } from 'vant'
 export default {
-  name: 'NewPlan',
+  name: 'NewProperty',
   components: {
     [NavBar.name]: NavBar,
     [Icon.name]: Icon,
