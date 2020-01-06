@@ -7,7 +7,7 @@
       <van-row>
         <p style="padding-left:15px">总市值（元）</p>
       </van-row>
-      <van-cell size="large">
+      <van-cell size="large" isLink @click="gotoQuotation">
         <div>
           <span style="font-size:27px">2580.07</span>
           <span>(200.89份)</span>
@@ -56,6 +56,11 @@ export default {
     [Button.name]: Button,
     [CellGroup.name]: CellGroup
   },
+  data () {
+    return {
+      id: ''
+    }
+  },
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
@@ -70,7 +75,20 @@ export default {
         }
       }
       this.$router.push(options)
+    },
+    gotoQuotation () {
+      let id = this.id
+      this.$router.push({
+        path: '/quotation',
+        query: {
+          id
+        }
+      })
     }
+  },
+  mounted () {
+    let id = this.$route.query.id
+    this.id = id
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 标题头 -->
-    <van-nav-bar title="总资产" :leftArrow="showBack" @click-left="goBack">
+    <van-nav-bar title="总资产" :leftArrow="!!id" @click-left="goBack">
       <van-icon slot="right" name="plus" @click="add"></van-icon>
     </van-nav-bar>
     <!-- 账户概要 -->
@@ -23,11 +23,11 @@
     <!-- 子级账户 -->
     <div>
       <van-cell-group>
-        <p slot="title" @click="changeCollection">
+        <p slot="title" @click="changeCollection(11)">
           <span>基金</span>
           <span style="float:right">21899.99</span>
         </p>
-        <van-cell title="理财通" isLink icon="star-o" @click="gotoAccount">400</van-cell>
+        <van-cell title="理财通" isLink icon="star-o" @click="gotoAccount(11)">400</van-cell>
         <van-cell title="支付宝" isLink icon="star-o">2.48</van-cell>
       </van-cell-group>
       <van-cell-group>
@@ -59,22 +59,11 @@ export default {
     [CellGroup.name]: CellGroup,
     MTabbar
   },
-  data () {
-    return {
-      showBack: false
+  computed: {
+    id () {
+      let { id } = this.$route.query
+      return id
     }
-  },
-  watch: {
-    $route (value) {
-      let query = value.query
-      let { current } = query
-      this.showBack = current !== undefined
-    }
-  },
-  mounted () {
-    let query = this.$route.query
-    let { current } = query
-    this.showBack = current !== undefined
   },
   methods: {
     goBack () {
@@ -85,19 +74,19 @@ export default {
         path: '/newproperty'
       })
     },
-    changeCollection () {
+    changeCollection (id) {
       this.$router.push({
         path: '/',
         query: {
-          current: 0
+          id
         }
       })
     },
-    gotoAccount () {
+    gotoAccount (id) {
       this.$router.push({
         path: '/account',
         query: {
-          current: 0
+          id
         }
       })
     }
