@@ -1,12 +1,14 @@
 <template>
   <div>
-    <van-nav-bar title="2019.08.01" leftArrow>
-      <van-icon slot="right" name="delete"></van-icon>
+    <!-- 标题头 -->
+    <van-nav-bar title="2019.08.01" leftArrow @click-left="goBack">
+      <van-icon v-if="id" slot="right" name="delete" @click="onDelete"></van-icon>
     </van-nav-bar>
+    <!-- 表单 -->
     <van-cell title="事件" isLink>休市</van-cell>
     <van-cell title="目标产品" isLink>全部产品</van-cell>
     <van-field type="textarea" placeholder="备注"></van-field>
-    <van-button type="info" size="large" round>确定</van-button>
+    <van-button type="info" size="large" round @click="onConfirm">确定</van-button>
   </div>
 </template>
 
@@ -20,6 +22,28 @@ export default {
     [Cell.name]: Cell,
     [Field.name]: Field,
     [Button.name]: Button
+  },
+  data () {
+    return {
+      id: ''
+    }
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    onDelete () {
+      console.log('Todo')
+      this.goBack()
+    },
+    onConfirm () {
+      console.log('Todo')
+      this.goBack()
+    }
+  },
+  mounted () {
+    let id = this.$route.query.id
+    this.id = id
   }
 }
 </script>
