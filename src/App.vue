@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App',
+  mounted () {
+    this.$store.dispatch('get_Accounts')
+  }
+}
+</script>
+
 <style lang="less">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

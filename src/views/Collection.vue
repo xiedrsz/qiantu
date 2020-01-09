@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- 标题头 -->
-    <van-nav-bar title="总资产" :leftArrow="!!id" @click-left="goBack">
-      <van-icon slot="right" name="plus" @click="add"></van-icon>
+    <van-nav-bar :title="account.name" :leftArrow="!!id" @click-left="goBack">
+      <van-icon slot="right" name="plus" @click="gotoProperty()"></van-icon>
     </van-nav-bar>
     <!-- 账户概要 -->
     <div>
       <van-row>
         <p style="padding-left:15px">总市值（元）</p>
       </van-row>
-      <van-cell size="large">
+      <van-cell size="large" :isLink="!!id" @click="gotoProperty(id)">
         <div>
-          <span style="font-size:27px">2580.07</span>
-          <span>(200.89份)</span>
+          <span style="font-size:27px">{{ account.capitalization }}</span>
+          <span v-if="account.share">({{ account.share }}份)</span>
         </div>
       </van-cell>
       <van-row type="flex" justify="space-around">
@@ -22,22 +22,18 @@
     </div>
     <!-- 子级账户 -->
     <div>
-      <van-cell-group>
-        <p slot="title" @click="changeCollection(11)">
-          <span>基金</span>
-          <span style="float:right">21899.99</span>
-        </p>
-        <van-cell title="理财通" isLink icon="star-o" @click="gotoAccount(11)">400</van-cell>
-        <van-cell title="支付宝" isLink icon="star-o">2.48</van-cell>
-      </van-cell-group>
-      <van-cell-group>
-        <van-cell title="东莞证券" isLink icon="star-o">400</van-cell>
-        <van-cell title="平安证券" isLink icon="star-o">2.48</van-cell>
-        <p slot="title">
-          <span>股票</span>
-          <span style="float:right">8000</span>
-        </p>
-      </van-cell-group>
+      <template v-for="collection in children">
+        <van-cell-group v-if="collection.children.length" :key="collection.id">
+          <p slot="title" @click="gotoAccount(collection.id, collection.isCollection)">
+            <span>{{collection.name}}</span>
+            <span style="float:right">{{collection.capitalization}}</span>
+          </p>
+          <!-- Todo icon -->
+          <van-cell v-for="item in collection.children" :key="item.id" :title="item.name" isLink icon="star-o" @click="gotoAccount(item.id, item.isCollection)">{{ item.capitalization }}</van-cell>
+        </van-cell-group>
+        <!-- Todo icon -->
+        <van-cell v-else :key="collection.id" :title="collection.name" isLink icon="star-o" @click="gotoAccount(collection.id, collection.isCollection)">{{ collection.capitalization }}</van-cell>
+      </template>
     </div>
     <!-- MTabbar -->
     <m-tabbar></m-tabbar>
@@ -63,28 +59,39 @@ export default {
     id () {
       let { id } = this.$route.query
       return id
+    },
+    account () {
+      return this.$store.getters.account
+    },
+    children () {
+      return this.$store.getters.children
+    }
+  },
+  watch: {
+    $route (value) {
+      let id = value.query.id
+      this.$store.commit('SET_CURRENT', id)
     }
   },
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
-    add () {
-      this.$router.push({
+    gotoProperty (id) {
+      let options = {
         path: '/newproperty'
-      })
-    },
-    changeCollection (id) {
-      this.$router.push({
-        path: '/',
-        query: {
+      }
+      if (id) {
+        options.query = {
           id
         }
-      })
+      }
+      this.$router.push(options)
     },
-    gotoAccount (id) {
+    gotoAccount (id, isCollection) {
+      let path = isCollection ? '/' : '/account'
       this.$router.push({
-        path: '/account',
+        path,
         query: {
           id
         }
