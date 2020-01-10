@@ -73,6 +73,10 @@ export default {
       this.$store.commit('SET_CURRENT', id)
     }
   },
+  mounted () {
+    let id = this.$route.query.id
+    this.$store.commit('SET_CURRENT', id)
+  },
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')

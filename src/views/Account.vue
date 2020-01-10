@@ -1,16 +1,19 @@
 <template>
   <div>
     <!-- 标题头 -->
-    <van-nav-bar title="余额+" leftArrow @click-left="goBack"></van-nav-bar>
+    <van-nav-bar :title="account.name" leftArrow @click-left="goBack">
+      <!-- 行情 -->
+      <van-icon slot="right" name="plus" @click="gotoQuotation()"></van-icon>
+    </van-nav-bar>
     <!-- 账户概要 -->
     <div>
       <van-row>
         <p style="padding-left:15px">总市值（元）</p>
       </van-row>
-      <van-cell size="large" isLink @click="gotoQuotation">
+      <van-cell size="large" isLink @click="gotoProperty">
         <div>
-          <span style="font-size:27px">2580.07</span>
-          <span>(200.89份)</span>
+          <span style="font-size:27px">{{ account.capitalization }}</span>
+          <span v-if="account.share">({{ account.share }}份)</span>
         </div>
       </van-cell>
       <van-row type="flex" justify="space-around">
@@ -61,9 +64,32 @@ export default {
       id: ''
     }
   },
+  computed: {
+    account () {
+      return this.$store.getters.account
+    }
+  },
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    gotoQuotation () {
+      let id = this.id
+      this.$router.push({
+        path: '/quotation',
+        query: {
+          id
+        }
+      })
+    },
+    gotoProperty () {
+      let id = this.id
+      this.$router.push({
+        path: '/newproperty',
+        query: {
+          id
+        }
+      })
     },
     gotoBill (id) {
       let options = {
@@ -75,20 +101,11 @@ export default {
         }
       }
       this.$router.push(options)
-    },
-    gotoQuotation () {
-      let id = this.id
-      this.$router.push({
-        path: '/quotation',
-        query: {
-          id
-        }
-      })
     }
   },
   mounted () {
-    let id = this.$route.query.id
-    this.id = id
+    this.id = this.$route.query.id
+    this.$store.commit('SET_CURRENT', this.id)
   }
 }
 </script>

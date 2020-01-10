@@ -13,7 +13,7 @@ export default new Vuex.Store({
     account (state) {
       let { current, accounts } = state
       let list = accounts.list
-      return _.find(list, ({ id }) => id === current)
+      return _.find(list, ({ id }) => id === current) || list[0] || {}
     },
     children (state) {
       let { current, accounts } = state
@@ -29,7 +29,10 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    SET_CURRENT (state, id = '1') {
+    SET_CURRENT (state, id) {
+      if (!id) {
+        id = state.accounts.list[0].id
+      }
       state.current = id
     }
   },

@@ -1,6 +1,9 @@
 /**
  * @module account 账户
  */
+import _ from 'lodash'
+// putAccount
+import { getAccountList } from '@/db'
 
 /**
  * prop table
@@ -9,7 +12,6 @@
  *  节点名称  是否展开  位置  子节点
  * ================================
  */
-import _ from 'lodash'
 
 const state = {
   // 列表
@@ -54,42 +56,13 @@ const mutations = {
 }
 
 const actions = {
-  get_Accounts ({
-    commit,
-    state
-  }, cb) {
-    let data = [{
-      id: '1',
-      code: '',
-      name: '总资产',
-      capitalization: 8000,
-      share: '',
-      isCollection: true,
-      tags: '',
-      note: '',
-      parent: ''
-    }, {
-      id: '2',
-      code: '',
-      name: '基金',
-      capitalization: 8000,
-      share: '',
-      isCollection: true,
-      tags: '',
-      note: '',
-      parent: '1'
-    }, {
-      id: '3',
-      code: '',
-      name: '理财通',
-      capitalization: 8000,
-      share: '',
-      isCollection: true,
-      tags: '',
-      note: '',
-      parent: '2'
-    }]
-    commit('INIT_LIST', data)
+  async get_Accounts ({
+    commit
+  }) {
+    let list = await getAccountList()
+    let current = list[0].id
+    commit('SET_CURRENT', current)
+    commit('INIT_LIST', list)
   },
   save_account ({
     commit,
