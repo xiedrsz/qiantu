@@ -31,7 +31,7 @@
           <span>12月</span>
           <span style="float:right">+12000，-8000</span>
         </p>
-        <van-cell title="定投计划" isLink icon="star-o" @click="gotoBill(11)">+ ￥400</van-cell>
+        <van-cell title="定投计划" isLink icon="/img/calendar/5.svg" @click="gotoBill(11)">+ ￥400</van-cell>
         <van-cell title="收益浮动" isLink icon="star-o">+ ￥2.48</van-cell>
       </van-cell-group>
       <van-cell-group>
