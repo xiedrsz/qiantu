@@ -2,41 +2,19 @@
  * @module account 账户
  */
 import _ from 'lodash'
-// putAccount
-import { getAccountList } from '@/db'
+import { getAccountList, putAccount } from '@/db'
 
 /**
  * prop table
  * ================================
- *   node   checked  pos  childs
+ *   node   checked  pos  childs  // 市值 capitalization: 8000,
  *  节点名称  是否展开  位置  子节点
  * ================================
  */
 
 const state = {
   // 列表
-  list: [
-    {
-      // id
-      id: '1',
-      // 代码
-      code: '',
-      // 名称
-      name: '总资产',
-      // 市值
-      capitalization: 8000,
-      // 份额
-      share: '',
-      // 集合
-      isCollection: false,
-      // 标签
-      tags: '',
-      // 备注
-      note: '',
-      // 归属
-      parent: ''
-    }
-  ]
+  list: []
 }
 
 const getters = {
@@ -50,8 +28,16 @@ const mutations = {
   INIT_LIST (state, list) {
     state.list = list
   },
-  PUSH_ACCOUNT (state, account) {
-    state.list.push(account)
+  PUT_ACCOUNT (state, account) {
+    let id = account.id
+    let last = _.find(state.list, {
+      id
+    })
+    if (last) {
+      Object.assign(last, account)
+    } else {
+      state.list.push(account)
+    }
   }
 }
 
@@ -64,22 +50,11 @@ const actions = {
     commit('SET_CURRENT', current)
     commit('INIT_LIST', list)
   },
-  save_account ({
-    commit,
-    state
+  async save_account ({
+    commit
   }, account) {
-    let id = account.id
-    if (id) {
-      let list = state.list
-      let last = _.find(list, {
-        id
-      })
-      Object.assign(last, account)
-      commit('INIT_LIST', list)
-    } else {
-      account.id = _.random(1000) + ''
-      commit('PUSH_ACCOUNT', account)
-    }
+    account.id = await putAccount(account)
+    commit('PUT_ACCOUNT', account)
   }
 }
 

@@ -2,11 +2,10 @@ import _ from 'lodash'
 import db from './db'
 
 const table = db.account
-const props = ['id', 'code', 'name', 'share', 'isCollection', 'tags', 'note', 'parent']
+const props = ['id', 'code', 'name', 'isCollection', 'tags', 'note', 'parent']
 const defAccount = {
   code: '',
   name: '总资产',
-  share: '',
   isCollection: true,
   tags: '',
   note: '',
@@ -40,7 +39,6 @@ const getAccountList = () => {
 const putAccount = account => {
   account = clean(account)
   return table.put(account).then(id => {
-    console.log(id)
     return id
   })
 }

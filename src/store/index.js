@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
 import accounts from './accounts'
+import tags from './tags'
 
 Vue.use(Vuex)
 
@@ -31,7 +32,7 @@ export default new Vuex.Store({
   mutations: {
     SET_CURRENT (state, id) {
       if (!id) {
-        id = state.accounts.list[0].id
+        id = (state.accounts.list[0] || {}).id
       }
       state.current = id
     }
@@ -39,6 +40,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    accounts
+    accounts,
+    tags
   }
 })

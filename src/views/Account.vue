@@ -104,7 +104,7 @@ export default {
     }
   },
   mounted () {
-    this.id = this.$route.query.id
+    this.id = +this.$route.query.id
     this.$store.commit('SET_CURRENT', this.id)
   }
 }
