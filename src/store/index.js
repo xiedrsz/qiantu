@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
 import accounts from './accounts'
+import bills from './bills'
 import tags from './tags'
 
 Vue.use(Vuex)
@@ -27,6 +28,37 @@ export default new Vuex.Store({
           children
         }
       })
+    },
+    bill (state) {
+      let { current, bills } = state
+      let list = bills.list
+      list = _.filter(list, ({ consumption, capital }) => {
+        return consumption === current || capital === current
+      })
+      list = _.groupBy(list, ({ date }) => {
+        date = date.split('-')
+        return date[1]
+      })
+      list = _.map(list, collection => {
+        let month = collection[0].date
+        month = +month.split('-')[1]
+        collection = _.map(collection, ({ date, capital, money, ...other }) => {
+          let day = date.split('-')[2]
+          money = capital === current ? -money : money
+          return {
+            ...other,
+            date,
+            capital,
+            money,
+            day
+          }
+        })
+        return {
+          month,
+          bills: collection
+        }
+      })
+      return list
     }
   },
   mutations: {
@@ -41,6 +73,7 @@ export default new Vuex.Store({
   },
   modules: {
     accounts,
-    tags
+    tags,
+    bills
   }
 })

@@ -9,6 +9,7 @@ export default {
   name: 'App',
   mounted () {
     this.$store.dispatch('get_Accounts')
+    this.$store.dispatch('get_Bills')
   }
 }
 </script>

@@ -26,21 +26,12 @@
     </div>
     <!-- 账单列表 -->
     <div>
-      <van-cell-group>
+      <van-cell-group v-for="item in bill" :key="item.month">
         <p slot="title">
-          <span>12月</span>
+          <span>{{item.month}}月</span>
           <span style="float:right">+12000，-8000</span>
         </p>
-        <van-cell title="定投计划" isLink icon="/img/calendar/5.svg" @click="gotoBill(11)">+ ￥400</van-cell>
-        <van-cell title="收益浮动" isLink icon="star-o">+ ￥2.48</van-cell>
-      </van-cell-group>
-      <van-cell-group>
-        <van-cell title="定投计划" isLink icon="star-o">+ ￥400</van-cell>
-        <van-cell title="收益浮动" isLink icon="star-o">+ ￥2.48</van-cell>
-        <p slot="title">
-          <span>11月</span>
-          <span style="float:right">+12000，-8000</span>
-        </p>
+        <van-cell title="定投计划" isLink :icon="'/img/calendar/' + tmp.day + '.svg'" v-for="tmp in item.bills" :key="tmp.id" @click="gotoBill(tmp.id)">+ ￥{{tmp.money}}</van-cell>
       </van-cell-group>
     </div>
   </div>
@@ -67,6 +58,9 @@ export default {
   computed: {
     account () {
       return this.$store.getters.account
+    },
+    bill () {
+      return this.$store.getters.bill
     }
   },
   methods: {

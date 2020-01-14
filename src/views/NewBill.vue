@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="新增账单" leftArrow @click-left="goBack">
+    <van-nav-bar :title="id ? '账单修改' : '新增账单'" leftArrow @click-left="goBack">
       <van-icon v-if="id" slot="right" name="delete" @click="onDelete"></van-icon>
     </van-nav-bar>
     <van-cell title="账单类型" isLink>投资计划</van-cell>
