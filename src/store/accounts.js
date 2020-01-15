@@ -30,6 +30,21 @@ const getters = {
   accounts (state) {
     let list = state.list
     return list.filter(({ isCollection }) => !isCollection)
+  },
+  account (state) {
+    let { list, current } = state
+    return _.find(list, ({ id }) => id === current) || list[0] || {}
+  },
+  children (state) {
+    let { list, current } = state
+    return _.filter(list, ({ parent }) => parent === current).map(({ id, ...other }) => {
+      let children = _.filter(list, ({ parent }) => parent === id)
+      return {
+        ...other,
+        id,
+        children
+      }
+    })
   }
 }
 

@@ -7,3 +7,7 @@ Vue.filter('mapDict', (value, dictionaries, key = 'code', name = 'name') => {
   }) || {}
   return item[name] || value
 })
+
+Vue.filter('ABS', value => {
+  return value < 0 ? -value : value
+})

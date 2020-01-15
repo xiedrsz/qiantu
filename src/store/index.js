@@ -11,23 +11,6 @@ export default new Vuex.Store({
   state: {
   },
   getters: {
-    account (state) {
-      let accounts = state.accounts
-      let { list, current } = accounts
-      return _.find(list, ({ id }) => id === current) || list[0] || {}
-    },
-    children (state) {
-      let accounts = state.accounts
-      let { list, current } = accounts
-      return _.filter(list, ({ parent }) => parent === current).map(({ id, ...other }) => {
-        let children = _.filter(list, ({ parent }) => parent === id)
-        return {
-          ...other,
-          id,
-          children
-        }
-      })
-    },
     bills (state) {
       let { accounts, bills } = state
       let current = accounts.current
@@ -40,10 +23,14 @@ export default new Vuex.Store({
       })
       list = _.map(list, collection => {
         let month = collection[0].date
+        let inflow = 0
+        let outflow = 0
         month = +/(\d{2})月/.exec(month)[1]
         collection = _.map(collection, ({ date, capital, money, ...other }) => {
           let day = +/(\d{2})日/.exec(date)[1]
           money = capital === current ? -money : money
+          inflow += money > 0 ? +money : 0
+          outflow += money < 0 ? +money : 0
           return {
             ...other,
             date,
@@ -54,6 +41,8 @@ export default new Vuex.Store({
         })
         return {
           month,
+          inflow,
+          outflow,
           bills: collection
         }
       })

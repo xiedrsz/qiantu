@@ -12,14 +12,15 @@
       </van-row>
       <van-cell size="large" isLink @click="gotoProperty">
         <div>
-          <span style="font-size:27px">{{ account.capitalization }}</span>
-          <span v-if="account.share">({{ account.share }}份)</span>
+          <span style="font-size:27px">{{ capitalization }}</span>
+          <span v-if="share">({{ share }}份)</span>
         </div>
       </van-cell>
-      <van-row type="flex" justify="space-around">
+      <!-- 暂时屏蔽 -->
+      <!-- <van-row type="flex" justify="space-around">
         <van-col>流入1200.87</van-col>
         <van-col>流出1234.98</van-col>
-      </van-row>
+      </van-row> -->
     </div>
     <div style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px">
       <van-button icon="star-o" size="large" type="info" @click="gotoBill()">记一笔</van-button>
@@ -29,16 +30,23 @@
       <van-cell-group v-for="item in bills" :key="item.month">
         <p slot="title">
           <span>{{item.month}}月</span>
-          <span style="float:right">+12000，-8000</span>
+          <span style="float:right">{{item.outflow}}</span>
+          <span style="float:right">+{{item.inflow}}，</span>
         </p>
-        <van-cell title="定投计划" isLink :icon="'/img/calendar/' + tmp.day + '.svg'" v-for="tmp in item.bills" :key="tmp.id" @click="gotoBill(tmp.id)">+ ￥{{tmp.money}}</van-cell>
+        <van-cell :title="tmp.type | mapDict(billTypes)" isLink :icon="'/img/calendar/' + tmp.day + '.svg'" v-for="tmp in item.bills" :key="tmp.id" @click="gotoBill(tmp.id)">
+          <span>{{tmp.money >= 0 ? '+' : '-'}}</span>
+          <span> ￥{{tmp.money | ABS}}</span>
+        </van-cell>
       </van-cell-group>
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import { NavBar, Icon, Row, Cell, Col, Button, CellGroup } from 'vant'
+import { BillTypes } from '@/db/const'
+
 export default {
   name: 'Account',
   components: {
@@ -52,7 +60,8 @@ export default {
   },
   data () {
     return {
-      id: ''
+      id: '',
+      billTypes: BillTypes
     }
   },
   computed: {
@@ -61,6 +70,17 @@ export default {
     },
     bills () {
       return this.$store.getters.bills
+    },
+    capitalization () {
+      let bills = this.bills
+      return _.sumBy(bills, ({ inflow, outflow }) => inflow + outflow)
+    },
+    share () {
+      let mbills = this.bills
+      let accountId = this.account.id
+      return _.sumBy(mbills, ({ bills }) => {
+        return _.sumBy(bills, ({ consumption, share }) => consumption === accountId ? +share : 0)
+      })
     }
   },
   methods: {
