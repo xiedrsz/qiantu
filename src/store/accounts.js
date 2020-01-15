@@ -41,7 +41,7 @@ const mutations = {
     if (!id) {
       id = (state.list[0] || {}).id
     }
-    state.current = id
+    state.current = +id
   },
   PUT_ACCOUNT (state, account) {
     let id = account.id

@@ -1,16 +1,19 @@
 <template>
   <div>
+    <!-- 标题头 -->
     <van-nav-bar :title="id ? '账单修改' : '新增账单'" leftArrow @click-left="goBack">
       <van-icon v-if="id" slot="right" name="delete" @click="onDelete"></van-icon>
     </van-nav-bar>
+    <!-- 表单 -->
     <van-cell title="账单类型" isLink @click="showPicker('type')">{{form.type | mapDict(billTypes)}}</van-cell>
     <van-cell title="消费/产品" isLink @click="showPicker('consumption')">{{form.consumption | mapDict(accounts, 'id')}}</van-cell>
-    <van-cell title="资金账户" isLink @click="showPicker('capital')">{{form.capital | mapDict(capitals, 'id')}}</van-cell>
+    <van-cell v-if="form.type !== '02' && form.type !== '06'" title="资金账户" isLink @click="showPicker('capital')">{{form.capital | mapDict(capitals, 'id')}}</van-cell>
     <van-cell title="日期" isLink @click="showPicker('date')">{{form.date}}</van-cell>
-    <van-field v-model="form.share" label="份额" inputAlign="right"></van-field>
+    <van-field v-if="form.type !== '02' && form.type !== '05'" v-model="form.share" label="份额" inputAlign="right"></van-field>
     <van-field v-model="form.money" label="金额" inputAlign="right"></van-field>
     <van-field v-model="form.note" type="textarea" placeholder="备注"></van-field>
     <van-button type="info" size="large" round @click="confirm">确定</van-button>
+    <!-- 底部弹框 -->
     <van-popup v-model="show" position="bottom">
       <van-picker v-if="pickerType !== 'date'" show-toolbar :title="pickerTitle" :columns="columns" value-key="name" @cancel="onClear" @confirm="onSelect" cancel-button-text="清除" />
       <van-datetime-picker v-else v-model="date" type="date" @confirm="onPickTime" @cancel="hidePicker" :max-date="maxDate" />
@@ -19,6 +22,7 @@
 </template>
 
 <script>
+// Todo 想加入机器学习，为每一步操作给出推荐答案
 import moment from 'moment'
 import { NavBar, Icon, Cell, Field, Button, Picker, Popup, DatetimePicker } from 'vant'
 import { BillTypes } from '@/db/const'
@@ -49,10 +53,10 @@ export default {
       show: false,
       form: {
         id: '',
-        type: '',
+        type: '02',
         consumption: '',
         capital: '',
-        date: '',
+        date: moment(Today).format('YYYY年MM月DD日'),
         share: '',
         money: '',
         note: ''
@@ -80,7 +84,16 @@ export default {
   },
   mounted () {
     let id = this.$route.query.id
+    let consumption = this.$store.state.accounts.current
+    let bill
     this.id = id
+    this.$store.commit('SET_B_CURRENT', id)
+    bill = this.$store.getters.bill
+    if (bill) {
+      this.form = bill
+    } else {
+      this.form.consumption = consumption
+    }
   },
   methods: {
     goBack () {
@@ -112,7 +125,7 @@ export default {
       this.hidePicker()
     },
     confirm () {
-      console.log('Todo')
+      this.$store.dispatch('put_bill', this.form)
       this.goBack()
     }
   }

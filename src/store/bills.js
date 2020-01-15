@@ -9,44 +9,56 @@
  *  节点名称  是否展开  位置  子节点
  * ================================
  */
+import _ from 'lodash'
+import { getBillList, putBill } from '@/db'
 
 const state = {
   // 列表
-  list: []
+  list: [],
+  current: ''
 }
 
 const getters = {
+  bill (state) {
+    let { list, current } = state
+    return _.find(list, {
+      id: current
+    })
+  }
 }
 
 const mutations = {
   INIT_B_LIST (state, list) {
     state.list = list
+  },
+  SET_B_CURRENT (state, id) {
+    state.current = +id
+  },
+  PUT_BILL (state, bill) {
+    let id = bill.id
+    let last = _.find(state.list, {
+      id
+    })
+    if (last) {
+      Object.assign(last, bill)
+    } else {
+      state.list.push(bill)
+    }
   }
 }
 
 const actions = {
-  get_Bills ({
+  async get_Bills ({
     commit
   }) {
-    let list = [{
-      // id
-      id: 1,
-      // 消费
-      consumption: 4,
-      // 资金
-      capital: 3,
-      // 交易份额
-      share: 200,
-      // 交易金额
-      money: 200,
-      // 日期
-      date: '2019年10月19日',
-      // 交易类型
-      type: '',
-      // 备注
-      note: ''
-    }]
+    let list = await getBillList()
     commit('INIT_B_LIST', list)
+  },
+  async put_bill ({
+    commit
+  }, bill) {
+    bill.id = await putBill(bill)
+    commit('PUT_BILL', bill)
   }
 }
 
