@@ -21,6 +21,14 @@ const getters = {
   collection (state) {
     let list = state.list
     return list.filter(({ isCollection }) => isCollection)
+  },
+  capitals (state) {
+    let list = state.list
+    return list.filter(({ tags }) => tags.includes('资金账户'))
+  },
+  accounts (state) {
+    let list = state.list
+    return list.filter(({ isCollection }) => !isCollection)
   }
 }
 

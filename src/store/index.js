@@ -36,14 +36,13 @@ export default new Vuex.Store({
         return consumption === current || capital === current
       })
       list = _.groupBy(list, ({ date }) => {
-        date = date.split('-')
-        return date[1]
+        return +/(\d{2})月/.exec(date)[1]
       })
       list = _.map(list, collection => {
         let month = collection[0].date
-        month = +month.split('-')[1]
+        month = +/(\d{2})月/.exec(month)[1]
         collection = _.map(collection, ({ date, capital, money, ...other }) => {
-          let day = date.split('-')[2]
+          let day = +/(\d{2})日/.exec(date)[1]
           money = capital === current ? -money : money
           return {
             ...other,

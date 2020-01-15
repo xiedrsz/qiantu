@@ -20,7 +20,7 @@
     <van-field type="textarea" placeholder="备注" v-model="form.note"></van-field>
     <van-button type="info" size="large" round @click="confirm">确定</van-button>
     <van-popup v-model="show" position="bottom">
-      <van-picker show-toolbar title="标题" :columns="collection" value-key="name" @cancel="hidePicker" @confirm="onSelect" />
+      <van-picker show-toolbar title="归属" :columns="collection" value-key="name" @cancel="hidePicker" @confirm="onSelect" />
     </van-popup>
   </div>
 </template>
