@@ -14,7 +14,8 @@ import { getAccountList, putAccount } from '@/db'
 
 const state = {
   // 列表
-  list: []
+  list: [],
+  current: ''
 }
 
 const getters = {
@@ -36,6 +37,12 @@ const mutations = {
   INIT_LIST (state, list) {
     state.list = list
   },
+  SET_A_CURRENT (state, id) {
+    if (!id) {
+      id = (state.list[0] || {}).id
+    }
+    state.current = id
+  },
   PUT_ACCOUNT (state, account) {
     let id = account.id
     let last = _.find(state.list, {
@@ -55,7 +62,7 @@ const actions = {
   }) {
     let list = await getAccountList()
     let current = list[0].id
-    commit('SET_CURRENT', current)
+    commit('SET_A_CURRENT', current)
     commit('INIT_LIST', list)
   },
   async save_account ({

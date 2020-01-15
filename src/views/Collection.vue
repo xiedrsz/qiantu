@@ -70,12 +70,12 @@ export default {
   watch: {
     $route (value) {
       let id = value.query.id
-      this.$store.commit('SET_CURRENT', id)
+      this.$store.commit('SET_A_CURRENT', id)
     }
   },
   mounted () {
     let id = this.$route.query.id
-    this.$store.commit('SET_CURRENT', id)
+    this.$store.commit('SET_A_CURRENT', id)
   },
   methods: {
     goBack () {

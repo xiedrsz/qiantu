@@ -26,7 +26,7 @@
     </div>
     <!-- 账单列表 -->
     <div>
-      <van-cell-group v-for="item in bill" :key="item.month">
+      <van-cell-group v-for="item in bills" :key="item.month">
         <p slot="title">
           <span>{{item.month}}月</span>
           <span style="float:right">+12000，-8000</span>
@@ -59,8 +59,8 @@ export default {
     account () {
       return this.$store.getters.account
     },
-    bill () {
-      return this.$store.getters.bill
+    bills () {
+      return this.$store.getters.bills
     }
   },
   methods: {
@@ -99,7 +99,7 @@ export default {
   },
   mounted () {
     this.id = +this.$route.query.id
-    this.$store.commit('SET_CURRENT', this.id)
+    this.$store.commit('SET_A_CURRENT', this.id)
   }
 }
 </script>

@@ -9,17 +9,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    current: '1'
   },
   getters: {
     account (state) {
-      let { current, accounts } = state
-      let list = accounts.list
+      let accounts = state.accounts
+      let { list, current } = accounts
       return _.find(list, ({ id }) => id === current) || list[0] || {}
     },
     children (state) {
-      let { current, accounts } = state
-      let list = accounts.list
+      let accounts = state.accounts
+      let { list, current } = accounts
       return _.filter(list, ({ parent }) => parent === current).map(({ id, ...other }) => {
         let children = _.filter(list, ({ parent }) => parent === id)
         return {
@@ -29,8 +28,9 @@ export default new Vuex.Store({
         }
       })
     },
-    bill (state) {
-      let { current, bills } = state
+    bills (state) {
+      let { accounts, bills } = state
+      let current = accounts.current
       let list = bills.list
       list = _.filter(list, ({ consumption, capital }) => {
         return consumption === current || capital === current
@@ -61,12 +61,6 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    SET_CURRENT (state, id) {
-      if (!id) {
-        id = (state.accounts.list[0] || {}).id
-      }
-      state.current = id
-    }
   },
   actions: {
   },

@@ -81,7 +81,7 @@ export default {
     }
   },
   mounted () {
-    let current = this.$store.state.current
+    let current = this.$store.state.accounts.current
     let id = this.$route.query.id
     let tags = ''
     if (id) {
