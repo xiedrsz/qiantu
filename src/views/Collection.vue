@@ -11,14 +11,13 @@
       </van-row>
       <van-cell size="large" :isLink="!!id" @click="gotoProperty(id)">
         <div>
-          <span style="font-size:27px">{{ account.capitalization }}</span>
-          <span v-if="account.share">({{ account.share }}份)</span>
+          <span style="font-size:27px">{{ capitalization }}</span>
         </div>
       </van-cell>
-      <van-row type="flex" justify="space-around">
+      <!-- <van-row type="flex" justify="space-around">
         <van-col>流入1200.87</van-col>
         <van-col>流出1234.98</van-col>
-      </van-row>
+      </van-row> -->
     </div>
     <!-- 子级账户 -->
     <div>
@@ -41,6 +40,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { NavBar, Icon, Row, Cell, Col, CellGroup } from 'vant'
 import MTabbar from '@/components/Tabbar'
 
@@ -65,6 +65,10 @@ export default {
     },
     children () {
       return this.$store.getters.children
+    },
+    capitalization () {
+      let bills = this.$store.getters.bills
+      return _.sumBy(bills, ({ inflow, outflow }) => inflow + outflow)
     }
   },
   watch: {

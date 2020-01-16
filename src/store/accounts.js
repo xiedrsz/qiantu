@@ -18,6 +18,15 @@ const state = {
   current: ''
 }
 
+const getAncestor = (maps, id) => {
+  let result = []
+  let parent = maps[`_${id}`]
+  if (parent) {
+    result = _.union(result, [parent], getAncestor(maps, parent))
+  }
+  return result
+}
+
 const getters = {
   collection (state) {
     let list = state.list
@@ -45,6 +54,25 @@ const getters = {
         children
       }
     })
+  },
+  relationship (state) {
+    let { list, current } = state
+    let accountIds = _.map(_.filter(list, ({ isCollection }) => !isCollection), 'id')
+    let maps = _.transform(list, (result, { id, parent }) => {
+      result[`_${id}`] = parent
+      return result
+    }, {})
+    let res = _.transform(accountIds, (result, id) => {
+      result[`_${id}`] = getAncestor(maps, id)
+      return result
+    }, {})
+    return _.transform(res, (result, value, key) => {
+      if (value.includes(current)) {
+        key = +key.replace('_', '')
+        result.push(key)
+      }
+      return result
+    }, [])
   }
 }
 

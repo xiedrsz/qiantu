@@ -11,12 +11,14 @@ export default new Vuex.Store({
   state: {
   },
   getters: {
-    bills (state) {
+    bills (state, getters) {
       let { accounts, bills } = state
       let current = accounts.current
+      let posterity = getters.relationship
       let list = bills.list
+      posterity = _.union(posterity, [current])
       list = _.filter(list, ({ consumption, capital }) => {
-        return consumption === current || capital === current
+        return posterity.includes(consumption) || posterity.includes(capital)
       })
       list = _.groupBy(list, ({ date }) => {
         return +/(\d{2})月/.exec(date)[1]
@@ -26,11 +28,14 @@ export default new Vuex.Store({
         let inflow = 0
         let outflow = 0
         month = +/(\d{2})月/.exec(month)[1]
-        collection = _.map(collection, ({ date, capital, money, ...other }) => {
+        collection = _.map(collection, ({ date, capital, consumption, money, ...other }) => {
           let day = +/(\d{2})日/.exec(date)[1]
+          let total = 0
+          total += posterity.includes(consumption) ? +money : 0
+          total += posterity.includes(capital) ? -money : 0
           money = capital === current ? -money : money
-          inflow += money > 0 ? +money : 0
-          outflow += money < 0 ? +money : 0
+          inflow += total > 0 ? total : 0
+          outflow += total < 0 ? total : 0
           return {
             ...other,
             date,
