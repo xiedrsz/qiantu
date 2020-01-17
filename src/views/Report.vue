@@ -30,7 +30,10 @@
         <van-radio name="2" style="flex:1;text-align:none">收入</van-radio>
         <van-radio name="3">资产</van-radio>
       </van-radio-group>
+      <!-- Todo -->
+      <canvas id="container" width="375" height="260"></canvas>
       <div style="background-color:#f8ffd7;padding-bottom:260px;text-align:center">改成轮播图</div>
+      <pie />
     </div>
     <!-- 内容 -->
     <van-cell-group>
@@ -43,8 +46,29 @@
 </template>
 
 <script>
+import F2 from '@antv/f2'
 import { NavBar, Icon, Row, Col, RadioGroup, Radio, CellGroup, Cell } from 'vant'
 import MTabbar from '@/components/Tabbar'
+import Pie from '@/components/Pie'
+
+const data = [{
+  name: '股票类',
+  percent: 83.59,
+  a: '1'
+}, {
+  name: '债券类',
+  percent: 2.17,
+  a: '1'
+}, {
+  name: '现金类',
+  percent: 14.24,
+  a: '1'
+}]
+
+const map = {}
+data.forEach(function (obj) {
+  map[obj.name] = obj.percent + '%'
+})
 
 export default {
   name: 'Report',
@@ -57,7 +81,48 @@ export default {
     [Radio.name]: Radio,
     [CellGroup.name]: CellGroup,
     [Cell.name]: Cell,
-    MTabbar
+    MTabbar,
+    Pie
+  },
+  mounted () {
+    const chart = new F2.Chart({
+      id: 'container',
+      pixelRatio: window.devicePixelRatio,
+      padding: [ 20, 'auto' ]
+    })
+    chart.source(data, {
+      percent: {
+        formatter: function formatter (val) {
+          return val + '%'
+        }
+      }
+    })
+    chart.tooltip(false)
+    chart.legend({
+      position: 'right',
+      itemFormatter: function itemFormatter (val) {
+        return val + '    ' + map[val]
+      }
+    })
+    chart.coord('polar', {
+      transposed: true,
+      innerRadius: 0.7,
+      radius: 0.85
+    })
+    chart.axis(false)
+    chart.interval()
+      .position('a*percent')
+      .color('name', [ '#FE5D4D', '#3BA4FF', '#737DDE' ])
+      .adjust('stack')
+
+    chart.guide().html({
+      position: [ '50%', '45%' ],
+      html: `<div style="width: 250px;height: 40px;text-align: center;">
+      <div style="font-size: 16px">总资产</div>
+      <div style="font-size: 24px">133.08 亿</div>
+    </div>`
+    })
+    chart.render()
   }
 }
 </script>
