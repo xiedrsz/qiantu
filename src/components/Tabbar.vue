@@ -1,12 +1,18 @@
 <template>
   <van-tabbar route>
     <van-tabbar-item to="/">
-      <van-icon slot="icon" slot-scope="props" :name="props.active ? '/logo/wealth-active.svg' : '/logo/wealth.svg'" />
+      <van-icon slot="icon" class-prefix="iconfont" name="wealth" />
       <span>财富</span>
     </van-tabbar-item>
-    <van-tabbar-item icon="home-o" to="/report">报表</van-tabbar-item>
-    <van-tabbar-item icon="home-o" to="/plan">计划</van-tabbar-item>
-    <van-tabbar-item icon="home-o" to="/setting">设置</van-tabbar-item>
+    <van-tabbar-item to="/report">
+      <van-icon slot="icon" class-prefix="iconfont" name="report" />
+      <span>报表</span>
+    </van-tabbar-item>
+    <van-tabbar-item to="/plan">
+      <van-icon slot="icon" class-prefix="iconfont" name="plan" />
+      <span>计划</span>
+    </van-tabbar-item>
+    <van-tabbar-item icon="setting" to="/setting">设置</van-tabbar-item>
   </van-tabbar>
 </template>
 

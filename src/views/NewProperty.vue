@@ -22,6 +22,20 @@
     <van-popup v-model="show" position="bottom">
       <van-picker show-toolbar title="归属" :columns="collection" value-key="name" @cancel="hidePicker" @confirm="onSelect" />
     </van-popup>
+    <!-- Todo -->
+    <van-popup v-model="showkk" position="bottom">
+      <div class="van-picker">
+        <div class="van-hairline--top-bottom van-picker__toolbar">
+          <button type="button" class="van-picker__cancel">取消</button>
+          <div class="van-ellipsis van-picker__title">归属</div>
+          <button type="button" class="van-picker__confirm">确认</button>
+        </div>
+        <div style="height: 220px">
+          <van-icon name="home-o" />
+          <van-icon class-prefix="iconfont" name="tallykkk" />
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -50,14 +64,13 @@ export default {
         code: '',
         isCollection: false,
         parent: '',
-        // share: '',
-        // capitalization: '',
         tags: '',
         note: ''
       },
       tags: [],
       tag: '',
-      show: false
+      show: false,
+      showkk: true
     }
   },
   computed: {

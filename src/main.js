@@ -5,6 +5,8 @@ import store from './store'
 import '@/libs/filter'
 import './registerServiceWorker'
 
+import '@/assets/less/index.less'
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -25,13 +25,16 @@
         <van-cell-group v-if="collection.children.length" :key="collection.id">
           <p slot="title" @click="gotoAccount(collection.id, collection.isCollection)">
             <span>{{collection.name}}</span>
-            <span style="float:right">{{collection.capitalization}}</span>
           </p>
           <!-- Todo icon -->
-          <van-cell v-for="item in collection.children" :key="item.id" :title="item.name" isLink icon="/logo/fund.svg" @click="gotoAccount(item.id, item.isCollection)">{{ item.capitalization }}</van-cell>
+          <van-cell v-for="item in collection.children" :key="item.id" :title="item.name" isLink @click="gotoAccount(item.id, item.isCollection)">
+            <van-icon slot="icon" class-prefix="iconfont" name="fund" />
+          </van-cell>
         </van-cell-group>
         <!-- Todo icon -->
-        <van-cell v-else :key="collection.id" :title="collection.name" isLink icon="/logo/fund.svg" @click="gotoAccount(collection.id, collection.isCollection)">{{ collection.capitalization }}</van-cell>
+        <van-cell v-else :key="collection.id" :title="collection.name" isLink @click="gotoAccount(collection.id, collection.isCollection)">
+          <van-icon slot="icon" class-prefix="iconfont" name="fund" />
+        </van-cell>
       </template>
     </div>
     <!-- MTabbar -->

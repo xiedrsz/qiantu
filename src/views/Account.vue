@@ -23,7 +23,7 @@
       </van-row> -->
     </div>
     <div style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px">
-      <van-button icon="star-o" size="large" type="info" @click="gotoBill()">记一笔</van-button>
+      <van-button icon="/logo/tally.svg" size="large" type="info" @click="gotoBill()">记一笔</van-button>
     </div>
     <!-- 账单列表 -->
     <div>
