@@ -1,8 +1,12 @@
 <template>
   <div>
     <van-nav-bar title="设置"></van-nav-bar>
-    <van-cell icon="home-o" title="导入/备份" isLink to="/backup"></van-cell>
-    <van-cell icon="home-o" title="投资日历" isLink to="/calendar"></van-cell>
+    <van-cell title="导入/备份" isLink to="/backup">
+      <van-icon slot="icon" class-prefix="iconfont" name="backup" />
+    </van-cell>
+    <van-cell title="投资日历" isLink to="/calendar">
+      <van-icon slot="icon" class-prefix="iconfont" name="calendar" />
+    </van-cell>
     <!-- MTabbar -->
     <m-tabbar></m-tabbar>
   </div>

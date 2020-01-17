@@ -3,7 +3,7 @@
     <!-- 标题头 -->
     <van-nav-bar :title="account.name" leftArrow @click-left="goBack">
       <!-- 行情 -->
-      <van-icon slot="right" name="plus" @click="gotoQuotation()"></van-icon>
+      <van-icon slot="right" class-prefix="iconfont" name="market" @click="gotoQuotation()" />
     </van-nav-bar>
     <!-- 账户概要 -->
     <div>
