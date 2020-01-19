@@ -3,6 +3,7 @@
  */
 import _ from 'lodash'
 import { getAccountList, putAccount } from '@/db'
+import Finance from '@/libs/finance'
 
 /**
  * prop table
@@ -30,7 +31,7 @@ const getAncestor = (maps, id) => {
 const getters = {
   collection (state) {
     let list = state.list
-    return list.filter(({ isCollection }) => isCollection)
+    return new Finance().setAccount(list).getCollection()
   },
   capitals (state) {
     let list = state.list

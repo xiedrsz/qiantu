@@ -11,6 +11,7 @@
  */
 import _ from 'lodash'
 import { getBillList, putBill } from '@/db'
+import Finance from '@/libs/finance'
 
 const state = {
   // 列表
@@ -21,9 +22,7 @@ const state = {
 const getters = {
   bill (state) {
     let { list, current } = state
-    return _.find(list, {
-      id: current
-    })
+    return new Finance().setBills(list).getBillOfAccount(current)
   }
 }
 
