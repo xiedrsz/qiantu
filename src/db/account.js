@@ -2,7 +2,7 @@ import _ from 'lodash'
 import db from './db'
 
 const table = db.account
-const props = ['id', 'code', 'name', 'isCollection', 'tags', 'note', 'parent']
+const props = ['id', 'code', 'name', 'icon', 'isCollection', 'tags', 'note', 'parent']
 const defAccount = {
   code: '',
   name: '总资产',

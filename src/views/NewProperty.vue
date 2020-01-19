@@ -5,11 +5,11 @@
     <!-- 表单 -->
     <van-field label="名称" inputAlign="right" placeholder="账户名称" v-model="form.name"></van-field>
     <van-field label="代码" inputAlign="right" placeholder="账户代码" v-model="form.code"></van-field>
+    <van-cell title="图标" isLink @click="showIcons">
+      <van-icon class-prefix="iconfont" :name="form.icon" />
+    </van-cell>
     <van-switch-cell title="集合" v-model="form.isCollection"></van-switch-cell>
     <van-cell title="归属" isLink @click="showPicker">{{ parentName }}</van-cell>
-    <!-- <van-field label="份额" inputAlign="right" placeholder="份额" v-model="form.share"></van-field> -->
-    <!-- <van-field label="资产" inputAlign="right" placeholder="2000" v-model="form.capitalization"></van-field> -->
-    <!-- Todo -->
     <van-row class="van-cell">标签</van-row>
     <van-row type="flex" class="van-cell tags">
       <van-tag size="large" plain round v-for="item in tags" :key="item.name" :color="item.selected ? '#1989fa' : ''" @click="onToggle(item)">{{item.name}}</van-tag>
@@ -19,20 +19,20 @@
     </van-row>
     <van-field type="textarea" placeholder="备注" v-model="form.note"></van-field>
     <van-button type="info" size="large" round @click="confirm">确定</van-button>
+    <!-- 归属弹出框 -->
     <van-popup v-model="show" position="bottom">
       <van-picker show-toolbar title="归属" :columns="collection" value-key="name" @cancel="hidePicker" @confirm="onSelect" />
     </van-popup>
-    <!-- Todo -->
-    <van-popup v-model="showkk" position="bottom">
+    <!-- 图标弹出框 -->
+    <van-popup v-model="showIcon" position="bottom">
       <div class="van-picker">
         <div class="van-hairline--top-bottom van-picker__toolbar">
-          <button type="button" class="van-picker__cancel">取消</button>
-          <div class="van-ellipsis van-picker__title">归属</div>
-          <button type="button" class="van-picker__confirm">确认</button>
+          <button type="button" class="van-picker__cancel" @click="hidePicker">取消</button>
+          <div class="van-ellipsis van-picker__title">图标</div>
+          <button type="button" class="van-picker__confirm" @click="onConfirmIcon">确认</button>
         </div>
-        <div style="height: 220px">
-          <van-icon name="home-o" />
-          <van-icon class-prefix="iconfont" name="tallykkk" />
+        <div class="icon-content">
+          <van-icon class-prefix="iconfont" v-for="item in icons" :key="item" :name="item" :class="{actived: iconTip === item}" @click="onTipIcon(item)" />
         </div>
       </div>
     </van-popup>
@@ -42,6 +42,8 @@
 <script>
 import _ from 'lodash'
 import { NavBar, Icon, Cell, Field, SwitchCell, Row, Tag, Button, Picker, Popup } from 'vant'
+import { Icons } from '@/db/const'
+
 export default {
   name: 'NewProperty',
   components: {
@@ -62,6 +64,7 @@ export default {
         id: '',
         name: '',
         code: '',
+        icon: '',
         isCollection: false,
         parent: '',
         tags: '',
@@ -70,7 +73,9 @@ export default {
       tags: [],
       tag: '',
       show: false,
-      showkk: true
+      showIcon: false,
+      icons: Icons,
+      iconTip: ''
     }
   },
   computed: {
@@ -122,6 +127,7 @@ export default {
     },
     hidePicker () {
       this.show = false
+      this.showIcon = false
     },
     onSelect (item) {
       this.form.parent = item.id
@@ -145,8 +151,18 @@ export default {
       this.tag = ''
       this.$store.dispatch('put_Tag', name)
     },
+    showIcons () {
+      this.iconTip = this.form.icon
+      this.showIcon = true
+    },
+    onTipIcon (icon) {
+      this.iconTip = icon
+    },
+    onConfirmIcon () {
+      this.form.icon = this.iconTip
+      this.hidePicker()
+    },
     confirm () {
-      // Tag
       this.form.tags = _.map(_.filter(this.tags, 'selected'), 'name').join(',')
       this.$store.dispatch('save_account', this.form)
       this.goBack()
@@ -166,6 +182,19 @@ export default {
   flex-wrap: wrap;
   span {
     margin: 0 6px 6px 0;
+  }
+}
+.icon-content {
+  padding: 15px 16px;
+  font-size: 1.6em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  i {
+    margin-bottom: 6px;
+  }
+  .actived {
+    color: #1989fa;
   }
 }
 </style>

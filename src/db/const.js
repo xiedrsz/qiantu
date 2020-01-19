@@ -18,3 +18,5 @@ export const BillTypes = [{
   code: '06',
   name: '登记'
 }]
+
+export const Icons = ['fund', 'saving', 'stock', 'wallet', 'borrowing', 'parities', 'abc', 'shanghai', 'citic', 'boc', 'cmb', 'icbc', 'postal', 'p_a']
