@@ -32,6 +32,7 @@
       </van-radio-group>
       <!-- <div style="background-color:#f8ffd7;padding-bottom:260px;text-align:center">改成轮播图</div> -->
       <pie ref="pie" :list="childProperty" @refresh="setLegends" />
+      <graph />
     </div>
     <!-- 内容 -->
     <van-cell-group>
@@ -53,6 +54,7 @@ import _ from 'lodash'
 import { NavBar, Icon, Row, Col, RadioGroup, Radio, CellGroup, Cell, Picker, Popup } from 'vant'
 import MTabbar from '@/components/Tabbar'
 import Pie from '@/components/Pie'
+import Graph from '@/components/Graph'
 
 export default {
   name: 'Report',
@@ -68,7 +70,8 @@ export default {
     [Picker.name]: Picker,
     [Popup.name]: Popup,
     MTabbar,
-    Pie
+    Pie,
+    Graph
   },
   data () {
     return {
