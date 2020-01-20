@@ -25,15 +25,16 @@ export default {
     list (val) {
       this.chart.changeData(val)
       let legends = this.chart.getLegendItems()
-      this.$emit('refresh', legends)
+      this.$emit('refresh', legends.type)
     }
   },
   mounted () {
     this.chart = new Pie(this.$refs.canvas, this.list)
     let legends = this.chart.getLegendItems()
-    this.$emit('refresh', legends)
+    this.$emit('refresh', legends.type)
   },
   methods: {
+    // 对外方法
     tipLegend (type) {
       this.chart.tipLegend(type)
     }

@@ -26,14 +26,12 @@
           <p slot="title" @click="gotoAccount(collection.id, collection.isCollection)">
             <span>{{collection.name}}</span>
           </p>
-          <!-- Todo icon -->
           <van-cell v-for="item in collection.children" :key="item.id" :title="item.name" isLink @click="gotoAccount(item.id, item.isCollection)">
-            <van-icon slot="icon" class-prefix="iconfont" name="fund" />
+            <van-icon slot="icon" class-prefix="iconfont" :name="item.icon" />
           </van-cell>
         </van-cell-group>
-        <!-- Todo icon -->
         <van-cell v-else :key="collection.id" :title="collection.name" isLink @click="gotoAccount(collection.id, collection.isCollection)">
-          <van-icon slot="icon" class-prefix="iconfont" name="fund" />
+          <van-icon slot="icon" class-prefix="iconfont" :name="collection.icon" />
         </van-cell>
       </template>
     </div>

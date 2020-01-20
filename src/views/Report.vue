@@ -2,9 +2,9 @@
   <div>
     <!-- 标题头 -->
     <van-nav-bar>
-      <div slot="title">
-        <span style="margin-right:0.5em">理财通</span>
-        <van-icon name="arrow-down" :size="12" color="#000000"></van-icon>
+      <div slot="title" @click="showPicker">
+        <span class="mgr-5">{{account.name}}</span>
+        <van-icon :name="show ? 'arrow-up' : 'arrow-down'" :size="12" color="#000000"></van-icon>
       </div>
     </van-nav-bar>
     <!-- 图表 -->
@@ -30,21 +30,27 @@
         <van-radio name="2" style="flex:1;text-align:none">收入</van-radio>
         <van-radio name="3">资产</van-radio>
       </van-radio-group>
-      <div style="background-color:#f8ffd7;padding-bottom:260px;text-align:center">改成轮播图</div>
-      <pie />
+      <!-- <div style="background-color:#f8ffd7;padding-bottom:260px;text-align:center">改成轮播图</div> -->
+      <pie ref="pie" :list="childProperty" @refresh="setLegends" />
     </div>
     <!-- 内容 -->
     <van-cell-group>
-      <van-cell label="200.89" center icon="home-o" title="易方达信用债">43%</van-cell>
-      <van-cell title="招商中证白酒指数" label="899.01" center icon="home-o">57%</van-cell>
+      <van-cell v-for="item in childProperty" :key="item.id" :label="item.amount" center :title="item.name" @click="tipLegend(item.name)">
+        <van-icon slot="icon" class-prefix="iconfont" :name="item.icon" :style="{color: colors[item.name]}" />
+        <span>{{item.value}}</span>
+      </van-cell>
     </van-cell-group>
     <!-- MTabbar -->
     <m-tabbar></m-tabbar>
+    <van-popup v-model="show" position="bottom">
+      <van-picker show-toolbar title="归属" :columns="accounts" value-key="name" @cancel="hidePicker" @confirm="onSelect" />
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { NavBar, Icon, Row, Col, RadioGroup, Radio, CellGroup, Cell } from 'vant'
+import _ from 'lodash'
+import { NavBar, Icon, Row, Col, RadioGroup, Radio, CellGroup, Cell, Picker, Popup } from 'vant'
 import MTabbar from '@/components/Tabbar'
 import Pie from '@/components/Pie'
 
@@ -59,17 +65,62 @@ export default {
     [Radio.name]: Radio,
     [CellGroup.name]: CellGroup,
     [Cell.name]: Cell,
+    [Picker.name]: Picker,
+    [Popup.name]: Popup,
     MTabbar,
     Pie
   },
+  data () {
+    return {
+      colors: {},
+      show: false
+    }
+  },
   computed: {
+    account () {
+      return this.$store.getters.account
+    },
     childProperty () {
-      return this.$store.getters.childProperty
+      let list = this.$store.getters.childProperty
+      let total = _.sumBy(list, 'amount')
+      let res = _.map(list, ({ amount, ...other }) => {
+        let value = `${(amount / total * 100).toFixed(2)}%`
+        return {
+          ...other,
+          amount,
+          value
+        }
+      })
+      return res
+    },
+    accounts () {
+      return this.$store.state.accounts.list
     }
   },
   watch: {
-    childProperty (value) {
+    accounts (value) {
       console.log(value)
+    }
+  },
+  methods: {
+    setLegends (legends) {
+      this.colors = _.transform(legends, (res, { name, marker: { fill } }) => {
+        res[name] = fill
+        return res
+      }, {})
+    },
+    tipLegend (name) {
+      this.$refs.pie.tipLegend(name)
+    },
+    showPicker () {
+      this.show = true
+    },
+    hidePicker () {
+      this.show = false
+    },
+    onSelect (item) {
+      this.$store.commit('SET_A_CURRENT', item.id)
+      this.hidePicker()
     }
   },
   mounted () {

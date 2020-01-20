@@ -214,15 +214,17 @@ class Finance {
   getChildProperty (id) {
     let accounts = this.accounts
     let children = _.filter(accounts, ({ parent }) => parent === id)
-    children = _.map(children, ({ id, name }) => {
+    children = _.map(children, ({ id, name, icon }) => {
       let bills = this.getBills(id)
       let amount = _.sumBy(bills, ({ inflow, outflow }) => inflow + outflow)
       return {
+        id,
         name,
+        icon,
         amount
       }
     })
-    console.log(children)
+    children = _.sortBy(children, ({ amount }) => -amount)
     return children
   }
 }

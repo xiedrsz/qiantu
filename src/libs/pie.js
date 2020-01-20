@@ -12,12 +12,12 @@ const COLORS = ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'
  */
 function transformList (list) {
   let total = _.sumBy(list, ({ amount }) => +amount)
-  return _.map(list, ({ amount, name }, index) => {
+  return _.map(list, ({ amount, name, value }, index) => {
     return {
       name,
       type: name,
       cost: +amount,
-      value: `${(amount / total * 100).toFixed(2)}%`,
+      value: value || `${(amount / total * 100).toFixed(2)}%`,
       marker: {
         symbol: 'circle',
         fill: COLORS[index],
@@ -143,6 +143,7 @@ class Pie {
    * @param {Array} list 原始数据
    */
   changeData (list) {
+    this.lastClickedShape && this.lastClickedShape.label.hide()
     let data = transformList(list)
     let sum = _.sumBy(data, 'cost')
     this.chart.changeData(data)
