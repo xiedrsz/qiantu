@@ -40,8 +40,10 @@ class Finance {
    * @param {Array} [accounts = []] 账户集合
    * @param {Array} [bills = []] 账单集合
    */
-  constructor (accounts, bills) {
+  constructor (accounts = [], bills = []) {
     if (Finance.instance) {
+      Finance.instance.setAccounts(accounts)
+      Finance.instance.setBills(bills)
       return Finance.instance
     } else {
       this.accounts = accounts
@@ -56,7 +58,7 @@ class Finance {
    * @param {Array} accounts 账户集合
    * @returns this
    */
-  setAccount (accounts) {
+  setAccounts (accounts) {
     this.accounts = accounts
     this.relationship = calcRelation(accounts)
     return this
@@ -128,11 +130,16 @@ class Finance {
   /**
    * 获取 子账户id
    * @param {Number} id id
+   * @param {Number} [depth] 深度
    * @returns Array 子账户id
    * @todo 去 / 留
    */
-  getRelationship (id) {
+  getRelationship (id, depth) {
     let relationship = this.relationship
+    // 暂留
+    /* if (depth) {
+      relationship = _.mapValues(relationship, parents => parents.slice(0, depth))
+    } */
     return _.transform(relationship, (result, value, key) => {
       if (value.includes(id)) {
         key = +key.replace('_', '')
@@ -143,18 +150,80 @@ class Finance {
   }
 
   /**
-   * 获取 某一账户账单
-   * @param {Number} id 账户id
-   * @returns bills
+   * 获取 某一账单
+   * @param {Number} id 账单id
+   * @returns Object bill
    */
-  getBillOfAccount (id) {
+  getBill (id) {
     return _.find(this.bills, {
       id
     })
   }
 
-  getBillOfCollection (id) {
-    // Todo
+  /**
+   * 获取 某一账户的账单
+   * @param {Number} id 账户 id
+   * @returns Array 按月汇总的账单
+   */
+  getBills (id) {
+    let posterity = this.getRelationship(id)
+    let list = this.bills
+    posterity = _.union(posterity, [id])
+    list = _.filter(list, ({ consumption, capital }) => {
+      return posterity.includes(consumption) || posterity.includes(capital)
+    })
+    list = _.groupBy(list, ({ date }) => {
+      return +/(\d{2})月/.exec(date)[1]
+    })
+    list = _.map(list, collection => {
+      let month = collection[0].date
+      let inflow = 0
+      let outflow = 0
+      month = +/(\d{2})月/.exec(month)[1]
+      collection = _.map(collection, ({ date, capital, consumption, money, ...other }) => {
+        let day = +/(\d{2})日/.exec(date)[1]
+        let total = 0
+        total += posterity.includes(consumption) ? +money : 0
+        total += posterity.includes(capital) ? -money : 0
+        money = capital === id ? -money : money
+        inflow += total > 0 ? total : 0
+        outflow += total < 0 ? total : 0
+        return {
+          ...other,
+          date,
+          capital,
+          money,
+          day
+        }
+      })
+      return {
+        month,
+        inflow,
+        outflow,
+        bills: collection
+      }
+    })
+    return list
+  }
+
+  /**
+   * 获取 子级资产
+   * @param {Number} id 账户 id
+   * @returns Array
+   */
+  getChildProperty (id) {
+    let accounts = this.accounts
+    let children = _.filter(accounts, ({ parent }) => parent === id)
+    children = _.map(children, ({ id, name }) => {
+      let bills = this.getBills(id)
+      let amount = _.sumBy(bills, ({ inflow, outflow }) => inflow + outflow)
+      return {
+        name,
+        amount
+      }
+    })
+    console.log(children)
+    return children
   }
 }
 

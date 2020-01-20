@@ -22,7 +22,7 @@ const state = {
 const getters = {
   bill (state) {
     let { list, current } = state
-    return new Finance().setBills(list).getBillOfAccount(current)
+    return new Finance().setBills(list).getBill(current)
   }
 }
 

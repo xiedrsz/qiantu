@@ -4,6 +4,7 @@ import _ from 'lodash'
 import accounts from './accounts'
 import bills from './bills'
 import tags from './tags'
+import Finance from '@/libs/finance'
 
 Vue.use(Vuex)
 
@@ -52,6 +53,13 @@ export default new Vuex.Store({
         }
       })
       return list
+    },
+    childProperty (state) {
+      let { bills, accounts } = state
+      let current = accounts.current
+      bills = bills.list
+      accounts = accounts.list
+      return new Finance(accounts, bills).getChildProperty(current)
     }
   },
   mutations: {

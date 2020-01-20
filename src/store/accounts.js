@@ -31,7 +31,7 @@ const getAncestor = (maps, id) => {
 const getters = {
   collection (state) {
     let list = state.list
-    return new Finance().setAccount(list).getCollection()
+    return new Finance().setAccounts(list).getCollection()
   },
   capitals (state) {
     let list = state.list
