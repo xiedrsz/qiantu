@@ -49,7 +49,7 @@ export default {
       })
     },
     gotoEvent (id, type) {
-      console.log('Todo')
+      // console.log('Todo')
       let path = type ? '/newplan' : '/newevent'
       this.$router.push({
         path,
@@ -68,8 +68,8 @@ export default {
     }
   },
   mounted () {
-    console.log('Todo')
-    console.log('获取列表')
+    // console.log('Todo')
+    // console.log('获取列表')
   }
 }
 </script>

@@ -23,10 +23,10 @@ export default {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
     onCopy () {
-      console.log('Todo Copy')
+      // console.log('Todo Copy')
     },
     onImport () {
-      console.log('Todo')
+      // console.log('Todo')
       let depth = window.history.length - 2
       this.$router.go(-depth)
     }

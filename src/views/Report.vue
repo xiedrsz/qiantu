@@ -98,11 +98,14 @@ export default {
     },
     accounts () {
       return this.$store.state.accounts.list
+    },
+    dailyAmount () {
+      return this.$store.getters.dailyAmount
     }
   },
   watch: {
-    accounts (value) {
-      console.log(value)
+    dailyAmount (value) {
+      // console.log(value)
     }
   },
   methods: {

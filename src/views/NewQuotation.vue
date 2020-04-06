@@ -33,11 +33,11 @@ export default {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     },
     onDelete () {
-      console.log('Todo')
+      // console.log('Todo')
       this.goBack()
     },
     onConfirm () {
-      console.log('Todo')
+      // console.log('Todo')
       this.goBack()
     }
   },
