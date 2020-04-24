@@ -35,48 +35,111 @@
       </div>
       <van-grid :column-num="2" class="items" :center="false">
         <van-grid-item>
-          <p class="label">余额</p>
+          <p class="label">零钱</p>
           <div class="value">
             <span class="gray">0.00</span>
-            <span class="red">+0.02</span>
+            <!-- <span class="red">+0.02</span> -->
           </div>
         </van-grid-item>
         <van-grid-item>
-          <p class="label">余额</p>
+          <p class="label">储蓄</p>
           <div class="value">
             <span class="gray">0.00</span>
-            <span class="red">+0.02</span>
+            <!-- <span class="red">+0.02</span> -->
           </div>
         </van-grid-item>
         <van-grid-item>
-          <p class="label">余额</p>
+          <p class="label">定期</p>
           <div class="value">
-            <span class="gray">0.00</span>
-            <span class="red">+0.02</span>
+            <span class="gray">8,057.26</span>
+            <span class="red">+0.59</span>
           </div>
         </van-grid-item>
         <van-grid-item>
-          <p class="label">余额</p>
+          <p class="label">基金</p>
           <div class="value">
-            <span class="gray">0.00</span>
-            <span class="red">+0.02</span>
+            <span class="gray">14,632.03</span>
+            <span class="green">-9.81</span>
           </div>
         </van-grid-item>
         <van-grid-item>
-          <p class="label">余额</p>
+          <p class="label">黄金</p>
           <div class="value">
-            <span class="gray">0.00</span>
-            <span class="red">+0.02</span>
+            <span class="gray">13.38</span>
+            <span class="green">-0.02</span>
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label">股票</p>
+          <div class="value">
+            <span class="gray">4,432.13</span>
+            <span class="red">+50.29</span>
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label">外汇</p>
+          <div class="value">
+            <span class="gray">1,432.13</span>
+            <span class="red">+0.29</span>
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label"></p>
+          <div class="value">
+            <span class="gray"></span>
+            <!-- <span class="red">+0.29</span> -->
+          </div>
+        </van-grid-item>
+      </van-grid>
+      <van-row type="flex" justify="center" class="seemore">
+        <van-col>
+          <span>去看看更多理财产品</span>
+          <van-icon name="arrow" class="top-2"/>
+        </van-col>
+      </van-row>
+    </div>
+    <div class="main">
+      <van-cell title="我的额度" :border="false">
+        <div slot="title" class="normal">
+          <span>我的额度</span>
+        </div>
+      </van-cell>
+      <van-grid :column-num="2" class="items" :center="false">
+        <van-grid-item>
+          <p class="label">花呗</p>
+          <div class="value">
+            <span class="gray">10,000</span>
+            <!-- <span class="red">+0.02</span> -->
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label">YOUNG</p>
+          <div class="value">
+            <span class="gray">30,000</span>
+            <span class="green">-6,798.02</span>
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label">平安信用卡</p>
+          <div class="value">
+            <span class="gray">70,000</span>
+            <span class="green">-390.23</span>
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label">VISA</p>
+          <div class="value">
+            <span class="gray">70,000</span>
+            <!-- <span class="green">-9.81</span> -->
           </div>
         </van-grid-item>
       </van-grid>
     </div>
-    <div class="main"></div>
   </div>
 </template>
 
 <script>
-import { NavBar, Cell, Icon, Grid, GridItem } from 'vant'
+import { NavBar, Cell, Icon, Grid, GridItem, Col, Row } from 'vant'
 
 export default {
   name: 'Zzc',
@@ -85,7 +148,9 @@ export default {
     [Cell.name]: Cell,
     [Icon.name]: Icon,
     [Grid.name]: Grid,
-    [GridItem.name]: GridItem
+    [GridItem.name]: GridItem,
+    [Col.name]: Col,
+    [Row.name]: Row
   }
 }
 </script>
@@ -147,7 +212,6 @@ export default {
   }
 }
 .main {
-  height: 400px;
   margin: 0 .028rem;
   background: #fff;
   position: relative;
@@ -189,6 +253,11 @@ export default {
     width: 100%;
     justify-content: space-between;
   }
+}
+.seemore {
+  font-size: 14px;
+  line-height: 2.8;
+  color: #999999;
 }
 // unit
 .normal {
