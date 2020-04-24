@@ -240,19 +240,19 @@ class Finance {
    */
   getDailyAmount (id, from, to) {
     let mbills = []
-    let amount = 0
-    let before = []
+    // let amount = 0
+    // let before = []
     to && (to = to.replace(/[年月]/g, '-').replace('日', ''))
     this.getBills(id).forEach(({ bills }) => {
       mbills = mbills.concat(bills)
     })
     if (from) {
       from = from.replace(/[年月]/g, '-').replace('日', '')
-      before = _.filter(mbills, ({ date }) => {
+      /* before = _.filter(mbills, ({ date }) => {
         return moment(date, 'YYYY年MM月DD日').isBefore(from, 'day')
-      })
+      }) */
     }
-    amount = _.sumBy(before, ({ money, flag }) => money * flag)
+    // amount = _.sumBy(before, ({ money, flag }) => money * flag)
     to = moment(to)
     mbills = _.filter(mbills, ({ date }) => {
       if (from) {

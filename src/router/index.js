@@ -106,6 +106,13 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "newevent" */ '../views/NewEvent.vue')
     }
+  },
+  {
+    path: '/zzc',
+    name: 'Zzc',
+    component: function () {
+      return import(/* webpackChunkName: "zzc" */ '../views/Zzc.vue')
+    }
   }
 ]
 
