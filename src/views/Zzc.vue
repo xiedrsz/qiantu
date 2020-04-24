@@ -180,9 +180,6 @@ export default {
   }
 }
 .items {
-  .van-grid-item__content {
-    padding: .028rem;
-  }
   .label {
     font-size: 14px;
   }
