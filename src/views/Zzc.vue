@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <van-nav-bar title="总资产" right-text="服务" :border="false" :fixed="true"></van-nav-bar>
+      <van-nav-bar title="总资产" right-text="服务" :border="false" :fixed="true" :z-index="2"></van-nav-bar>
       <div class="zhushou">
         <img class="icon" src="/img/ant_head.gif" />
         <div class="pdt-14">下午好</div>
@@ -99,7 +99,7 @@
       </van-row>
     </div>
     <div class="main">
-      <van-cell title="我的额度" :border="false">
+      <van-cell :border="false">
         <div slot="title" class="normal">
           <span>我的额度</span>
         </div>
@@ -135,11 +135,67 @@
         </van-grid-item>
       </van-grid>
     </div>
+    <van-swipe class="main transparent" indicator-color="#1677ff">
+      <van-swipe-item>
+        <div class="swipe-item">
+          <van-cell :border="false">
+            <div slot="title" class="desc">
+              <span>2020年理财成绩(截止到5-26)</span>
+            </div>
+          </van-cell>
+          <van-row type="flex" justify="space-between" class="yield">
+            <van-col>
+              <p class="value">+1,962.77</p>
+              <p class="small">收益</p>
+            </van-col>
+            <van-col>
+              <p class="value">+6.92%</p>
+              <p class="small txt-r">收益率</p>
+            </van-col>
+          </van-row>
+          <div class="line">
+            <div class="bg"></div>
+            <div class="value"></div>
+            <div class="icon">
+              <van-icon name="logistics" />
+            </div>
+          </div>
+          <div class="desc pdlr-28 lh-2">
+            <span>当前预期年化收益率为</span>
+            <span class="sys-orange">23.12%</span>
+            <span>, 加油!</span>
+          </div>
+        </div>
+      </van-swipe-item>
+      <van-swipe-item>
+        <div class="monthly swipe-item">
+          <div class="monthly-icon">
+            <van-cell :border="false">
+              <div slot="title" class="desc">
+                <span>4月理财月报</span>
+              </div>
+            </van-cell>
+            <van-row type="flex" justify="space-between" class="yield">
+              <van-col>
+                <p class="value">+514.38</p>
+                <p class="small">当月收益</p>
+              </van-col>
+              <van-col>
+                <p class="value">+1.73%</p>
+                <p class="small txt-r">月收益率</p>
+              </van-col>
+            </van-row>
+            <van-button type="primary" size="small" color="#1677ff" round class="tosee" plain>去看看</van-button>
+          </div>
+        </div>
+      </van-swipe-item>
+    </van-swipe>
+    <van-divider class="mdivider">哎呦老底都给你看光了</van-divider>
   </div>
 </template>
 
 <script>
-import { NavBar, Cell, Icon, Grid, GridItem, Col, Row } from 'vant'
+import { NavBar, Cell, Icon, Grid, GridItem, Col, Row, Swipe, SwipeItem, Button, Divider } from 'vant'
 
 export default {
   name: 'Zzc',
@@ -150,7 +206,11 @@ export default {
     [Grid.name]: Grid,
     [GridItem.name]: GridItem,
     [Col.name]: Col,
-    [Row.name]: Row
+    [Row.name]: Row,
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem,
+    [Button.name]: Button,
+    [Divider.name]: Divider
   }
 }
 </script>
@@ -259,13 +319,93 @@ export default {
   line-height: 2.8;
   color: #999999;
 }
+.yield {
+  padding: 0 .028rem;
+  .value {
+    color: #e8541e;
+    font-weight: bold;
+    font-size: 22px;
+  }
+}
+.line {
+  padding: .028rem 0;
+  margin: 0 .028rem;
+  position: relative;
+  .bg {
+    height: .012rem;
+    background: #ffc41b;
+    border-radius: .012rem;
+    opacity: .28;
+  }
+  .value {
+    height: 0.012rem;
+    background: linear-gradient(180deg, #ffc41b, #e8541e);
+    border-radius: 0.012rem;
+    width: 72%;
+    position: absolute;
+    top: .028rem;
+  }
+  .icon {
+    position: absolute;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #ffc41b, #e8541e);
+    width: 14px;
+    height: 14px;
+    padding: .004rem;
+    border-radius: 100%;
+    border: 2px solid #fff1d3;
+    left: calc(72% - 7px);
+    top: .014rem;
+  }
+}
+.swipe-item {
+  height: .304rem;
+  margin-right: 1px;
+  background: #fff;
+}
+.monthly {
+  background: linear-gradient(135deg, #e8f3ff 50%, #e6f0ff 50%);
+  &-icon {
+    background-image: url(/img/file.png);
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    height: 100%;
+  }
+}
+.tosee {
+  font-size: 16px;
+  border: none;
+  padding: 0 .056rem;
+  margin: .028rem;
+  height: .064rem;
+  line-height: .072rem;
+}
+.mdivider {
+  margin: -.048rem 0 .012rem 0;
+  font-size: 12px;
+}
 // unit
 .normal {
   font-size: 16px;
   font-weight: bold;
 }
+.small {
+  font-size: 14px;
+}
+.desc {
+  font-size: 12px;
+  color: #999999;
+}
+.pdlr-28 {
+  padding: 0 .028rem;
+}
 .pdt-14 {
   padding-top: .014rem;
+}
+.pdb-36 {
+  padding-bottom: .036rem;
 }
 .opacity-72 {
   opacity: .72;
@@ -309,5 +449,11 @@ export default {
 }
 .txt-r {
   text-align: right;
+}
+.lh-2 {
+  line-height: 2;
+}
+.transparent {
+  background: transparent;
 }
 </style>
