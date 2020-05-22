@@ -245,10 +245,10 @@ export default {
   }
 }
 .zhushou {
-  color: #fff;
+  color: @white;
   padding: .028rem .028rem .028rem .12rem;
   position: relative;
-  font-size: 16px;
+  font-size: @normal;
   font-weight: bold;
   .icon {
     width: 0.094rem;
@@ -256,24 +256,24 @@ export default {
     left: .016rem;
   }
   .vice {
-    font-size: 14px;
+    font-size: @small;
     font-weight: normal;
   }
   .arrow {
     display: inline-block;
-    background: rgba(255,255,255,.72);
+    background: rgba(255, 255, 255, @opacity1);
     margin-left: .006rem;
-    width: 12px;
-    height: 12px;
+    width: @smaller;
+    height: @smaller;
     border-radius: 100%;
     text-align: center;
-    line-height: 12px;
-    opacity: .95;
+    line-height: @smaller;
+    opacity: @opacity2;
   }
 }
 .main {
   margin: 0 .028rem;
-  background: #fff;
+  background: @white;
   position: relative;
   border-radius: .016rem;
   top: -.05rem;
@@ -282,7 +282,8 @@ export default {
     background-color: transparent;
   }
   .van-cell__right-icon {
-    font-size: 14px;
+    font-size: @small;
+    // Todo
     color: orange;
   }
 }
@@ -293,11 +294,11 @@ export default {
     flex: 1;
   }
   .label {
-    font-size: 14px;
-    color: #999999;
+    font-size: @small;
+    color: @gray;
   }
   .value {
-    font-size: 18px;
+    font-size: @big;
     font-weight: bold;
     line-height: 1.28;
     padding-top: .008rem;
@@ -305,26 +306,26 @@ export default {
 }
 .items {
   .label {
-    font-size: 14px;
+    font-size: @small;
   }
   .value {
-    font-size: 12px;
+    font-size: @smaller;
     display: flex;
     width: 100%;
     justify-content: space-between;
   }
 }
 .seemore {
-  font-size: 14px;
+  font-size: @small;
   line-height: 2.8;
-  color: #999999;
+  color: @gray;
 }
 .yield {
   padding: 0 .028rem;
   .value {
-    color: #e8541e;
+    color: @red;
     font-weight: bold;
-    font-size: 22px;
+    font-size: @bigger;
   }
 }
 .line {
@@ -333,13 +334,13 @@ export default {
   position: relative;
   .bg {
     height: .012rem;
-    background: #ffc41b;
+    background: @orange;
     border-radius: .012rem;
     opacity: .28;
   }
   .value {
     height: 0.012rem;
-    background: linear-gradient(180deg, #ffc41b, #e8541e);
+    background: linear-gradient(180deg, @orange, @red);
     border-radius: 0.012rem;
     width: 72%;
     position: absolute;
@@ -347,11 +348,11 @@ export default {
   }
   .icon {
     position: absolute;
-    font-size: 14px;
-    color: #ffffff;
-    background: linear-gradient(135deg, #ffc41b, #e8541e);
-    width: 14px;
-    height: 14px;
+    font-size: @small;
+    color: @white;
+    background: linear-gradient(135deg, @orange, @red);
+    width: @small;
+    height: @small;
     padding: .004rem;
     border-radius: 100%;
     border: 2px solid #fff1d3;
@@ -362,7 +363,7 @@ export default {
 .swipe-item {
   height: .304rem;
   margin-right: 1px;
-  background: #fff;
+  background: @white;
 }
 .monthly {
   background: linear-gradient(135deg, #e8f3ff 50%, #e6f0ff 50%);
@@ -375,7 +376,7 @@ export default {
   }
 }
 .tosee {
-  font-size: 16px;
+  font-size: @normal;
   border: none;
   padding: 0 .056rem;
   margin: .028rem;
@@ -384,76 +385,6 @@ export default {
 }
 .mdivider {
   margin: -.048rem 0 .012rem 0;
-  font-size: 12px;
-}
-// unit
-.normal {
-  font-size: 16px;
-  font-weight: bold;
-}
-.small {
-  font-size: 14px;
-}
-.desc {
-  font-size: 12px;
-  color: #999999;
-}
-.pdlr-28 {
-  padding: 0 .028rem;
-}
-.pdt-14 {
-  padding-top: .014rem;
-}
-.pdb-36 {
-  padding-bottom: .036rem;
-}
-.opacity-72 {
-  opacity: .72;
-}
-.mgl-16 {
-  margin-left: .016rem;
-}
-.mgl-08 {
-  margin-left: .008rem;
-}
-.sys-orange {
-  color: orange;
-}
-.top-2 {
-  top: 2px;
-}
-.bdb {
-  position: relative;
-  &:after {
-    content: ' ';
-    height: 1px;
-    transform: scaleY(0.5);
-    background: @bg;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
-}
-.black {
-  color: #000000;
-}
-.gray {
-  color: #999999;
-}
-.red {
-  color: #e8541e;
-}
-.green {
-  color: #0ba194;
-}
-.txt-r {
-  text-align: right;
-}
-.lh-2 {
-  line-height: 2;
-}
-.transparent {
-  background: transparent;
+  font-size: @smaller;
 }
 </style>
