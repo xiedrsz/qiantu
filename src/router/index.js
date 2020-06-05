@@ -113,6 +113,13 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "zzc" */ '../views/Zzc.vue')
     }
+  },
+  {
+    path: '/change',
+    name: 'Change',
+    component: function () {
+      return import(/* webpackChunkName: "change" */ '../views/Change.vue')
+    }
   }
 ]
 
