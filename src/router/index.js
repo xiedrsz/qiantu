@@ -107,6 +107,7 @@ const routes = [
       return import(/* webpackChunkName: "newevent" */ '../views/NewEvent.vue')
     }
   },
+  // 总资产
   {
     path: '/zzc',
     name: 'Zzc',
@@ -114,13 +115,22 @@ const routes = [
       return import(/* webpackChunkName: "zzc" */ '../views/Zzc.vue')
     }
   },
+  // 零钱
   {
     path: '/change',
     name: 'Change',
     component: function () {
       return import(/* webpackChunkName: "change" */ '../views/Change.vue')
     }
-  }
+  },
+  // 定期
+  {
+    path: '/regular',
+    name: 'Regular',
+    component: function () {
+      return import(/* webpackChunkName: "regular" */ '../views/regular.vue')
+    }
+  } // $newRoute
 ]
 
 const router = new VueRouter({

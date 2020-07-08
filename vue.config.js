@@ -6,7 +6,8 @@ module.exports = {
           // 自定义 vant
           // 直接覆盖变量
           'grid-item-content-padding': '.028rem',
-          'grid-item-content-background-color': 'transparent'
+          'grid-item-content-background-color': 'transparent',
+          'grid-item-text-font-size': '14px'
           // 或者可以通过 less 文件覆盖（文件路径为绝对路径）
           // hack: `true; @import "your-less-file-path.less";`
         }
