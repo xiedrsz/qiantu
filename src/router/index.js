@@ -128,7 +128,15 @@ const routes = [
     path: '/regular',
     name: 'Regular',
     component: function () {
-      return import(/* webpackChunkName: "regular" */ '../views/regular.vue')
+      return import(/* webpackChunkName: "regular" */ '../views/Regular.vue')
+    }
+  },
+  // 股票
+  {
+    path: '/stock',
+    name: 'Stock',
+    component: function () {
+      return import(/* webpackChunkName: "stock" */ '../views/Stock.vue')
     }
   } // $newRoute
 ]

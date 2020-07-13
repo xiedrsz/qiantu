@@ -133,6 +133,20 @@
             <!-- <span class="green">-9.81</span> -->
           </div>
         </van-grid-item>
+        <van-grid-item>
+          <p class="label">京东白条</p>
+          <div class="value">
+            <span class="gray">70,000</span>
+            <span class="green">-9.81</span>
+          </div>
+        </van-grid-item>
+        <van-grid-item>
+          <p class="label">美团月付</p>
+          <div class="value">
+            <span class="gray">70,000</span>
+            <span class="green">-9.81</span>
+          </div>
+        </van-grid-item>
       </van-grid>
     </div>
     <van-swipe class="main transparent" indicator-color="#1677ff">
