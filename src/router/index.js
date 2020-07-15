@@ -138,6 +138,14 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "stock" */ '../views/Stock.vue')
     }
+  },
+  // 基金
+  {
+    path: '/fund',
+    name: 'Fund',
+    component: function () {
+      return import(/* webpackChunkName: "fund" */ '../views/Fund.vue')
+    }
   } // $newRoute
 ]
 

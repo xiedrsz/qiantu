@@ -132,15 +132,15 @@ export default {
 
 <style lang="less" scoped>
 @import '../assets/less/variable.less';
-@blue: #0c9eff;
-@lightBlue: #5fd0fa;
+@tangerine: #f25635;
+@lightTangerine: #f27256;
 
 .header {
   position: relative;
   padding-top: .09rem;
-  background: linear-gradient(180deg, #f25635 30%, #f27256 80%, transparent);
+  background: linear-gradient(180deg, @tangerine 30%, @lightTangerine 80%, transparent);
   .van-nav-bar {
-    background: #f25635;
+    background: @tangerine;
     &__title {
       color: @white;
       font-size: @big;
@@ -194,9 +194,8 @@ export default {
   }
   .item {
     padding: .03rem;
-    // margin-bottom: .03rem;
     background:@white;
-    font-size: 12px;
+    font-size: @smaller;
     .value {
       font-size: @small;
       font-weight: 500;
