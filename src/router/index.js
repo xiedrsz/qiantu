@@ -146,6 +146,14 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "fund" */ '../views/Fund.vue')
     }
+  },
+  // 黄金
+  {
+    path: '/gold',
+    name: 'Gold',
+    component: function () {
+      return import(/* webpackChunkName: "gold" */ '../views/Gold.vue')
+    }
   } // $newRoute
 ]
 
