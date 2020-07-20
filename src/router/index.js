@@ -154,6 +154,14 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "gold" */ '../views/Gold.vue')
     }
+  },
+  // 储蓄
+  {
+    path: '/saving',
+    name: 'Saving',
+    component: function () {
+      return import(/* webpackChunkName: "saving" */ '../views/Saving.vue')
+    }
   } // $newRoute
 ]
 
